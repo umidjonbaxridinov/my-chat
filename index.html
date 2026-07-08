@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Chat - Upgraded</title>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <title>Space P2P Chat - Mega Upgraded</title>
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background: #0b0b1e; color: #e0e0e0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; }
         
-        /* Анимированный Космический Фон */
+        /* 5. ФИШКА: Анимированный Космический Фон */
         .stars { position: absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%); z-index: -2; }
         .twinkling { position: absolute; top:0; left:0; width:100%; height:100%; background: transparent url('https://i.imgur.com/Y7wZ9H4.png') repeat top center; z-index: -1; animation: move-twink-back 200s linear infinite; }
         @keyframes move-twink-back { from {background-position:0 0;} to {background-position:-10000px 5000px;} }
@@ -30,21 +29,19 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .message.incoming { background: rgba(45, 45, 70, 0.85); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #3a3a5c; }
         .message.outgoing { background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .message.deleted-admin { background: rgba(100, 20, 20, 0.8) !important; border: 1px dashed #ff4a4a; align-self: flex-start; }
         
         .meta { font-size: 0.75rem; color: #00d2ff; margin-bottom: 4px; display: flex; justify-content: space-between; font-weight: bold; }
         .message.outgoing .meta { color: #ffe600; }
-        .del-btn { font-size: 0.8rem; color: #ff4a4a; cursor: pointer; text-decoration: none; margin-left: 8px; }
         
-        /* Медиа элементы */
+        /* Картинки работают без серверов */
         .chat-img { max-width: 100%; border-radius: 10px; margin-top: 5px; max-height: 250px; cursor: pointer; transition: 0.2s; }
         .chat-img:hover { transform: scale(1.02); }
 
-        /* Ответы (Reply) */
+        /* 3. ФИШКА: Ответы (Reply) */
         .reply-container { background: rgba(0,0,0,0.2); padding: 5px 8px; border-left: 3px solid #00d2ff; border-radius: 4px; margin-bottom: 5px; font-size: 0.85rem; }
         #reply-preview-bar { display: none; background: #19192d; padding: 8px 15px; border-left: 4px solid #0078ff; justify-content: space-between; align-items: center; color: white; font-size: 0.9rem; }
 
-        /* Реакции */
+        /* 1. ФИШКА: Реакции */
         .reaction-panel { display: flex; gap: 4px; margin-top: 4px; font-size: 0.9rem; }
         .reaction-badge { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 10px; cursor: pointer; display: inline-block; transition: 0.2s; }
         .reaction-badge:hover { background: rgba(255,255,255,0.25); }
@@ -60,7 +57,13 @@
         .icon-btn:hover { background: #0078ff; border-color: #0078ff; }
         #send-btn { background: #0078ff; color: white; border: none; padding: 0 22px; height: 45px; border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         #send-btn:hover { background: #0052d4; }
+        
+        #connection-status { font-size: 0.9rem; color: #ffaa00; text-align: center; padding: 5px; background: rgba(0,0,0,0.4); }
+        
+        /* 2. ФИШКА: Индикатор печати */
         #typing-status { position: absolute; top: -20px; left: 20px; font-size: 0.8rem; color: #00d2ff; font-style: italic; display: none; }
+        
+        /* 4. ФИШКА: Галочки */
         .status-ticks { font-size: 0.75rem; align-self: flex-end; margin-top: 2px; color: rgba(255,255,255,0.6); }
 
         /* Просмотрщик картинок */
@@ -78,15 +81,16 @@
 
     <div id="auth-screen">
         <div class="auth-box">
-            <h2 style="text-align: center; color: #00d2ff; margin-bottom: 5px;">Space Chat 🌌</h2>
+            <h2 style="text-align: center; color: #00d2ff; margin-bottom: 5px;">Space P2P Chat 🌌</h2>
             <input type="text" id="username-input" placeholder="Твой Никнейм">
-            <input type="text" id="room-input" placeholder="Имя комнаты (например: test)">
-            <button id="login-btn" style="background:#0078ff; color:white; border:none; padding:12px; border-radius:20px; font-weight:bold; cursor:pointer;">Войти в гиперпространство</button>
+            <input type="text" id="room-input" placeholder="Секретный ID комнаты (например: space-test)">
+            <button id="login-btn" style="background:#0078ff; color:white; border:none; padding:12px; border-radius:20px; font-weight:bold; cursor:pointer;">Создать / Подключиться</button>
         </div>
     </div>
 
     <div id="chat-screen">
-        <header id="chat-header">Комната: ...</header>
+        <header id="chat-header">Пилот: ...</header>
+        <div id="connection-status">Ожидание подключения собеседника...</div>
         <div id="chat-box"></div>
         
         <div id="reply-preview-bar">
@@ -100,193 +104,200 @@
             <button class="icon-btn" onclick="document.getElementById('file-input').click()">📎</button>
             <input type="file" id="file-input" accept="image/*">
             
-            <input type="text" id="msg-input" placeholder="Напишите сообщение..." autocomplete="off">
-            <button id="send-btn">Отправить</button>
+            <input type="text" id="msg-input" placeholder="Напишите сообщение..." autocomplete="off" disabled>
+            <button id="send-btn" disabled>Отправить</button>
         </div>
     </div>
 
     <div id="image-viewer">
         <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;" onclick="document.getElementById('image-viewer').style.display='none'">&times;</span>
         <img id="viewer-img" src="">
-        <a id="download-btn" class="viewer-btn" download="space_image.png">📥 Скачать в оригинале</a>
+        <a id="download-btn" class="viewer-btn" download="space_image.png">📥 Скачать оригинал</a>
     </div>
 
     <script>
-        // Твои рабочие настройки Firebase Firestore
-        const firebaseConfig = {
-            apiKey: "AIzaSyAs8G4-XJb6XWvXw-9Z_XvXw-9Z_XvXw",
-            authDomain: "my-secret-chat.firebaseapp.com",
-            projectId: "my-secret-chat",
-            storageBucket: "my-secret-chat.appspot.com",
-            messagingSenderId: "1095584838382",
-            appId: "1:1095584838382:web:cbdc9f80a4f5f5fc8f7b3a"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
         let myName = "";
-        let currentRoom = "";
+        let roomID = "";
+        let peer = null;
+        let conn = null;
         let replyTextPreview = null;
         let typingTimeout;
+        let localMessages = []; // Храним сообщения локально для перерендера реакций
 
         const chatBox = document.getElementById("chat-box");
         const msgInput = document.getElementById("msg-input");
+        const sendBtn = document.getElementById("send-btn");
+        const statusDiv = document.getElementById("connection-status");
 
-        // Логин
         document.getElementById("login-btn").addEventListener("click", () => {
             myName = document.getElementById("username-input").value.trim();
-            currentRoom = document.getElementById("room-input").value.trim().toLowerCase();
-            if (!myName || !currentRoom) { alert("Заполни поля!"); return; }
+            roomID = document.getElementById("room-input").value.trim().toLowerCase();
+            if (!myName || !roomID) { alert("Заполни поля!"); return; }
 
             document.getElementById("auth-screen").style.display = "none";
             document.getElementById("chat-screen").style.display = "flex";
-            document.getElementById("chat-header").innerText = `Космическая комната: ${currentRoom} (Пилот: ${myName})`;
+            document.getElementById("chat-header").innerText = `Пилот: ${myName} | ID комнаты: ${roomID}`;
             
-            startListening();
-            setupTypingStatus();
+            initP2P();
         });
 
-        // Отправка текста
-        async function sendMessage() {
+        function initP2P() {
+            const myPeerId = roomID + "-" + myName;
+            peer = new Peer(myPeerId);
+
+            peer.on('open', (id) => {
+                statusDiv.innerText = "Комната создана. Ждём друга или введите его ник.";
+                const askFriendName = prompt("Введите НИКНЕЙМ вашего друга, если он уже зашел в чат (или оставьте пустым, если вы зашли первым и ждете его):");
+                if (askFriendName) {
+                    const targetId = roomID + "-" + askFriendName.trim();
+                    conn = peer.connect(targetId);
+                    setupConnection();
+                }
+            });
+
+            peer.on('connection', (incomingConn) => {
+                conn = incomingConn;
+                setupConnection();
+            });
+        }
+
+        function setupConnection() {
+            conn.on('open', () => {
+                statusDiv.innerText = "⚡ Соединение установлено напрямую!";
+                statusDiv.style.color = "#00ffcc";
+                msgInput.disabled = false;
+                sendBtn.disabled = false;
+            });
+
+            // Слушаем входящие пакеты (сообщения, реакции, статус печати)
+            conn.on('data', (data) => {
+                if (data.dataType === 'typing') {
+                    const status = document.getElementById("typing-status");
+                    status.innerText = `${data.user} вводит сообщение...`;
+                    status.style.display = "block";
+                    clearTimeout(typingTimeout);
+                    typingTimeout = setTimeout(() => status.style.display = "none", 1500);
+                } 
+                else if (data.dataType === 'reaction') {
+                    const targetMsg = localMessages.find(m => m.id === data.msgId);
+                    if (targetMsg) {
+                        targetMsg.reactions[data.emoji] = (targetMsg.reactions[data.emoji] || 0) + 1;
+                        renderAllMessages();
+                    }
+                }
+                else {
+                    localMessages.push({
+                        id: data.id, user: data.user, text: data.text, type: data.type, reply_to: data.reply_to, reactions: {}, direction: 'incoming'
+                    });
+                    renderAllMessages();
+                }
+            });
+        }
+
+        function sendMessage() {
             const text = msgInput.value.trim();
-            if (!text) return;
+            if (!text || !conn) return;
             msgInput.value = "";
             
-            await db.collection("messages").add({
-                room: currentRoom,
-                user: myName,
-                text: text,
-                type: 'text',
-                reply_to: replyTextPreview,
-                reactions: {},
-                is_deleted: false,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            const msgId = Date.now();
+            const msgData = { id: msgId, user: myName, text: text, type: 'text', reply_to: replyTextPreview };
+            
+            conn.send(msgData);
+            localMessages.push({...msgData, reactions: {}, direction: 'outgoing'});
+            renderAllMessages();
             cancelReply();
         }
+
         document.getElementById("send-btn").addEventListener("click", sendMessage);
         msgInput.addEventListener("keypress", (e) => { if(e.key==='Enter') sendMessage(); });
 
-        // Отправка Фото в оригинальном качестве через Base64
+        // Отправка фото
         document.getElementById("file-input").addEventListener("change", function(e) {
             const file = e.target.files[0];
-            if (!file) return;
+            if (!file || !conn) return;
 
             const reader = new FileReader();
-            reader.onload = async function(event) {
+            reader.onload = function(event) {
                 const base64String = event.target.result;
+                const msgId = Date.now();
+                const msgData = { id: msgId, user: myName, text: base64String, type: 'image', reply_to: replyTextPreview };
                 
-                await db.collection("messages").add({
-                    room: currentRoom,
-                    user: myName,
-                    text: base64String,
-                    type: 'image',
-                    reply_to: replyTextPreview,
-                    reactions: {},
-                    is_deleted: false,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                conn.send(msgData);
+                localMessages.push({...msgData, reactions: {}, direction: 'outgoing'});
+                renderAllMessages();
                 cancelReply();
             };
             reader.readAsDataURL(file);
         });
 
-        // Подписка на сообщения в реальном времени
-        function startListening() {
-            db.collection("messages")
-                .where("room", "==", currentRoom)
-                .orderBy("timestamp", "asc")
-                .onSnapshot(snapshot => {
-                    chatBox.innerHTML = "";
-                    snapshot.forEach(doc => {
-                        const msg = doc.data();
-                        const id = doc.id;
-                        const isAdmin = (myName.toLowerCase() === 'admin');
-                        if (msg.is_deleted && !isAdmin) return;
+        // Отправка сигнала «печатает...»
+        msgInput.addEventListener("input", () => {
+            if (conn) conn.send({ dataType: 'typing', user: myName });
+        });
 
-                        const isMe = msg.user === myName;
-                        const msgDiv = document.createElement("div");
-                        msgDiv.className = `message ${isMe ? 'outgoing' : 'incoming'} ${msg.is_deleted && isAdmin ? 'deleted-admin' : ''}`;
+        function renderAllMessages() {
+            chatBox.innerHTML = "";
+            localMessages.forEach(msg => {
+                const msgDiv = document.createElement("div");
+                msgDiv.className = `message ${msg.direction}`;
 
-                        let content = `<span class="meta">${msg.user}`;
-                        if (isMe && !msg.is_deleted) {
-                            content += `<span class="del-btn" onclick="deleteMsg('${id}')">× удалить</span>`;
-                        }
-                        content += `</span>`;
+                let content = `<span class="meta">${msg.user}</span>`;
+                
+                // Фишка: Ответы
+                if (msg.reply_to) {
+                    content += `<div class="reply-container"><b>↳ Ответ на:</b> ${msg.reply_to}</div>`;
+                }
 
-                        // 3. Фишка: Отображение ответов
-                        if (msg.reply_to) {
-                            content += `<div class="reply-container"><b>↳ Ответ на:</b> ${msg.reply_to}</div>`;
-                        }
+                if (msg.type === 'text') {
+                    content += `<div>${msg.text}</div>`;
+                } else if (msg.type === 'image') {
+                    content += `<img class="chat-img" src="${msg.text}" onclick="openFullImage('${msg.text}')">`;
+                }
 
-                        if (msg.is_deleted && isAdmin) {
-                            content += `<i style="color:#ff8888;">[Удалено пользователем]</i><br>`;
-                        }
+                // Кнопка вызова панели реакций и ответа
+                content += `<span class="msg-actions-trigger" onclick="togglePicker(${msg.id})">⚙️</span>`;
+                content += `
+                    <div class="reactions-picker" id="picker-${msg.id}">
+                        <span onclick="addLocalReaction(${msg.id}, '👍')">👍</span>
+                        <span onclick="addLocalReaction(${msg.id}, '❤️')">❤️</span>
+                        <span onclick="addLocalReaction(${msg.id}, '🔥')">🔥</span>
+                        <span onclick="setReply('${msg.user}', '${msg.type === 'image' ? 'Фото' : msg.text}')">↩️</span>
+                    </div>
+                `;
 
-                        // Контент
-                        if (msg.type === 'text') {
-                            content += `<div>${msg.text}</div>`;
-                        } else if (msg.type === 'image') {
-                            content += `<img class="chat-img" src="${msg.text}" onclick="openFullImage('${msg.text}')">`;
-                        }
+                // Фишка: Реакции под сообщением
+                if (msg.reactions && Object.keys(msg.reactions).length > 0) {
+                    content += `<div class="reaction-panel">`;
+                    for (let emoji in msg.reactions) {
+                        content += `<span class="reaction-badge">${emoji} ${msg.reactions[emoji]}</span>`;
+                    }
+                    content += `</div>`;
+                }
 
-                        // Шестеренка действий (Реакции / Ответ)
-                        content += `<span class="msg-actions-trigger" onclick="togglePicker('${id}')">⚙️</span>`;
-                        
-                        // 1 и 3 Фишки: Меню выбора реакций и кнопка ответа
-                        content += `
-                            <div class="reactions-picker" id="picker-${id}">
-                                <span onclick="addReaction('${id}', '👍')">👍</span>
-                                <span onclick="addReaction('${id}', '❤️')">❤️</span>
-                                <span onclick="addReaction('${id}', '🔥')">🔥</span>
-                                <span onclick="setReply('${msg.user}', '${msg.type === 'image' ? 'Фотография' : msg.text}')">↩️</span>
-                            </div>
-                        `;
+                // Фишка: Галочки прочтения
+                content += `<span class="status-ticks">✔️✔️</span>`;
 
-                        // 1. Фишка: Рендер реакций под сообщением
-                        if (msg.reactions && Object.keys(msg.reactions).length > 0) {
-                            content += `<div class="reaction-panel">`;
-                            for (let emoji in msg.reactions) {
-                                content += `<span class="reaction-badge" onclick="addReaction('${id}', '${emoji}')">${emoji} ${msg.reactions[emoji]}</span>`;
-                            }
-                            content += `</div>`;
-                        }
-
-                        // 4. Фишка: Статус сообщения (Галочки)
-                        content += `<span class="status-ticks">✔️✔️</span>`;
-
-                        msgDiv.innerHTML = content;
-                        chatBox.appendChild(msgDiv);
-                    });
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                });
+                msgDiv.innerHTML = content;
+                chatBox.appendChild(msgDiv);
+            });
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // Удаление сообщений
-        window.deleteMsg = async function(id) {
-            if (confirm("Удалить сообщение?")) {
-                await db.collection("messages").doc(id).update({ is_deleted: true });
-            }
-        };
-
-        // Открытие реакций
         window.togglePicker = function(id) {
             const p = document.getElementById(`picker-${id}`);
             p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
         };
 
-        // Добавление реакции
-        window.addReaction = async function(id, emoji) {
-            const docRef = db.collection("messages").doc(id);
-            const doc = await docRef.get();
-            let reactions = doc.data().reactions || {};
-            reactions[emoji] = (reactions[emoji] || 0) + 1;
-            await docRef.update({ reactions: reactions });
+        window.addLocalReaction = function(id, emoji) {
+            const targetMsg = localMessages.find(m => m.id === id);
+            if (targetMsg) {
+                targetMsg.reactions[emoji] = (targetMsg.reactions[emoji] || 0) + 1;
+                renderAllMessages();
+                if (conn) conn.send({ dataType: 'reaction', msgId: id, emoji: emoji });
+            }
             document.getElementById(`picker-${id}`).style.display = 'none';
         };
 
-        // Выбор сообщения для ответа
         window.setReply = function(user, text) {
             const shortText = text.length > 25 ? text.substring(0, 25) + "..." : text;
             replyTextPreview = `${user}: "${shortText}"`;
@@ -298,38 +309,11 @@
             document.getElementById("reply-preview-bar").style.display = "none";
         };
 
-        // Просмотр картинок на весь экран
         window.openFullImage = function(url) {
             document.getElementById("viewer-img").src = url;
             document.getElementById("download-btn").href = url;
             document.getElementById("image-viewer").style.display = "flex";
         };
-
-        // 2. Фишка: Индикатор «Собеседник печатает...» через вспомогательную коллекцию
-        function setupTypingStatus() {
-            const statusDiv = document.getElementById("typing-status");
-            
-            db.collection("typing").where("room", "==", currentRoom).onSnapshot(snapshot => {
-                let typers = [];
-                snapshot.forEach(doc => {
-                    if (doc.id !== myName) typers.push(doc.id);
-                });
-                if (typers.length > 0) {
-                    statusDiv.innerText = `${typers.join(", ")} вводит сообщение...`;
-                    statusDiv.style.display = "block";
-                } else {
-                    statusDiv.style.display = "none";
-                }
-            });
-
-            msgInput.addEventListener("input", () => {
-                db.collection("typing").doc(myName).set({ room: currentRoom, typing: true });
-                clearTimeout(typingTimeout);
-                typingTimeout = setTimeout(() => {
-                    db.collection("typing").doc(myName).delete();
-                }, 2000);
-            });
-        }
     </script>
 </body>
 </html>
