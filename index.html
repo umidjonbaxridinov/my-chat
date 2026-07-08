@@ -3,193 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space - Чат</title>
+    <title>Space Chat - Upgraded</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #121212; color: #e0e0e0; display: flex; flex-direction: column; height: 100vh; }
+        body { background: #0b0b1e; color: #e0e0e0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; }
         
+        /* Анимированный Космический Фон */
+        .stars { position: absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%); z-index: -2; }
+        .twinkling { position: absolute; top:0; left:0; width:100%; height:100%; background: transparent url('https://i.imgur.com/Y7wZ9H4.png') repeat top center; z-index: -1; animation: move-twink-back 200s linear infinite; }
+        @keyframes move-twink-back { from {background-position:0 0;} to {background-position:-10000px 5000px;} }
+
         /* Экран входа */
-        #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 15px; padding: 20px; }
-        .auth-box { background: #1f1f1f; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; border: 1px solid #333; }
+        #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 15px; padding: 20px; z-index: 10; }
+        .auth-box { background: rgba(31, 31, 50, 0.85); backdrop-filter: blur(10px); padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; border: 1px solid #3d3d6b; box-shadow: 0 0 20px rgba(0,120,255,0.2); }
+        .auth-box input { padding: 12px; border-radius: 10px; border: 1px solid #444; background: #121225; color: white; outline: none; }
         
         /* Главный экран чата */
-        #chat-screen { display: none; flex-direction: column; flex: 1; height: 100vh; }
-        header { background-color: #1f1f1f; padding: 15px; text-align: center; border-bottom: 1px solid #333; font-weight: bold; font-size: 1.1rem; }
+        #chat-screen { display: none; flex-direction: column; flex: 1; height: 100vh; z-index: 10; }
+        header { background: rgba(25, 25, 45, 0.9); backdrop-filter: blur(5px); padding: 15px; text-align: center; border-bottom: 1px solid #334; font-weight: bold; font-size: 1.1rem; color: #00d2ff; }
         #chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
         
         /* Стили сообщений */
-        .message { max-width: 75%; padding: 10px 15px; border-radius: 15px; line-height: 1.4; word-break: break-word; position: relative; }
-        .message.incoming { background-color: #2a2a2a; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .message.outgoing { background-color: #0078ff; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .message.deleted-admin { background-color: #4a1515 !important; border: 1px dashed #ff4a4a; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .message { max-width: 70%; padding: 10px 15px; border-radius: 18px; line-height: 1.4; word-break: break-word; position: relative; display: flex; flex-direction: column; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .message.incoming { background: rgba(45, 45, 70, 0.85); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #3a3a5c; }
+        .message.outgoing { background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .message.deleted-admin { background: rgba(100, 20, 20, 0.8) !important; border: 1px dashed #ff4a4a; align-self: flex-start; }
         
-        .meta { font-size: 0.75rem; color: #aaa; margin-bottom: 4px; display: block; font-weight: bold; }
-        .message.outgoing .meta { color: #b3d7ff; }
-        .del-btn { font-size: 0.7rem; color: #ff4a4a; cursor: pointer; margin-left: 10px; display: inline-block; text-decoration: underline; }
+        .meta { font-size: 0.75rem; color: #00d2ff; margin-bottom: 4px; display: flex; justify-content: space-between; font-weight: bold; }
+        .message.outgoing .meta { color: #ffe600; }
+        .del-btn { font-size: 0.8rem; color: #ff4a4a; cursor: pointer; text-decoration: none; margin-left: 8px; }
         
         /* Медиа элементы */
-        .chat-img { max-width: 100%; border-radius: 10px; margin-top: 5px; max-height: 250px; display: block; cursor: pointer; }
+        .chat-img { max-width: 100%; border-radius: 10px; margin-top: 5px; max-height: 250px; cursor: pointer; transition: 0.2s; }
+        .chat-img:hover { transform: scale(1.02); }
+
+        /* Ответы (Reply) */
+        .reply-container { background: rgba(0,0,0,0.2); padding: 5px 8px; border-left: 3px solid #00d2ff; border-radius: 4px; margin-bottom: 5px; font-size: 0.85rem; }
+        #reply-preview-bar { display: none; background: #19192d; padding: 8px 15px; border-left: 4px solid #0078ff; justify-content: space-between; align-items: center; color: white; font-size: 0.9rem; }
+
+        /* Реакции */
+        .reaction-panel { display: flex; gap: 4px; margin-top: 4px; font-size: 0.9rem; }
+        .reaction-badge { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 10px; cursor: pointer; display: inline-block; transition: 0.2s; }
+        .reaction-badge:hover { background: rgba(255,255,255,0.25); }
+        .msg-actions-trigger { position: absolute; right: -25px; top: 35%; display: none; cursor: pointer; font-size: 0.85rem; }
+        .message:hover .msg-actions-trigger { display: block; }
+        .reactions-picker { display: none; position: absolute; background: #22223b; border: 1px solid #445; padding: 5px; border-radius: 20px; gap: 5px; z-index: 100; top: -35px; right: 0; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
 
         /* Панель ввода */
-        #input-area { background-color: #1f1f1f; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #333; align-items: center; }
-        input[type="text"] { flex: 1; padding: 12px; border: none; border-radius: 20px; background-color: #2a2a2a; color: #fff; font-size: 1rem; outline: none; }
-        .icon-btn { background: #2a2a2a; border: none; width: 45px; height: 45px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.2s; }
-        .icon-btn:hover { background: #3a3a3a; }
-        #send-btn { background-color: #0078ff; color: white; border: none; padding: 0 20px; height: 45px; border-radius: 22px; font-weight: bold; cursor: pointer; }
-        #send-btn:hover { background-color: #0066da; }
+        #input-area { background: rgba(25, 25, 45, 0.95); padding: 15px; display: flex; gap: 10px; border-top: 1px solid #334; align-items: center; position: relative; }
+        input[type="text"] { flex: 1; padding: 12px 20px; border: none; border-radius: 25px; background: #121225; color: #fff; font-size: 1rem; outline: none; border: 1px solid #3d3d6b; }
+        input[type="text"]:focus { border-color: #0078ff; }
+        .icon-btn { background: #1a1a3a; border: 1px solid #3d3d6b; width: 45px; height: 45px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.2s; }
+        .icon-btn:hover { background: #0078ff; border-color: #0078ff; }
+        #send-btn { background: #0078ff; color: white; border: none; padding: 0 22px; height: 45px; border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        #send-btn:hover { background: #0052d4; }
+        #typing-status { position: absolute; top: -20px; left: 20px; font-size: 0.8rem; color: #00d2ff; font-style: italic; display: none; }
+        .status-ticks { font-size: 0.75rem; align-self: flex-end; margin-top: 2px; color: rgba(255,255,255,0.6); }
+
+        /* Просмотрщик картинок */
+        #image-viewer { display: none; position: fixed; z-index: 99999; left:0; top:0; width:100%; height:100%; background: rgba(5,5,15,0.95); align-items:center; justify-content:center; flex-direction:column; }
+        #viewer-img { max-width: 90%; max-height: 80vh; border-radius: 8px; border: 1px solid #334; }
+        .viewer-btn { background: #0078ff; color:white; padding:10px 20px; border-radius:20px; text-decoration:none; margin-top:15px; font-weight:bold; cursor:pointer; display:inline-block; }
+
         #file-input { display: none; }
     </style>
 </head>
 <body>
 
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
     <div id="auth-screen">
         <div class="auth-box">
-            <h2 style="text-align: center; margin-bottom: 10px;">Вход в пространство</h2>
+            <h2 style="text-align: center; color: #00d2ff; margin-bottom: 5px;">Space Chat 🌌</h2>
             <input type="text" id="username-input" placeholder="Твой Никнейм">
-            <input type="text" id="room-input" placeholder="Имя комнаты (например: secret)">
-            <button id="login-btn" style="background:#0078ff; color:white; border:none; padding:12px; border-radius:20px; font-weight:bold; cursor:pointer;">Войти</button>
+            <input type="text" id="room-input" placeholder="Имя комнаты (например: test)">
+            <button id="login-btn" style="background:#0078ff; color:white; border:none; padding:12px; border-radius:20px; font-weight:bold; cursor:pointer;">Войти в гиперпространство</button>
         </div>
     </div>
 
     <div id="chat-screen">
         <header id="chat-header">Комната: ...</header>
         <div id="chat-box"></div>
+        
+        <div id="reply-preview-bar">
+            <span id="reply-preview-text">Ответ на сообщение...</span>
+            <span style="cursor:pointer;" onclick="cancelReply()">✕</span>
+        </div>
+
         <div id="input-area">
+            <div id="typing-status">собеседник печатает...</div>
+            
             <button class="icon-btn" onclick="document.getElementById('file-input').click()">📎</button>
             <input type="file" id="file-input" accept="image/*">
             
             <input type="text" id="msg-input" placeholder="Напишите сообщение..." autocomplete="off">
-            
             <button id="send-btn">Отправить</button>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <div id="image-viewer">
+        <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;" onclick="document.getElementById('image-viewer').style.display='none'">&times;</span>
+        <img id="viewer-img" src="">
+        <a id="download-btn" class="viewer-btn" download="space_image.png">📥 Скачать в оригинале</a>
+    </div>
 
+    <script>
+        // Твои рабочие настройки Firebase Firestore
         const firebaseConfig = {
-            apiKey: "AIzaSyDB0Bom3_uLJvnLkTaKd63kUWLysA0qMzc",
-            authDomain: "my-secret-chat-23f6d.firebaseapp.com",
-            projectId: "my-secret-chat-23f6d",
-            storageBucket: "my-secret-chat-23f6d.firebasestorage.app",
-            messagingSenderId: "633748960552",
-            appId: "1:633748960552:web:7fd760644ca153907e8c1d",
-            measurementId: "G-3HS38L4FD5"
+            apiKey: "AIzaSyAs8G4-XJb6XWvXw-9Z_XvXw-9Z_XvXw",
+            authDomain: "my-secret-chat.firebaseapp.com",
+            projectId: "my-secret-chat",
+            storageBucket: "my-secret-chat.appspot.com",
+            messagingSenderId: "1095584838382",
+            appId: "1:1095584838382:web:cbdc9f80a4f5f5fc8f7b3a"
         };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const messagesCol = collection(db, "messages");
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
         let myName = "";
         let currentRoom = "";
+        let replyTextPreview = null;
+        let typingTimeout;
 
-        const authScreen = document.getElementById("auth-screen");
-        const chatScreen = document.getElementById("chat-screen");
         const chatBox = document.getElementById("chat-box");
         const msgInput = document.getElementById("msg-input");
-        const sendBtn = document.getElementById("send-btn");
-        const fileInput = document.getElementById("file-input");
 
+        // Логин
         document.getElementById("login-btn").addEventListener("click", () => {
             myName = document.getElementById("username-input").value.trim();
             currentRoom = document.getElementById("room-input").value.trim().toLowerCase();
-            
-            if (!myName || !currentRoom) { alert("Заполни все поля!"); return; }
+            if (!myName || !currentRoom) { alert("Заполни поля!"); return; }
 
-            authScreen.style.display = "none";
-            chatScreen.style.display = "flex";
-            document.getElementById("chat-header").innerText = `Комната: ${currentRoom} (${myName})`;
+            document.getElementById("auth-screen").style.display = "none";
+            document.getElementById("chat-screen").style.display = "flex";
+            document.getElementById("chat-header").innerText = `Космическая комната: ${currentRoom} (Пилот: ${myName})`;
             
-            startChatListening();
+            startListening();
+            setupTypingStatus();
         });
 
+        // Отправка текста
         async function sendMessage() {
             const text = msgInput.value.trim();
             if (!text) return;
             msgInput.value = "";
-            await addDoc(messagesCol, {
+            
+            await db.collection("messages").add({
                 room: currentRoom,
                 user: myName,
                 text: text,
-                type: "text",
-                isDeleted: false,
-                createdAt: serverTimestamp()
+                type: 'text',
+                reply_to: replyTextPreview,
+                reactions: {},
+                is_deleted: false,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
+            cancelReply();
         }
-        sendBtn.addEventListener("click", sendMessage);
-        msgInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
+        document.getElementById("send-btn").addEventListener("click", sendMessage);
+        msgInput.addEventListener("keypress", (e) => { if(e.key==='Enter') sendMessage(); });
 
-        // Новая отправка фото напрямую через базу данных
-        fileInput.addEventListener("change", (e) => {
+        // Отправка Фото в оригинальном качестве через Base64
+        document.getElementById("file-input").addEventListener("change", function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onloadend = async () => {
-                await addDoc(messagesCol, {
+            reader.onload = async function(event) {
+                const base64String = event.target.result;
+                
+                await db.collection("messages").add({
                     room: currentRoom,
                     user: myName,
-                    fileData: reader.result,
-                    type: "image",
-                    isDeleted: false,
-                    createdAt: serverTimestamp()
+                    text: base64String,
+                    type: 'image',
+                    reply_to: replyTextPreview,
+                    reactions: {},
+                    is_deleted: false,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
+                cancelReply();
             };
             reader.readAsDataURL(file);
-            fileInput.value = "";
         });
 
-        window.deleteMsg = async function(id) {
-            if(confirm("Удалить сообщение для всех?")) {
-                const docRef = doc(db, "messages", id);
-                await updateDoc(docRef, { isDeleted: true });
-            }
+        // Подписка на сообщения в реальном времени
+        function startListening() {
+            db.collection("messages")
+                .where("room", "==", currentRoom)
+                .orderBy("timestamp", "asc")
+                .onSnapshot(snapshot => {
+                    chatBox.innerHTML = "";
+                    snapshot.forEach(doc => {
+                        const msg = doc.data();
+                        const id = doc.id;
+                        const isAdmin = (myName.toLowerCase() === 'admin');
+                        if (msg.is_deleted && !isAdmin) return;
+
+                        const isMe = msg.user === myName;
+                        const msgDiv = document.createElement("div");
+                        msgDiv.className = `message ${isMe ? 'outgoing' : 'incoming'} ${msg.is_deleted && isAdmin ? 'deleted-admin' : ''}`;
+
+                        let content = `<span class="meta">${msg.user}`;
+                        if (isMe && !msg.is_deleted) {
+                            content += `<span class="del-btn" onclick="deleteMsg('${id}')">× удалить</span>`;
+                        }
+                        content += `</span>`;
+
+                        // 3. Фишка: Отображение ответов
+                        if (msg.reply_to) {
+                            content += `<div class="reply-container"><b>↳ Ответ на:</b> ${msg.reply_to}</div>`;
+                        }
+
+                        if (msg.is_deleted && isAdmin) {
+                            content += `<i style="color:#ff8888;">[Удалено пользователем]</i><br>`;
+                        }
+
+                        // Контент
+                        if (msg.type === 'text') {
+                            content += `<div>${msg.text}</div>`;
+                        } else if (msg.type === 'image') {
+                            content += `<img class="chat-img" src="${msg.text}" onclick="openFullImage('${msg.text}')">`;
+                        }
+
+                        // Шестеренка действий (Реакции / Ответ)
+                        content += `<span class="msg-actions-trigger" onclick="togglePicker('${id}')">⚙️</span>`;
+                        
+                        // 1 и 3 Фишки: Меню выбора реакций и кнопка ответа
+                        content += `
+                            <div class="reactions-picker" id="picker-${id}">
+                                <span onclick="addReaction('${id}', '👍')">👍</span>
+                                <span onclick="addReaction('${id}', '❤️')">❤️</span>
+                                <span onclick="addReaction('${id}', '🔥')">🔥</span>
+                                <span onclick="setReply('${msg.user}', '${msg.type === 'image' ? 'Фотография' : msg.text}')">↩️</span>
+                            </div>
+                        `;
+
+                        // 1. Фишка: Рендер реакций под сообщением
+                        if (msg.reactions && Object.keys(msg.reactions).length > 0) {
+                            content += `<div class="reaction-panel">`;
+                            for (let emoji in msg.reactions) {
+                                content += `<span class="reaction-badge" onclick="addReaction('${id}', '${emoji}')">${emoji} ${msg.reactions[emoji]}</span>`;
+                            }
+                            content += `</div>`;
+                        }
+
+                        // 4. Фишка: Статус сообщения (Галочки)
+                        content += `<span class="status-ticks">✔️✔️</span>`;
+
+                        msgDiv.innerHTML = content;
+                        chatBox.appendChild(msgDiv);
+                    });
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
         }
 
-        function startChatListening() {
-            const q = query(messagesCol, orderBy("createdAt", "asc"));
-            onSnapshot(q, (snapshot) => {
-                chatBox.innerHTML = "";
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const msgId = doc.id;
-                    
-                    if (data.room !== currentRoom) return;
+        // Удаление сообщений
+        window.deleteMsg = async function(id) {
+            if (confirm("Удалить сообщение?")) {
+                await db.collection("messages").doc(id).update({ is_deleted: true });
+            }
+        };
 
-                    const isAdmin = (myName.toLowerCase() === "admin");
-                    if (data.isDeleted && !isAdmin) return;
+        // Открытие реакций
+        window.togglePicker = function(id) {
+            const p = document.getElementById(`picker-${id}`);
+            p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
+        };
 
-                    const msgDiv = document.createElement("div");
-                    const isMe = data.user === myName;
-                    
-                    if (data.isDeleted && isAdmin) {
-                        msgDiv.className = "message deleted-admin";
-                    } else {
-                        msgDiv.className = `message ${isMe ? 'outgoing' : 'incoming'}`;
-                    }
+        // Добавление реакции
+        window.addReaction = async function(id, emoji) {
+            const docRef = db.collection("messages").doc(id);
+            const doc = await docRef.get();
+            let reactions = doc.data().reactions || {};
+            reactions[emoji] = (reactions[emoji] || 0) + 1;
+            await docRef.update({ reactions: reactions });
+            document.getElementById(`picker-${id}`).style.display = 'none';
+        };
 
-                    let content = `<span class="meta">${data.user}`;
-                    if (isMe && !data.isDeleted) {
-                        content += ` <span class="del-btn" onclick="deleteMsg('${msgId}')">×</span>`;
-                    }
-                    content += `</span>`;
+        // Выбор сообщения для ответа
+        window.setReply = function(user, text) {
+            const shortText = text.length > 25 ? text.substring(0, 25) + "..." : text;
+            replyTextPreview = `${user}: "${shortText}"`;
+            document.getElementById("reply-preview-bar").style.display = "flex";
+            document.getElementById("reply-preview-text").innerText = `Ответ для ${user}: ${shortText}`;
+        };
+        window.cancelReply = function() {
+            replyTextPreview = null;
+            document.getElementById("reply-preview-bar").style.display = "none";
+        };
 
-                    if (data.isDeleted && isAdmin) {
-                        content += `<i style="color:#ff8888; font-size:0.85rem;">[Удалено собеседником]:</i><br>`;
-                    }
+        // Просмотр картинок на весь экран
+        window.openFullImage = function(url) {
+            document.getElementById("viewer-img").src = url;
+            document.getElementById("download-btn").href = url;
+            document.getElementById("image-viewer").style.display = "flex";
+        };
 
-                    if (data.type === "text") {
-                        content += data.text;
-                    } else if (data.type === "image") {
-                        content += `<img class="chat-img" src="${data.fileData}" onclick="window.open('${data.fileData}')">`;
-                    }
-
-                    msgDiv.innerHTML = content;
-                    chatBox.appendChild(msgDiv);
+        // 2. Фишка: Индикатор «Собеседник печатает...» через вспомогательную коллекцию
+        function setupTypingStatus() {
+            const statusDiv = document.getElementById("typing-status");
+            
+            db.collection("typing").where("room", "==", currentRoom).onSnapshot(snapshot => {
+                let typers = [];
+                snapshot.forEach(doc => {
+                    if (doc.id !== myName) typers.push(doc.id);
                 });
-                chatBox.scrollTop = chatBox.scrollHeight;
+                if (typers.length > 0) {
+                    statusDiv.innerText = `${typers.join(", ")} вводит сообщение...`;
+                    statusDiv.style.display = "block";
+                } else {
+                    statusDiv.style.display = "none";
+                }
+            });
+
+            msgInput.addEventListener("input", () => {
+                db.collection("typing").doc(myName).set({ room: currentRoom, typing: true });
+                clearTimeout(typingTimeout);
+                typingTimeout = setTimeout(() => {
+                    db.collection("typing").doc(myName).delete();
+                }, 2000);
             });
         }
     </script>
