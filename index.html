@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space - Чат</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #121212; color: #e0e0e0; display: flex; flex-direction: column; height: 100vh; }
+        
+        /* Экран входа */
+        #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 15px; padding: 20px; }
+        .auth-box { background: #1f1f1f; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; border: 1px solid #333; }
+        
+        /* Главный экран чата */
+        #chat-screen { display: none; flex-direction: column; flex: 1; height: 100vh; }
+        header { background-color: #1f1f1f; padding: 15px; text-align: center; border-bottom: 1px solid #333; font-weight: bold; font-size: 1.1rem; }
+        #chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        
+        /* Стили сообщений */
+        .message { max-width: 75%; padding: 10px 15px; border-radius: 15px; line-height: 1.4; word-break: break-word; position: relative; }
+        .message.incoming { background-color: #2a2a2a; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .message.outgoing { background-color: #0078ff; color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .message.deleted-admin { background-color: #4a1515 !important; border: 1px dashed #ff4a4a; align-self: flex-start; border-bottom-left-radius: 2px; }
+        
+        .meta { font-size: 0.75rem; color: #aaa; margin-bottom: 4px; display: block; font-weight: bold; }
+        .message.outgoing .meta { color: #b3d7ff; }
+        .del-btn { font-size: 0.7rem; color: #ff4a4a; cursor: pointer; margin-left: 10px; display: inline-block; text-decoration: underline; }
+        
+        /* Медиа элементы */
+        .chat-img, .chat-video { max-width: 100%; border-radius: 10px; margin-top: 5px; max-height: 250px; display: block; }
+        audio { margin-top: 5px; display: block; width: 100%; max-width: 240px; }
+
+        /* Панель ввода */
+        #input-area { background-color: #1f1f1f; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #333; align-items: center; }
+        input { flex: 1; padding: 12px; border: none; border-radius: 20px; background-color: #2a2a2a; color: #fff; font-size: 1rem; outline: none; }
+        .icon-btn { background: #2a2a2a; border: none; width: 45px; height: 45px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.2s; }
+        .icon-btn:hover { background: #3a3a3a; }
+        #send-btn { background-color: #0078ff; color: white; border: none; padding: 0 20px; height: 45px; border-radius: 22px; font-weight: bold; cursor: pointer; }
+        #send-btn:hover { background-color: #0066da; }
+        #voice-btn.recording { background-color: #ff3b30; animation: pulse 1.5s infinite; }
+        
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        #file-input { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="auth-screen">
+        <div class="auth-box">
+            <h2 style="text-align: center; margin-bottom: 10px;">Вход в пространство</h2>
+            <input type="text" id="username-input" placeholder="Твой Никнейм">
+            <input type="text" id="room-input" placeholder="Имя комнаты (например: secret)">
+            <button id="login-btn" style="background:#0078ff; color:white; border:none; padding:12px; border-radius:20px; font-weight:bold; cursor:pointer;">Войти</button>
+        </div>
+    </div>
+
+    <div id="chat-screen">
+        <header id="chat-header">Комната: ...</header>
+        <div id="chat-box"></div>
+        <div id="input-area">
+            <button class="icon-btn" onclick="document.getElementById('file-input').click()">📎</button>
+            <input type="file" id="file-input" accept="image/*,video/*">
+            
+            <input type="text" id="msg-input" placeholder="Напишите сообщение..." autocomplete="off">
+            
+            <button class="icon-btn" id="voice-btn">🎤</button>
+            
+            <button id="send-btn">Отправить</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+        // Твои личные конфигурации с экрана Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDB0Bom3_uLJvnLkTaKd63kUWLysA0qMzc",
+            authDomain: "my-secret-chat-23f6d.firebaseapp.com",
+            projectId: "my-secret-chat-23f6d",
+            storageBucket: "my-secret-chat-23f6d.firebasestorage.app",
+            messagingSenderId: "633748960552",
+            appId: "1:633748960552:web:7fd760644ca153907e8c1d",
+            measurementId: "G-3HS38L4FD5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        const messagesCol = collection(db, "messages");
+
+        let myName = "";
+        let currentRoom = "";
+        let mediaRecorder;
+        let audioChunks = [];
+
+        const authScreen = document.getElementById("auth-screen");
+        const chatScreen = document.getElementById("chat-screen");
+        const chatBox = document.getElementById("chat-box");
+        const msgInput = document.getElementById("msg-input");
+        const sendBtn = document.getElementById("send-btn");
+        const voiceBtn = document.getElementById("voice-btn");
+        const fileInput = document.getElementById("file-input");
+
+        // Вход в чат
+        document.getElementById("login-btn").addEventListener("click", () => {
+            myName = document.getElementById("username-input").value.trim();
+            currentRoom = document.getElementById("room-input").value.trim().toLowerCase();
+            
+            if (!myName || !currentRoom) { alert("Заполни все поля!"); return; }
+
+            authScreen.style.display = "none";
+            chatScreen.style.display = "flex";
+            document.getElementById("chat-header").innerText = `Комната: ${currentRoom} (${myName})`;
+            
+            startChatListening();
+        });
+
+        // Отправка сообщений
+        async function sendMessage() {
+            const text = msgInput.value.trim();
+            if (!text) return;
+            msgInput.value = "";
+            await addDoc(messagesCol, {
+                room: currentRoom,
+                user: myName,
+                text: text,
+                type: "text",
+                isDeleted: false,
+                createdAt: serverTimestamp()
+            });
+        }
+        sendBtn.addEventListener("click", sendMessage);
+        msgInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
+
+        // Отправка фото / видео
+        fileInput.addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const fileType = file.type.startsWith("image/") ? "image" : "video";
+            
+            const storageRef = ref(storage, `chats/${currentRoom}/${Date.now()}_${file.name}`);
+            await uploadBytes(storageRef, file);
+            const url = await getDownloadURL(storageRef);
+
+            await addDoc(messagesCol, {
+                room: currentRoom,
+                user: myName,
+                fileUrl: url,
+                type: fileType,
+                isDeleted: false,
+                createdAt: serverTimestamp()
+            });
+            fileInput.value = "";
+        });
+
+        // Голосовые сообщения
+        voiceBtn.addEventListener("click", async () => {
+            try {
+                if (!mediaRecorder || mediaRecorder.state === "inactive") {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+                    
+                    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const storageRef = ref(storage, `chats/${currentRoom}/${Date.now()}_voice.webm`);
+                        await uploadBytes(storageRef, audioBlob);
+                        const url = await getDownloadURL(storageRef);
+
+                        await addDoc(messagesCol, {
+                            room: currentRoom,
+                            user: myName,
+                            fileUrl: url,
+                            type: "audio",
+                            isDeleted: false,
+                            createdAt: serverTimestamp()
+                        });
+                    };
+                    mediaRecorder.start();
+                    voiceBtn.classList.add("recording");
+                } else {
+                    mediaRecorder.stop();
+                    voiceBtn.classList.remove("recording");
+                }
+            } catch (err) {
+                alert("Ошибка доступа к микрофону! Убедись, что зашел через HTTPS.");
+            }
+        });
+
+        // Удаление
+        window.deleteMsg = async function(id) {
+            if(confirm("Удалить сообщение для всех?")) {
+                const docRef = doc(db, "messages", id);
+                await updateDoc(docRef, { isDeleted: true });
+            }
+        }
+
+        // Обновление чата в реальном времени
+        function startChatListening() {
+            const q = query(messagesCol, orderBy("createdAt", "asc"));
+            onSnapshot(q, (snapshot) => {
+                chatBox.innerHTML = "";
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const msgId = doc.id;
+                    
+                    if (data.room !== currentRoom) return;
+
+                    const isAdmin = (myName.toLowerCase() === "admin");
+                    if (data.isDeleted && !isAdmin) return;
+
+                    const msgDiv = document.createElement("div");
+                    const isMe = data.user === myName;
+                    
+                    if (data.isDeleted && isAdmin) {
+                        msgDiv.className = "message deleted-admin";
+                    } else {
+                        msgDiv.className = `message ${isMe ? 'outgoing' : 'incoming'}`;
+                    }
+
+                    let content = `<span class="meta">${data.user}`;
+                    if (isMe && !data.isDeleted) {
+                        content += ` <span class="del-btn" onclick="deleteMsg('${msgId}')">×</span>`;
+                    }
+                    content += `</span>`;
+
+                    if (data.isDeleted && isAdmin) {
+                        content += `<i style="color:#ff8888; font-size:0.85rem;">[Удалено собеседником]:</i><br>`;
+                    }
+
+                    if (data.type === "text") {
+                        content += data.text;
+                    } else if (data.type === "image") {
+                        content += `<img class="chat-img" src="${data.fileUrl}" onclick="window.open('${data.fileUrl}')">`;
+                    } else if (data.type === "video") {
+                        content += `<video class="chat-video" src="${data.fileUrl}" controls></video>`;
+                    } else if (data.type === "audio") {
+                        content += `<audio src="${data.fileUrl}" controls></audio>`;
+                    }
+
+                    msgDiv.innerHTML = content;
+                    chatBox.appendChild(msgDiv);
+                });
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+    </script>
+</body>
+</html>
