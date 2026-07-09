@@ -54,7 +54,7 @@
         .admin-card { background: rgba(20, 20, 35, 0.95); border: 1px solid #ff004b; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 0 15px rgba(255, 0, 75, 0.3); }
         
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 5px; }
-        .stats-box { background: rgba(255, 255, 255, 0.05); border: 1px solid #ffeba2; border-radius: 8px; padding: 10px; text-align: center; }
+        .stat-box { background: rgba(255, 255, 255, 0.05); border: 1px solid #ffeba2; border-radius: 8px; padding: 10px; text-align: center; }
         .stat-box minititle { display: block; font-size: 0.75rem; color: #aaa; }
         .stat-box val { font-size: 1.3rem; font-weight: bold; color: #ffeb3b; }
 
@@ -74,7 +74,7 @@
         .spy-msg.intercepted-deleted { border-left: 3px solid #ff004b; background: rgba(255, 0, 75, 0.15); }
         .spy-meta { font-size: 0.75rem; color: #00d2ff; font-weight: bold; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: center; }
         .spy-hard-del-btn { color: #ff4a4a; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
-        .spy-ban-btn { background: #ff004b; color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: bold; }
+        .spy-ban-btn { background: #ff004b; color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
         .edited-history-box { font-size: 0.8rem; color: #ffb300; background: rgba(255, 179, 0, 0.1); padding: 4px; border-radius: 4px; margin-top: 5px; border-left: 2px solid #ffb300; }
 
         /* Экран чата */
@@ -117,8 +117,8 @@
         /* Панель ввода */
         #input-area { background: rgba(25, 25, 45, 0.95); padding: 15px; display: flex; gap: 10px; border-top: 1px solid #334; align-items: center; position: relative; }
         input[type="text"] { flex: 1; padding: 12px 20px; border: none; border-radius: 25px; background: #121225; color: #fff; font-size: 1rem; outline: none; border: 1px solid #3d3d6b; }
-        .icon-btn { background: #1a1a3a; border: 1px solid #3d3d6b; width: 45px; height: 45px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
-        #send-btn { background: #0078ff; color: white; border: none; padding: 0 22px; height: 45px; border-radius: 25px; font-weight: bold; cursor: pointer; flex-shrink: 0; }
+        .icon-btn { background: #1a1a3a; border: 1px solid #3d3d6b; width: 45px; height: 45px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        #send-btn { background: #0078ff; color: white; border: none; padding: 0 22px; height: 45px; border-radius: 25px; font-weight: bold; cursor: pointer; }
         #voice-btn { background: #2196f3; }
         #voice-btn.recording { background: #f44336; animation: pulse 1s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -128,84 +128,8 @@
         .theme-select { background: #1a1a32; color: #00d2ff; border: 1px solid #3d3d6b; padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; outline: none; cursor: pointer; }
         
         .header-controls { display: flex; align-items: center; gap: 8px; }
-        .circle-control-btn { background: #1a1a3a; border: 1px solid #3d3d6b; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; flex-shrink: 0; }
-        .referral-btn { background: #ffeb3b; color: #000; border: none; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; cursor: pointer; flex-shrink: 0; }
-
-        /* ======================================================== */
-        /* АДАПТИВНЫЙ БЛОК ДЛЯ СМАРТФОНОВ (ЭКРАНЫ МЕНЕЕ 600px)     */
-        /* ======================================================== */
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                gap: 8px;
-                align-items: stretch;
-                padding: 10px;
-                height: auto;
-            }
-            .header-controls {
-                justify-content: space-between;
-                width: 100%;
-                gap: 4px;
-            }
-            #chat-header {
-                text-align: center;
-                font-size: 0.9rem;
-                word-break: break-all;
-            }
-            .referral-btn {
-                padding: 6px 10px;
-                font-size: 0.75rem;
-                flex: 1;
-                text-align: center;
-            }
-            .theme-select {
-                padding: 4px 6px;
-                font-size: 0.75rem;
-                max-width: 95px;
-            }
-            .circle-control-btn {
-                width: 30px;
-                height: 30px;
-                font-size: 0.8rem;
-            }
-            #chat-box {
-                padding: 10px;
-                gap: 8px;
-            }
-            .message {
-                max-width: 85%; /* На телефонах делаем блоки СМС шире для удобства чтения */
-                padding: 8px 12px;
-                font-size: 0.95rem;
-            }
-            audio {
-                max-width: 100%; /* Защита аудиоплеера от вылавливания из границ СМС */
-            }
-            #input-area {
-                padding: 8px 10px;
-                gap: 6px;
-            }
-            input[type="text"] {
-                padding: 10px 14px;
-                font-size: 0.9rem;
-            }
-            .icon-btn {
-                width: 38px;
-                height: 38px;
-                font-size: 1rem;
-            }
-            #send-btn {
-                padding: 0 14px;
-                height: 38px;
-                font-size: 0.85rem;
-                border-radius: 20px;
-            }
-            .msg-actions-trigger {
-                right: -20px;
-            }
-            .auth-box {
-                padding: 20px 15px;
-            }
-        }
+        .circle-control-btn { background: #1a1a3a; border: 1px solid #3d3d6b; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; }
+        .referral-btn { background: #ffeb3b; color: #000; border: none; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body class="theme-space">
@@ -281,7 +205,7 @@
             </div>
             
             <div style="display: flex; flex-direction: column; gap: 10px;">
-                <button class="admin-btn" id="global-clear-btn">🚨 Стереть эту комноту из базы под ноль</button>
+                <button class="admin-btn" id="global-clear-btn">🚨 Стереть эту комнату из базы под ноль</button>
                 <button class="admin-btn secondary" id="global-maintenance-btn">🔒 Заблокировать / Разблокировать комнату</button>
                 <button class="admin-btn secondary" id="global-msg-btn">📢 Подать системное объявление</button>
             </div>
@@ -328,7 +252,7 @@
         <div id="input-area">
             <div id="typing-status"></div>
             <button class="icon-btn" onclick="document.getElementById('file-input').click()">📎</button>
-            <input type="file" id="file-input" accept="image/*" style="display: none;">
+            <input type="file" id="file-input" accept="image/*" style="display:none;">
             
             <button class="icon-btn" id="voice-btn">🎙️</button>
 
@@ -370,7 +294,6 @@
         let currentPinnedId = null;
         let lastMessageCount = -1; 
 
-        // АВТО-ПЕРЕХВАТ ПАРАМЕТРОВ ССЫЛКИ ДЛЯ ДЕВОЧЕК/ПАРНЕЙ (РЕФЕРАЛКА)
         window.addEventListener('load', () => {
             history.replaceState({ screen: "auth" }, "");
             
@@ -381,16 +304,14 @@
             }
         });
 
-        // ИСПРАВЛЕННЫЙ БАГ С ССЫЛКОЙ (теперь генерирует точный URL на любой хостинг-платформе)
         window.copyReferralLink = function() {
             if(!currentRoom) return;
             
-            // Очищаем текущий URL от старых параметров, чтобы не плодить дубликаты вопросов в ссылке
             const baseUrl = window.location.href.split('?')[0];
             const refUrl = `${baseUrl}?room=${encodeURIComponent(currentRoom)}`;
             
             navigator.clipboard.writeText(refUrl).then(() => {
-                alert(`🔗 Реферальная ссылка скопирована!\nЕё можно отправить парню. Она автоматически вставит комнату "${currentRoom}" при входе.`);
+                alert(`🔗 Реферальная ссылка скопирована!\nЕё можно отправить другу. Она автоматически вставит комнату "${currentRoom}" при входе.`);
             }).catch(err => {
                 console.error("Ошибка копирования: ", err);
             });
@@ -821,7 +742,8 @@
         };
 
         window.setReply = function(user, text) {
-            const shortText = text.length > 20 ? text.substring(0, 20) + "..." : text;
+            const safeText = text || "Медиа";
+            const shortText = safeText.length > 20 ? safeText.substring(0, 20) + "..." : safeText;
             replyTextPreview = `${user}: "${shortText}"`;
             document.getElementById("reply-preview-bar").style.display = "flex";
             document.getElementById("reply-preview-text").innerText = `Ответ для ${user}: ${shortText}`;
@@ -883,11 +805,15 @@
                     if (data.type !== "announcement") {
                         content += `<span class="msg-actions-trigger" onclick="togglePicker('${msgId}')">⚙️</span>`;
                         let pinOption = data.type === "text" ? `<span onclick="pinMsg('${msgId}', '${data.user}', '${data.text}')">📌</span>` : "";
+                        
+                        // Безопасное экранирование текста для передачи в функцию ответа
+                        let textParam = data.text ? data.text.replace(/'/g, "\\'") : "";
+                        
                         content += `
                             <div class="reactions-picker" id="picker-${msgId}">
                                 <span onclick="addReaction('${msgId}', '👍')">👍</span>
                                 <span onclick="addReaction('${msgId}', '❤️')">❤️</span>
-                                <span onclick="setReply('${data.user}', '${data.text || 'Медиа'}')">↩️</span>
+                                <span onclick="setReply('${data.user}', '${textParam}')">↩️</span>
                                 ${pinOption}
                             </div>`;
                     }
@@ -902,10 +828,14 @@
                     msgDiv.innerHTML = content; chatBox.appendChild(msgDiv);
                 });
 
+                // Корректная логика звукового уведомления без зацикливания при первой загрузке
                 if (lastMessageCount !== -1 && currentIterationCount > lastMessageCount) {
-                    const lastDoc = snapshot.docs[snapshot.docs.length - 1].data();
-                    if (lastDoc && lastDoc.user !== myName && lastDoc.room === currentRoom) {
-                        playNotificationSound();
+                    const docsArray = snapshot.docs;
+                    if(docsArray.length > 0) {
+                        const lastDoc = docsArray[docsArray.length - 1].data();
+                        if (lastDoc && lastDoc.user !== myName && lastDoc.room === currentRoom) {
+                            playNotificationSound();
+                        }
                     }
                 }
                 lastMessageCount = currentIterationCount;
