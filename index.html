@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Chat - Ultimate Edition</title>
+    <title>Space Chat - Premium Monetized Edition</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; transition: background 0.3s, color 0.3s; }
         body { background-color: #0b0b1e; color: #e0e0e0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; }
@@ -37,10 +37,11 @@
         #secret-admin-trigger { position: absolute; top: 15px; right: 15px; width: 20px; height: 20px; cursor: pointer; opacity: 0.1; color: #fff; font-size: 0.8rem; user-select: none; z-index: 100; }
         #secret-admin-trigger:hover { opacity: 0.5; }
 
+        /* СВЯЗЬ С АДМИНОМ */
         .tg-admin-btn { background: #24a1de; color: white; border: none; padding: 12px; border-radius: 20px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; display: inline-block; font-size: 0.95rem; margin-top: 5px; box-shadow: 0 4px 10px rgba(36, 161, 222, 0.3); transition: 0.2s; }
         .tg-admin-btn:hover { background: #1e83b4; transform: translateY(-1px); }
 
-        /* СКРЫТОЕ ОКНО АДМИНА */
+        /* СКРЫТОЕ ОКНО ДЛЯ ЗВЕЗДОЧЕК */
         #admin-auth-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 15, 0.95); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
         .admin-modal-box { background: #14142b; border: 2px solid #ff004b; border-radius: 15px; padding: 25px; width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 0 25px rgba(255, 0, 75, 0.4); }
         .admin-modal-box h3 { color: #ffeba2; text-align: center; font-size: 1.1rem; }
@@ -73,61 +74,61 @@
         .spy-msg.intercepted-deleted { border-left: 3px solid #ff004b; background: rgba(255, 0, 75, 0.15); }
         .spy-meta { font-size: 0.75rem; color: #00d2ff; font-weight: bold; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: center; }
         .spy-hard-del-btn { color: #ff4a4a; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
-        .spy-ban-btn { background: #ff004b; color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: bold; }
-
-        /* ЭКРАН ЧАТА */
+        
+        /* Экран чата */
         #chat-screen { display: none; flex-direction: column; flex: 1; height: 100vh; z-index: 10; }
-        header { background: rgba(25, 25, 45, 0.95); backdrop-filter: blur(5px); padding: 12px 15px; border-bottom: 1px solid #334; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #00d2ff; }
+        header { background: rgba(25, 25, 45, 0.95); backdrop-filter: blur(5px); padding: 10px; border-bottom: 1px solid #334; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #00d2ff; font-size: 0.9rem; }
         #maintenance-overlay, #ban-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 11, 30, 0.98); z-index: 999; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
 
-        /* Поиск и закреп */
+        /* Панель поиска */
         #search-bar { display: none; background: #14142b; padding: 8px 15px; border-bottom: 1px solid #334; align-items: center; gap: 10px; }
         #search-bar input { flex:1; background:#0b0b1e; border:1px solid #3d3d6b; padding:6px 12px; color:white; border-radius:15px; outline:none; font-size:0.9rem; }
+
+        /* Панель закрепа */
         #pinned-bar { display: none; background: rgba(0, 120, 255, 0.15); border-bottom: 1px solid #0078ff; padding: 8px 15px; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #fff; cursor: pointer; backdrop-filter: blur(5px); }
 
-        #chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        #chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
         
-        /* СООБЩЕНИЯ */
-        .message { max-width: 70%; padding: 10px 15px; border-radius: 18px; line-height: 1.4; word-break: break-word; position: relative; display: flex; flex-direction: column; cursor: pointer; }
+        .message { max-width: 75%; padding: 10px 15px; border-radius: 18px; line-height: 1.4; word-break: break-word; position: relative; display: flex; flex-direction: column; }
         .message.incoming { background: rgba(45, 45, 70, 0.85); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #3a3a5c; }
         .message.outgoing { background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .message.system-announcement { background: linear-gradient(135deg, #ff004b, #9c27b0); color: white; align-self: center; max-width: 90%; border-radius: 12px; border: 2px solid #ffeb3b; text-align: center; padding: 10px 20px; font-weight: bold; cursor: default; }
+        .message.system-announcement { background: linear-gradient(135deg, #ff004b, #9c27b0); color: white; align-self: center; max-width: 90%; border-radius: 12px; border: 2px solid #ffeb3b; text-align: center; font-weight: bold; padding: 10px; }
 
-        .meta { font-size: 0.75rem; color: #00d2ff; margin-bottom: 4px; display: flex; justify-content: space-between; font-weight: bold; align-items: center; }
+        .meta { font-size: 0.75rem; color: #00d2ff; margin-bottom: 4px; display: flex; justify-content: space-between; font-weight: bold; }
         .message.outgoing .meta { color: #ffe600; }
-        .msg-del-btn { color: rgba(255, 255, 255, 0.4); margin-left: 10px; font-size: 0.8rem; cursor: pointer; }
-        .msg-del-btn:hover { color: #ff4a4a; }
-        
-        .reply-sub-box { background: rgba(0, 0, 0, 0.2); border-left: 3px solid #ffeb3b; padding: 4px 8px; border-radius: 4px; margin-bottom: 6px; font-size: 0.8rem; color: #ccc; }
+        .del-btn { font-size: 0.8rem; color: #ff4a4a; cursor: pointer; margin-left: 8px; font-weight: bold; }
+        .edit-msg-btn { font-size: 0.8rem; color: #00ffcc; cursor: pointer; margin-left: 8px; font-weight: bold; }
         .chat-img { max-width: 100%; border-radius: 10px; margin-top: 5px; max-height: 250px; display: block; }
-        
+        .reply-container { background: rgba(0,0,0,0.2); padding: 5px 8px; border-left: 3px solid #00d2ff; border-radius: 4px; margin-bottom: 5px; font-size: 0.85rem; }
         #reply-preview-bar { display: none; background: #19192d; padding: 8px 15px; border-left: 4px solid #0078ff; justify-content: space-between; align-items: center; font-size: 0.9rem; }
+        .edited-marker { font-size: 0.7rem; color: #888; font-style: italic; margin-left: 5px; }
 
-        audio { margin-top: 5px; max-width: 240px; outline: none; }
+        audio { margin-top: 5px; max-width: 100%; outline: none; }
 
-        /* АДАПТИВНАЯ ПАНЕЛЬ ВВОДА */
-        #input-area { background: rgba(25, 25, 45, 0.95); padding: 10px; display: flex; gap: 8px; border-top: 1px solid #334; align-items: center; position: relative; width: 100%; max-width: 100vw; }
-        #msg-input { flex: 1; min-width: 0; padding: 12px 15px; border: none; border-radius: 25px; background: #121225; color: #fff; font-size: 0.95rem; outline: none; border: 1px solid #3d3d6b; }
-        .icon-btn { background: #1a1a3a; border: 1px solid #3d3d6b; width: 42px; height: 42px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; user-select: none; }
-        .icon-btn.recording { background: #ff004b; animation: pulse-record 1s infinite alternate; }
-        @keyframes pulse-record { from { opacity: 1; } to { opacity: 0.6; } }
+        /* Реакции */
+        .reaction-panel { display: flex; gap: 4px; margin-top: 4px; font-size: 0.9rem; }
+        .reaction-badge { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 10px; cursor: pointer; display: inline-block; }
+        .msg-actions-trigger { position: absolute; right: -25px; top: 35%; display: none; cursor: pointer; font-size: 0.85rem; }
+        .message:hover .msg-actions-trigger { display: block; }
+        .reactions-picker { display: none; position: absolute; background: #22223b; border: 1px solid #445; padding: 5px; border-radius: 20px; gap: 5px; z-index: 100; top: -35px; right: 0; }
 
-        #send-btn { background: #0078ff; color: white; border: none; width: 42px; height: 42px; border-radius: 50%; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        #file-input { display: none; }
-        #typing-status { position: absolute; top: -22px; left: 20px; font-size: 0.8rem; color: #00d2ff; font-style: italic; display: none; }
-        .theme-select { background: #1a1a32; color: #00d2ff; border: 1px solid #3d3d6b; padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; outline: none; cursor: pointer; }
+        /* ИСПРАВЛЕННАЯ АДАПТИВНАЯ ПАНЕЛЬ ВВОДА */
+        #input-area { background: rgba(25, 25, 45, 0.95); padding: 10px; display: flex; gap: 8px; border-top: 1px solid #334; align-items: center; position: relative; width: 100%; }
+        #msg-input { flex: 1; padding: 12px 15px; border: none; border-radius: 25px; background: #121225; color: #fff; font-size: 0.95rem; outline: none; border: 1px solid #3d3d6b; min-width: 0; }
         
-        .header-controls { display: flex; align-items: center; gap: 6px; }
-        .circle-control-btn { background: #1a1a3a; border: 1px solid #3d3d6b; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; }
-        .referral-btn { background: #ffeb3b; color: #000; border: none; padding: 6px 10px; border-radius: 15px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
-
-        @media (max-width: 480px) {
-            header { padding: 10px; font-size: 0.9rem; }
-            .referral-btn { padding: 5px 8px; font-size: 0.7rem; }
-            .message { max-width: 85%; }
-            #chat-box { padding: 10px; }
-            audio { max-width: 180px; }
-        }
+        .icon-btn { background: #1a1a3a; border: 1px solid #3d3d6b; width: 40px; height: 40px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        #send-btn { background: #0078ff; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        #voice-btn { background: #2196f3; }
+        #voice-btn.recording { background: #f44336; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        
+        #typing-status { position: absolute; top: -22px; left: 20px; font-size: 0.8rem; color: #00d2ff; font-style: italic; display: none; }
+        .status-ticks { font-size: 0.75rem; align-self: flex-end; margin-top: 2px; color: rgba(255,255,255,0.6); }
+        .theme-select { background: #1a1a32; color: #00d2ff; border: 1px solid #3d3d6b; padding: 5px; border-radius: 12px; font-size: 0.8rem; outline: none; cursor: pointer; max-width: 90px; }
+        
+        .header-controls { display: flex; align-items: center; gap: 5px; }
+        .circle-control-btn { background: #1a1a3a; border: 1px solid #3d3d6b; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; }
+        .referral-btn { background: #ffeb3b; color: #000; border: none; padding: 6px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body class="theme-space">
@@ -136,13 +137,13 @@
     <div class="twinkling"></div>
 
     <div id="maintenance-overlay">
-        <h1 style="color: #ff004b; font-size: 2.5rem; margin-bottom: 15px;">🛠️ Технические работы</h1>
-        <p style="font-size: 1.2rem; color: #b0b0d0;">Эта комната временно заморожена владельцем сервиса.</p>
+        <h1 style="color: #ff004b; font-size: 2rem; margin-bottom: 15px;">🛠️ Технические работы</h1>
+        <p style="font-size: 1.1rem; color: #b0b0d0;">Эта комната временно заморожена владельцем сервиса.</p>
     </div>
 
     <div id="ban-overlay">
-        <h1 style="color: #ff0000; font-size: 3rem; margin-bottom: 15px;">🚫 ДОСТУП ПРЕКРАЩЕН</h1>
-        <p style="font-size: 1.4rem; color: #ffffff; font-weight: bold;">Твой аккаунт был заблокирован Создателем чата.</p>
+        <h1 style="color: #ff0000; font-size: 2.5rem; margin-bottom: 15px;">🚫 ДОСТУП ПРЕКРАЩЕН</h1>
+        <p style="font-size: 1.2rem; color: #ffffff; font-weight: bold;">Твой аккаунт был заблокирован Создателем чата.</p>
     </div>
 
     <div id="secret-admin-trigger" onclick="openAdminModal()">⚙️</div>
@@ -161,52 +162,39 @@
     <div id="auth-screen">
         <div class="auth-box">
             <h2 style="text-align: center; color: #00d2ff; margin-bottom: 5px;">Space Chat 🌌</h2>
-            
             <label>Твой никнейм:</label>
             <input type="text" id="username-input" placeholder="Никнейм">
-            
             <label>Пароль:</label>
             <input type="text" id="password-input" placeholder="Пароль">
-            
             <label>Имя комнаты:</label>
             <input type="text" id="room-input" placeholder="Например: room101">
-            
             <button id="login-btn" style="background: linear-gradient(135deg, #0078ff, #0052d4); color:white; border:none; padding:12px; border-radius:20px; font-weight:bold; cursor:pointer; margin-top:10px;">Войти в чат</button>
-            
             <a href="https://t.me/umidjon7177" target="_blank" class="tg-admin-btn">💬 Купить приватную комнату (Админ)</a>
         </div>
     </div>
 
     <div id="super-admin-screen">
         <div class="admin-card">
-            <h2 style="color: #ffeba2; text-align: center; border-bottom: 1px solid #ffeb3b; padding-bottom: 10px;">Панель Создателя (Diamond Mode) 💎</h2>
-            
+            <h2 style="color: #ffeba2; text-align: center; border-bottom: 1px solid #ffeb3b; padding-bottom: 10px;">Панель Создателя 💎</h2>
             <div class="stats-grid">
                 <div class="stat-box"><minititle>Всего СМС</minititle><val id="stat-total-msg">0</val></div>
                 <div class="stat-box"><minititle>Картинок</minititle><val id="stat-images">0</val></div>
                 <div class="stat-box"><minititle>Войсов</minititle><val id="stat-voices">0</val></div>
                 <div class="stat-box"><minititle>Удаленных</minititle><val id="stat-deleted">0</val></div>
             </div>
-
             <div class="admin-input-group">
-                <label>Поиск комнаты (Введите имя или слово <b>алмаз</b>):</label>
+                <label>Поиск комнаты:</label>
                 <input type="text" id="target-room-input" placeholder="Имя комнаты или слово 'алмаз'">
-                <button class="admin-btn secondary" id="connect-spy-btn" style="margin-top:5px;">👁️ Запустить перехват сообщений</button>
+                <button class="admin-btn secondary" id="connect-spy-btn" style="margin-top:5px;">👁️ Запустить перехват</button>
             </div>
-
             <div id="rooms-list-container"></div>
-            
             <h4 style="margin-top: 5px; color: #00d2ff;">🕵️‍♂️ Лог слежки:</h4>
-            <div id="admin-spy-monitor">
-                <div style="color: #666; text-align: center; margin-top: 110px;">Ожидание подключения...</div>
-            </div>
-            
+            <div id="admin-spy-monitor"><div style="color: #666; text-align: center; margin-top: 110px;">Ожидание...</div></div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
-                <button class="admin-btn" id="global-clear-btn">🚨 Стереть эту комноту из базы под ноль</button>
-                <button class="admin-btn secondary" id="global-maintenance-btn">🔒 Заблокировать / Разблокировать комнату</button>
-                <button class="admin-btn secondary" id="global-msg-btn">📢 Подать системное объявление</button>
+                <button class="admin-btn" id="global-clear-btn">🚨 Стереть комнату</button>
+                <button class="admin-btn secondary" id="global-maintenance-btn">🔒 Заблокировать / Разблокировать</button>
+                <button class="admin-btn secondary" id="global-msg-btn">📢 Системное объявление</button>
             </div>
-            
             <button style="background: #333; margin-top: 5px;" class="admin-btn" onclick="goBackToAuth()">🚪 Закрыть терминал</button>
         </div>
     </div>
@@ -218,23 +206,22 @@
                 <button class="referral-btn" onclick="copyReferralLink()">Пригласить 🔗</button>
                 <div class="circle-control-btn" onclick="toggleSearchField()">🔍</div>
                 <div class="circle-control-btn" id="sound-toggle-btn" onclick="toggleNotificationSound()">🔊</div>
-                
                 <select id="theme-changer" class="theme-select" onchange="changeTheme(this.value)">
                     <option value="theme-space">🌌 Космос</option>
                     <option value="theme-matrix">🟢 Матрица</option>
-                    <option value="theme-minimal">⚫ Минимализм</option>
+                    <option value="theme-minimal">⚫ Мини</option>
                 </select>
                 <span id="room-status-indicator" style="font-size:0.85rem; color:#4caf50;">●</span>
             </div>
         </header>
 
         <div id="search-bar">
-            <input type="text" id="search-input" placeholder="Введите text для поиска..." oninput="filterMessages(this.value)">
-            <span style="color: #ff4a4a; cursor: pointer; font-weight: bold;" onclick="closeSearchField()">✕</span>
+            <input type="text" id="search-input" placeholder="Поиск по комнате..." oninput="filterMessages(this.value)">
+            <span style="color: #ff4a4a; cursor: pointer; font-weight: bold; font-size: 1.1rem;" onclick="closeSearchField()">✕</span>
         </div>
 
         <div id="pinned-bar" onclick="scrollToPinnedMessage()">
-            <span id="pinned-text">📌 Закрепленное сообщение появится здесь...</span>
+            <span id="pinned-text">📌 Закрепленное сообщение...</span>
             <span id="unpin-btn-container"></span>
         </div>
         
@@ -249,12 +236,13 @@
             <div id="typing-status"></div>
             
             <button class="icon-btn" onclick="document.getElementById('file-input').click()">📎</button>
-            <input type="file" id="file-input" accept="image/*">
+            <input type="file" id="file-input" accept="image/*" style="display: none;">
             
             <button class="icon-btn" id="voice-btn">🎙️</button>
-
+            
             <input type="text" id="msg-input" placeholder="Напишите сообщение..." autocomplete="off">
-            <button id="send-btn" onclick="window.sendMyMessage()">➔</button>
+            
+            <button id="send-btn">→</button>
         </div>
     </div>
 
@@ -278,116 +266,145 @@
 
         let myName = "";
         let currentRoom = "";
+        let replyTextPreview = null;
+        let typingTimeout;
         let spyUnsubscribe = null;
         let mainChatUnsubscribe = null;
-        let roomConfigUnsubscribe = null;
 
-        let soundEnabled = true; 
-        let lastMessageCount = -1; 
-        let replyTargetId = null;
-        let replyTargetText = "";
-
-        // ДЛЯ ЗАПИСИ ГОЛОСОВЫХ
-        let mediaRecorder = null;
+        let mediaRecorder;
         let audioChunks = [];
         let isRecording = false;
+
+        let soundEnabled = true; 
+        let currentPinnedId = null;
+        let lastMessageCount = -1; 
 
         window.addEventListener('load', () => {
             history.replaceState({ screen: "auth" }, "");
             const urlParams = new URLSearchParams(window.location.search);
             const roomFromUrl = urlParams.get('room');
-            if(roomFromUrl) document.getElementById("room-input").value = roomFromUrl.trim().toLowerCase();
+            if(roomFromUrl) {
+                document.getElementById("room-input").value = roomFromUrl.trim().toLowerCase();
+            }
         });
 
         window.copyReferralLink = function() {
             if(!currentRoom) return;
             const baseUrl = window.location.href.split('?')[0];
-            navigator.clipboard.writeText(`${baseUrl}?room=${encodeURIComponent(currentRoom)}`).then(() => {
-                alert(`🔗 Ссылка скопирована для комнаты "${currentRoom}"`);
-            });
+            const refUrl = `${baseUrl}?room=${encodeURIComponent(currentRoom)}`;
+            navigator.clipboard.writeText(refUrl).then(() => {
+                alert(`🔗 Ссылка скопирована! Она автоматически откроет комнату "${currentRoom}".`);
+            }).catch(err => console.error(err));
         };
 
         window.addEventListener('popstate', () => {
             document.getElementById("chat-screen").style.display = "none";
             document.getElementById("super-admin-screen").style.display = "none";
-            document.getElementById("auth-screen").style.display = "flex";
+            document.getElementById("ban-overlay").style.display = "none";
+            document.getElementById("maintenance-overlay").style.display = "none";
+            document.getElementById("admin-auth-modal").style.display = "none";
             document.getElementById("secret-admin-trigger").style.display = "block";
+            document.getElementById("auth-screen").style.display = "flex";
             if (spyUnsubscribe) { spyUnsubscribe(); spyUnsubscribe = null; }
             if (mainChatUnsubscribe) { mainChatUnsubscribe(); mainChatUnsubscribe = null; }
-            if (roomConfigUnsubscribe) { roomConfigUnsubscribe(); roomConfigUnsubscribe = null; }
+            closeSearchField();
         });
 
         window.goBackToAuth = function() { history.back(); };
         window.openAdminModal = function() {
             document.getElementById("admin-auth-modal").style.display = "flex";
-            document.getElementById("secret-admin-key-input").value = "";
+            const input = document.getElementById("secret-admin-key-input");
+            input.value = ""; input.focus();
         };
         window.closeAdminModal = function() { document.getElementById("admin-auth-modal").style.display = "none"; };
 
         window.submitAdminKey = function() {
-            if (document.getElementById("secret-admin-key-input").value.trim() === "umidjon30393110$$$") {
+            const inputKey = document.getElementById("secret-admin-key-input").value.trim();
+            if (inputKey === "umidjon30393110$$$") {
                 document.getElementById("admin-auth-modal").style.display = "none";
                 document.getElementById("auth-screen").style.display = "none";
                 document.getElementById("super-admin-screen").style.display = "flex";
+                document.getElementById("secret-admin-trigger").style.display = "none";
                 history.pushState({ screen: "admin" }, "");
                 loadAdminStatistics(); 
             } else {
-                alert("Ошибка."); closeAdminModal();
+                alert("Неверный ключ.");
+                closeAdminModal();
             }
         };
 
-        document.getElementById("target-room-input").addEventListener("input", async (e) => {
-            const container = document.getElementById("rooms-list-container");
-            if (e.target.value.toLowerCase().trim() === "алмаз") {
-                container.style.display = "flex"; container.innerHTML = "Сканирование...";
-                const snap = await getDocs(messagesCol);
-                let rooms = new Set(); snap.forEach(d => { if(d.data().room) rooms.add(d.data().room.toLowerCase()); });
-                container.innerHTML = "";
-                rooms.forEach(r => {
-                    const b = document.createElement("button"); b.className = "room-item-btn"; b.innerText = `📁 ${r}`;
-                    b.onclick = () => { document.getElementById("target-room-input").value = r; container.style.display = "none"; document.getElementById("connect-spy-btn").click(); };
-                    container.appendChild(b);
-                });
-            } else container.style.display = "none";
+        document.getElementById("secret-admin-key-input").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") submitAdminKey();
         });
 
-        document.getElementById("connect-spy-btn").addEventListener("click", () => {
-            const trg = document.getElementById("target-room-input").value.trim().toLowerCase();
-            if (!trg || trg === "алмаз") return;
-            if (spyUnsubscribe) spyUnsubscribe();
-            const mon = document.getElementById("admin-spy-monitor");
-            const q = query(messagesCol, where("room", "==", trg), orderBy("timestamp", "asc"));
-            spyUnsubscribe = onSnapshot(q, (snap) => {
-                mon.innerHTML = "";
-                snap.forEach(ds => {
-                    const data = ds.data();
-                    const item = document.createElement("div");
-                    item.className = `spy-msg ${data.isDeleted ? 'intercepted-deleted' : ''}`;
-                    let c = data.text || "";
-                    if(data.type === "image") c = `<a href="${data.fileUrl}" target="_blank">🖼️ Картинка</a>`;
-                    if(data.type === "voice") c = `<audio src="${data.fileUrl}" controls></audio>`;
-                    item.innerHTML = `<div class="spy-meta"><span>👤 ${data.name}</span><div><button class="spy-ban-btn" onclick="globalBanUser('${data.name}')">Бан</button> <span class="spy-hard-del-btn" onclick="globalHardDelete('${ds.id}')">💥 Стереть</span></div></div><div>${c}</div>`;
-                    mon.appendChild(item);
-                });
-                mon.scrollTop = mon.scrollHeight;
+        window.toggleNotificationSound = function() {
+            soundEnabled = !soundEnabled;
+            document.getElementById("sound-toggle-btn").innerText = soundEnabled ? "🔊" : "🔇";
+        };
+
+        function playNotificationSound() {
+            if (!soundEnabled) return;
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc1 = audioCtx.createOscillator();
+                const gain1 = audioCtx.createGain();
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
+                osc1.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); 
+                gain1.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc1.connect(gain1); gain1.connect(audioCtx.destination);
+                osc1.start(); osc1.stop(audioCtx.currentTime + 0.2);
+            } catch(e) { console.log(e); }
+        }
+
+        window.toggleSearchField = function() {
+            const bar = document.getElementById("search-bar");
+            bar.style.display = bar.style.display === "flex" ? "none" : "flex";
+            if(bar.style.display === "flex") document.getElementById("search-input").focus();
+            else filterMessages("");
+        };
+
+        window.closeSearchField = function() {
+            document.getElementById("search-bar").style.display = "none";
+            document.getElementById("search-input").value = "";
+            filterMessages("");
+        };
+
+        window.filterMessages = function(keyword) {
+            const cleanKeyword = keyword.toLowerCase().trim();
+            document.querySelectorAll("#chat-box .message").forEach(el => {
+                if (el.classList.contains("system-announcement")) return;
+                el.style.display = (cleanKeyword === "" || el.innerText.toLowerCase().includes(cleanKeyword)) ? "flex" : "none";
             });
-        });
+        };
 
-        window.globalBanUser = async function(n) { if(confirm(`Забанить ${n}?`)) await setDoc(doc(db, "blacklist", n.toLowerCase().trim()), { isBanned: true }); };
-        window.globalHardDelete = async function(id) { if(confirm("Удалить СМС?")) { await deleteDoc(doc(db, "messages", id)); loadAdminStatistics(); } };
+        window.changeTheme = function(themeName) { document.body.className = themeName; };
 
         document.getElementById("login-btn").addEventListener("click", async () => {
             myName = document.getElementById("username-input").value.trim().toLowerCase();
-            const myPass = document.getElementById("password-input").value.trim();
+            const myPassword = document.getElementById("password-input").value.trim();
             currentRoom = document.getElementById("room-input").value.trim().toLowerCase();
-            if(!myName || !myPass || !currentRoom) return alert("Заполните всё!");
+            
+            if (!myName || !myPassword || !currentRoom) { alert("Заполни все поля!"); return; }
 
-            const ban = await getDoc(doc(db, "blacklist", myName));
-            if(ban.exists() && ban.data().isBanned) { document.getElementById("auth-screen").style.display="none"; document.getElementById("ban-overlay").style.display="flex"; return; }
+            const banSnap = await getDoc(doc(db, "blacklist", myName));
+            if (banSnap.exists() && banSnap.data().isBanned) {
+                document.getElementById("auth-screen").style.display = "none";
+                document.getElementById("ban-overlay").style.display = "flex";
+                history.pushState({ screen: "ban" }, "");
+                return;
+            }
 
-            const uSnap = await getDoc(doc(db, "users", myName));
-            if(uSnap.exists() && uSnap.data().password !== myPass) return alert("Неверный пароль!");
-            if(!uSnap.exists()) await setDoc(doc(db, "users", myName), { password: myPass });
+            const userDocRef = doc(db, "users", myName);
+            const userSnap = await getDoc(userDocRef);
+
+            if (userSnap.exists()) {
+                if (userSnap.data().password !== myPassword) { alert("Неверный пароль!"); return; }
+            } else {
+                await setDoc(userDocRef, { password: myPassword });
+                alert("Аккаунт создан!");
+            }
 
             document.getElementById("auth-screen").style.display = "none";
             document.getElementById("chat-screen").style.display = "flex";
@@ -395,160 +412,294 @@
             history.pushState({ screen: "chat" }, "");
 
             startChatListening();
-            listenRoomConfig();
             setupTypingStatus();
+            listenRoomConfig(); 
+            listenPins(); 
         });
 
-        function startChatListening() {
-            if(mainChatUnsubscribe) mainChatUnsubscribe();
-            const q = query(messagesCol, where("room", "==", currentRoom), orderBy("timestamp", "asc"));
-            const cb = document.getElementById("chat-box");
-
-            mainChatUnsubscribe = onSnapshot(q, (snap) => {
-                cb.innerHTML = "";
-                let fresh = lastMessageCount !== -1 && snap.size > lastMessageCount;
-                snap.forEach(ds => {
-                    const data = ds.data();
-                    if(data.isDeleted) return;
-                    const el = document.createElement("div");
-                    
-                    if(data.type === "system-announcement") {
-                        el.className = "message system-announcement";
-                        el.innerText = data.text;
-                    } else {
-                        const isMy = data.name === myName;
-                        el.className = `message ${isMy ? 'outgoing' : 'incoming'}`;
-                        el.onclick = () => startReply(ds.id, data.text || "[Медиа]");
-                        
-                        let c = data.text || "";
-                        if(data.type === "image") c = `<img src="${data.fileUrl}" class="chat-img"/>`;
-                        if(data.type === "voice") c = `<audio src="${data.fileUrl}" controls></audio>`;
-                        
-                        let replyHtml = data.replyToText ? `<div class="reply-sub-box">↪️ ${data.replyToText}</div>` : "";
-                        let delHtml = isMy ? `<span class="msg-del-btn" onclick="event.stopPropagation(); deleteMyMessage('${ds.id}')">❌</span>` : "";
-                        
-                        el.innerHTML = `<div class="meta"><span>${data.name}</span>${delHtml}</div>${replyHtml}<div>${c}</div>`;
-                    }
-                    cb.appendChild(el);
-                });
-                if(fresh && soundEnabled) playNotificationSound();
-                lastMessageCount = snap.size; cb.scrollTop = cb.scrollHeight;
-            });
-        }
-
-        window.deleteMyMessage = async function(id) {
-            if(confirm("Удалить сообщение для всех?")) await updateDoc(doc(db, "messages", id), { isDeleted: true });
-        };
-
-        window.sendMyMessage = async function() {
-            const inp = document.getElementById("msg-input");
-            const txt = inp.value.trim();
-            if(!txt) return;
-            let pack = { room: currentRoom, name: myName, text: txt, type: "text", timestamp: serverTimestamp() };
-            if(replyTargetId) { pack.replyToId = replyTargetId; pack.replyToText = replyTargetText; }
-            await addDoc(messagesCol, pack);
-            inp.value = ""; cancelReply();
-        };
-
-        document.getElementById("msg-input").addEventListener("keypress", (e) => { if(e.key === "Enter") window.sendMyMessage(); });
-
-        function startReply(id, text) {
-            replyTargetId = id; replyTargetText = text.substring(0, 40) + (text.length > 40 ? "..." : "");
-            document.getElementById("reply-preview-text").innerText = `Ответ на: "${replyTargetText}"`;
-            document.getElementById("reply-preview-bar").style.display = "flex";
-        }
-        function cancelReply() { replyTargetId = null; replyTargetText = ""; document.getElementById("reply-preview-bar").style.display = "none"; }
-        document.getElementById("cancel-reply-btn").addEventListener("click", cancelReply);
-
-        // ЗАГРУЗКА КАРТИНОК ЧЕРЕЗ IMGUR
-        document.getElementById("file-input").addEventListener("change", async (e) => {
-            const file = e.target.files[0]; if(!file) return;
-            let formData = new FormData(); formData.append("image", file);
+        async function loadAdminStatistics() {
             try {
-                let res = await fetch("https://api.imgur.com/3/image", {
-                    method: "POST", headers: { Authorization: "Client-ID 6f8bb161cb7e69c" }, body: formData
+                const snap = await getDocs(messagesCol);
+                let total = 0; let imgs = 0; let voices = 0; let deleted = 0;
+                snap.forEach(d => {
+                    const data = d.data(); total++;
+                    if(data.isDeleted) deleted++;
+                    if(data.type === "image") imgs++;
+                    if(data.type === "voice") voices++;
                 });
-                let json = await res.json();
-                if(json.success) {
-                    await addDoc(messagesCol, { room: currentRoom, name: myName, fileUrl: json.data.link, type: "image", timestamp: serverTimestamp() });
-                } else alert("Ошибка Imgur");
-            } catch { alert("Сеть лежит"); }
+                document.getElementById("stat-total-msg").innerText = total;
+                document.getElementById("stat-images").innerText = imgs;
+                document.getElementById("stat-voices").innerText = voices;
+                document.getElementById("stat-deleted").innerText = deleted;
+            } catch(e) { console.log(e); }
+        }
+
+        async function checkDiamondCommand(inputValue) {
+            const container = document.getElementById("rooms-list-container");
+            container.innerHTML = ""; 
+            if (inputValue.toLowerCase() === "алмаз") {
+                container.style.display = "flex";
+                const snap = await getDocs(messagesCol);
+                let activeRooms = new Set();
+                snap.forEach(d => { if(d.data().room) activeRooms.add(d.data().room.trim().toLowerCase()); });
+                container.innerHTML = "<span style='color:#aaa; font-size:0.8rem; margin-bottom:5px;'>Все комнаты:</span>";
+                activeRooms.forEach(roomName => {
+                    const btn = document.createElement("button");
+                    btn.className = "room-item-btn"; btn.innerText = `📁 Комната: ${roomName}`;
+                    btn.onclick = () => {
+                        document.getElementById("target-room-input").value = roomName;
+                        document.getElementById("connect-spy-btn").click();
+                    };
+                    container.appendChild(btn);
+                });
+            } else { container.style.display = "none"; }
+        }
+
+        document.getElementById("connect-spy-btn").addEventListener("click", async () => {
+            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if (targetRoom === "алмаз") { await checkDiamondCommand(targetRoom); return; }
+            if (!targetRoom) { alert("Укажите имя комнаты!"); return; }
+            document.getElementById("rooms-list-container").style.display = "none";
+
+            if (spyUnsubscribe) spyUnsubscribe();
+            const monitor = document.getElementById("admin-spy-monitor");
+            monitor.innerHTML = `<div style="color: #00d2ff; text-align: center; margin-top: 110px;">Перехват...</div>`;
+
+            const q = query(messagesCol, orderBy("createdAt", "asc"));
+            spyUnsubscribe = onSnapshot(q, (snapshot) => {
+                monitor.innerHTML = "";
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data(); if (data.room !== targetRoom) return; 
+                    const msgDiv = document.createElement("div");
+                    msgDiv.className = data.isDeleted ? "spy-msg intercepted-deleted" : "spy-msg";
+                    let body = `
+                        <div class="spy-meta">
+                            <span>👤 <b>${data.user}</b> <button style="background:#ff004b;color:white;border:none;padding:2px 5px;border-radius:4px;cursor:pointer;" onclick="window.banUser('${data.user}')">БАН</button></span> 
+                            <span style="color:#ff4a4a;cursor:pointer;" onclick="window.hardDeleteMsg('${docSnap.id}')">Стереть 💀</span>
+                        </div>
+                    `;
+                    if (data.type === "text" || data.type === "announcement") body += `<div>${data.text}</div>`;
+                    else if (data.type === "image") body += `<div>🖼️ [Фото]: <img src="${data.fileData}" style="max-height:80px;display:block;"></div>`;
+                    else if (data.type === "voice") body += `<div>🎤 [Голосовое]</div>`;
+                    msgDiv.innerHTML = body; monitor.appendChild(msgDiv);
+                });
+                monitor.scrollTop = monitor.scrollHeight; loadAdminStatistics();
+            });
         });
 
-        // ЗАПИСЬ И ОТПРАВКА СВЕЖИХ ВОЙСОВ
-        const voiceBtn = document.getElementById("voice-btn");
-        voiceBtn.addEventListener("click", async () => {
-            if(!isRecording) {
-                if(!navigator.mediaDevices) return alert("Микрофон недоступен!");
-                let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream); audioChunks = [];
-                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-                mediaRecorder.onstop = async () => {
-                    let blob = new Blob(audioChunks, { type: "audio/ogg; codecs=opus" });
-                    let formData = new FormData(); formData.append("image", blob); 
-                    // Используем imgur как временный склад для файлов
-                    let res = await fetch("https://api.imgur.com/3/image", { method: "POST", headers: { Authorization: "Client-ID 6f8bb161cb7e69c" }, body: formData });
-                    let json = await res.json();
-                    if(json.success) {
-                        await addDoc(messagesCol, { room: currentRoom, name: myName, fileUrl: json.data.link, type: "voice", timestamp: serverTimestamp() });
-                    }
-                };
-                mediaRecorder.start(); isRecording = true; voiceBtn.classList.add("recording"); voiceBtn.innerText = "🛑";
-            } else {
-                mediaRecorder.stop(); isRecording = false; voiceBtn.classList.remove("recording"); voiceBtn.innerText = "🎙️";
+        window.banUser = async function(username) {
+            if(!username || username === "администрация") return;
+            if(confirm(`Забанить ${username}?`)) await setDoc(doc(db, "blacklist", username.toLowerCase()), { isBanned: true });
+        };
+        window.hardDeleteMsg = async function(id) { if(confirm("Удалить?")) await deleteDoc(doc(db, "messages", id)); };
+
+        document.getElementById("global-clear-btn").addEventListener("click", async () => {
+            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if (!targetRoom || targetRoom === "алмаз") return;
+            if (confirm("Удалить всё?")) {
+                const snap = await getDocs(query(messagesCol, where("room", "==", targetRoom)));
+                snap.forEach(async (d) => await deleteDoc(doc(db, "messages", d.id)));
             }
         });
 
-        // ПЕЧАТАЕТ...
-        function setupTypingStatus() {
-            const inp = document.getElementById("msg-input");
-            inp.addEventListener("input", () => {
-                setDoc(doc(db, "typing", currentRoom), { [myName]: true }, { merge: true });
-                clearTimeout(window.typingTimeout);
-                window.typingTimeout = setTimeout(() => {
-                    setDoc(doc(db, "typing", currentRoom), { [myName]: false }, { merge: true });
-                }, 2000);
-            });
+        document.getElementById("global-maintenance-btn").addEventListener("click", async () => {
+            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if (!targetRoom || targetRoom === "алмаз") return;
+            const roomRef = doc(db, "rooms_config", targetRoom);
+            const docSnap = await getDoc(roomRef);
+            let currentStatus = docSnap.exists() ? docSnap.data().isMaintenance || false : false;
+            await setDoc(roomRef, { isMaintenance: !currentStatus }, { merge: true });
+            alert("Статус изменен!");
+        });
 
-            onSnapshot(doc(db, "typing", currentRoom), (ds) => {
-                if(!ds.exists()) return;
-                let active = []; Object.keys(ds.data()).forEach(k => { if(ds.data()[k] && k !== myName) active.push(k); });
-                const st = document.getElementById("typing-status");
-                if(active.length > 0) { st.innerText = `${active.join(", ")} печатает...`; st.style.display = "block"; }
-                else st.style.display = "none";
-            });
+        document.getElementById("global-msg-btn").addEventListener("click", async () => {
+            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
+            const text = prompt("Текст:"); if (!targetRoom || !text) return;
+            await addDoc(messagesCol, { room: targetRoom, user: "АДМИНИСТРАЦИЯ", text: text, type: "announcement", createdAt: serverTimestamp() });
+        });
+
+        const msgInput = document.getElementById("msg-input");
+        const sendBtn = document.getElementById("send-btn");
+        const chatBox = document.getElementById("chat-box");
+        const fileInput = document.getElementById("file-input");
+        const voiceBtn = document.getElementById("voice-btn");
+
+        async function sendMessage() {
+            const text = msgInput.value.trim(); if (!text) return; 
+            msgInput.value = "";
+            await addDoc(messagesCol, { room: currentRoom, user: myName, text: text, type: "text", reply_to: replyTextPreview, reactions: {}, isDeleted: false, isEdited: false, oldText: "", createdAt: serverTimestamp() });
+            cancelReply();
         }
+        
+        // Перепривязка событий для гарантированной отправки без багов
+        sendBtn.onclick = sendMessage;
+        msgInput.onkeypress = function(e) { if (e.key === "Enter") sendMessage(); };
+
+        voiceBtn.onclick = async function() {
+            if (!isRecording) {
+                audioChunks = [];
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                    const reader = new FileReader();
+                    reader.onloadend = async () => {
+                        await addDoc(messagesCol, { room: currentRoom, user: myName, fileData: reader.result, type: "voice", reply_to: replyTextPreview, reactions: {}, isDeleted: false, createdAt: serverTimestamp() });
+                        cancelReply();
+                    };
+                    reader.readAsDataURL(audioBlob);
+                };
+                mediaRecorder.start(); isRecording = true;
+                voiceBtn.classList.add("recording"); voiceBtn.innerText = "🛑";
+            } else {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                isRecording = false; voiceBtn.classList.remove("recording"); voiceBtn.innerText = "🎙️";
+            }
+        };
 
         function listenRoomConfig() {
-            if(roomConfigUnsubscribe) roomConfigUnsubscribe();
-            roomConfigUnsubscribe = onSnapshot(doc(db, "rooms_config", currentRoom), (ds) => {
-                document.getElementById("maintenance-overlay").style.display = ds.exists() && ds.data().isMaintenance ? "flex" : "none";
+            onSnapshot(doc(db, "rooms_config", currentRoom), (docSnap) => {
+                if (docSnap.exists()) {
+                    const isMaint = docSnap.data().isMaintenance || false;
+                    document.getElementById("room-status-indicator").style.color = isMaint ? "#ff004b" : "#4caf50";
+                    document.getElementById("maintenance-overlay").style.display = isMaint ? "flex" : "none";
+                }
             });
         }
 
-        async function loadAdminStatistics() {
-            const snap = await getDocs(messagesCol);
-            let t=0, i=0, v=0, d=0;
-            snap.forEach(ds => { let data = ds.data(); t++; if(data.isDeleted) d++; if(data.type==="image") i++; if(data.type==="voice") v++; });
-            document.getElementById("stat-total-msg").innerText = t; document.getElementById("stat-images").innerText = i; document.getElementById("stat-voices").innerText = v; document.getElementById("stat-deleted").innerText = d;
+        window.pinMsg = async function(id, user, text) {
+            await setDoc(doc(db, "pins", currentRoom), { msgId: id, displayText: `${user}: ${text.substring(0,30)}` });
+        };
+        window.unpinMsg = async function(e) { if(e) e.stopPropagation(); await deleteDoc(doc(db, "pins", currentRoom)); };
+
+        function listenPins() {
+            onSnapshot(doc(db, "pins", currentRoom), (docSnap) => {
+                const bar = document.getElementById("pinned-bar");
+                if (docSnap.exists()) {
+                    currentPinnedId = docSnap.data().msgId;
+                    document.getElementById("pinned-text").innerText = `📌 ${docSnap.data().displayText}`;
+                    document.getElementById("unpin-btn-container").innerHTML = `<span style="color:#ff4a4a;font-weight:bold;padding-left:10px;" onclick="unpinMsg(event)">✕</span>`;
+                    bar.style.display = "flex";
+                } else { bar.style.display = "none"; }
+            });
         }
 
-        function playNotificationSound() {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-                osc.type = 'sine'; osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-            } catch {}
+        window.scrollToPinnedMessage = function() {
+            if (!currentPinnedId) return;
+            const targetEl = document.getElementById(`msg-block-${currentPinnedId}`);
+            if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
+        fileInput.onchange = function(e) {
+            const file = e.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+                await addDoc(messagesCol, { room: currentRoom, user: myName, fileData: reader.result, type: "image", reply_to: replyTextPreview, reactions: {}, isDeleted: false, createdAt: serverTimestamp() });
+                cancelReply();
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.deleteMsg = async function(id) { await updateDoc(doc(db, "messages", id), { isDeleted: true }); }
+        window.editMsg = async function(id, currentText) {
+            const newText = prompt("Редактировать:", currentText);
+            if (newText && newText.trim() !== currentText) await updateDoc(doc(db, "messages", id), { oldText: currentText, text: newText.trim(), isEdited: true });
+        };
+
+        window.togglePicker = function(id) {
+            const p = document.getElementById(`picker-${id}`);
+            if (p) p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
+        };
+
+        window.addReaction = async function(id, emoji) {
+            const docRef = doc(db, "messages", id); const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                let reactions = docSnap.data().reactions || {}; reactions[emoji] = (reactions[emoji] || 0) + 1;
+                await updateDoc(docRef, { reactions: reactions });
+            }
+        };
+
+        window.setReply = function(user, text) {
+            replyTextPreview = `${user}: "${text.substring(0,20)}..."`;
+            document.getElementById("reply-preview-bar").style.display = "flex";
+            document.getElementById("reply-preview-text").innerText = `Ответ ${user}`;
+        };
+        function cancelReply() { replyTextPreview = null; document.getElementById("reply-preview-bar").style.display = "none"; }
+        document.getElementById("cancel-reply-btn").onclick = cancelReply;
+
+        function setupTypingStatus() {
+            const statusDiv = document.getElementById("typing-status");
+            onSnapshot(collection(db, "typing"), (snapshot) => {
+                let typers = [];
+                snapshot.forEach(doc => { if (doc.data().room === currentRoom && doc.id !== myName) typers.push(doc.id); });
+                statusDiv.innerText = typers.length > 0 ? `${typers.join(", ")} печатает...` : "";
+                statusDiv.style.display = typers.length > 0 ? "block" : "none";
+            });
+            msgInput.oninput = async () => {
+                await setDoc(doc(db, "typing", myName), { room: currentRoom, typing: true });
+                clearTimeout(typingTimeout);
+                typingTimeout = setTimeout(async () => { await deleteDoc(doc(db, "typing", myName)); }, 2000);
+            };
         }
 
-        window.toggleNotificationSound = function() { soundEnabled = !soundEnabled; document.getElementById("sound-toggle-btn").innerText = soundEnabled ? "🔊" : "🔇"; };
-        window.toggleSearchField = function() { const bar = document.getElementById("search-bar"); bar.style.display = bar.style.display === "flex" ? "none" : "flex"; if(bar.style.display === "flex") document.getElementById("search-input").focus(); else filterMessages(""); };
-        window.closeSearchField = function() { document.getElementById("search-bar").style.display = "none"; document.getElementById("search-input").value = ""; filterMessages(""); };
-        window.filterMessages = function(kw) { let clean = kw.toLowerCase().trim(); document.querySelectorAll("#chat-box .message").forEach(el => { if (!el.classList.contains("system-announcement")) el.style.display = clean === "" || el.innerText.toLowerCase().includes(clean) ? "flex" : "none"; }); };
-        window.changeTheme = function(tn) { document.body.className = tn; };
+        function startChatListening() {
+            const q = query(messagesCol, orderBy("createdAt", "asc"));
+            mainChatUnsubscribe = onSnapshot(q, (snapshot) => {
+                chatBox.innerHTML = "";
+                let currentIterationCount = 0;
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data(); const msgId = doc.id;
+                    if (data.room !== currentRoom || data.isDeleted) return;
+                    currentIterationCount++;
+
+                    const msgDiv = document.createElement("div");
+                    msgDiv.id = `msg-block-${msgId}`;
+                    const isMe = data.user === myName;
+                    msgDiv.className = data.type === "announcement" ? "message system-announcement" : `message ${isMe ? 'outgoing' : 'incoming'}`;
+
+                    let content = `<span class="meta">${data.user}<span>`;
+                    if (isMe && data.type === "text") content += `<span class="edit-msg-btn" onclick="editMsg('${msgId}', '${data.text}')">📝</span>`;
+                    if (isMe && data.type !== "announcement") content += `<span class="del-btn" onclick="deleteMsg('${msgId}')">×</span>`;
+                    content += `</span></span>`;
+
+                    if (data.reply_to) content += `<div class="reply-container"><b>↳:</b> ${data.reply_to}</div>`;
+                    
+                    if (data.type === "text" || data.type === "announcement") content += `<div>${data.text} ${data.isEdited ? '<span class="edited-marker">(ред.)</span>':''}</div>`;
+                    else if (data.type === "image") content += `<img class="chat-img" src="${data.fileData}">`;
+                    else if (data.type === "voice") content += `<audio src="${data.fileData}" controls></audio>`;
+
+                    if (data.type !== "announcement") {
+                        content += `<span class="msg-actions-trigger" onclick="togglePicker('${msgId}')">⚙️</span>`;
+                        content += `
+                            <div class="reactions-picker" id="picker-${msgId}">
+                                <span onclick="addReaction('${msgId}', '👍')">👍</span>
+                                <span onclick="addReaction('${msgId}', '❤️')">❤️</span>
+                                <span onclick="setReply('${data.user}', '${data.text || 'Медиа'}')">↩️</span>
+                                ${data.type === 'text' ? `<span onclick="pinMsg('${msgId}', '${data.user}', '${data.text}')">📌</span>`:''}
+                            </div>`;
+                    }
+
+                    if (data.reactions && Object.keys(data.reactions).length > 0) {
+                        content += `<div class="reaction-panel">`;
+                        for (let emoji in data.reactions) content += `<span class="reaction-badge">${emoji} ${data.reactions[emoji]}</span>`;
+                        content += `</div>`;
+                    }
+                    if (data.type !== "announcement") content += `<span class="status-ticks">✔️✔️</span>`;
+
+                    msgDiv.innerHTML = content; chatBox.appendChild(msgDiv);
+                });
+
+                if (lastMessageCount !== -1 && currentIterationCount > lastMessageCount) {
+                    const lastDoc = snapshot.docs[snapshot.docs.length - 1].data();
+                    if (lastDoc && lastDoc.user !== myName && lastDoc.room === currentRoom) playNotificationSound();
+                }
+                lastMessageCount = currentIterationCount;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
     </script>
 </body>
 </html>
