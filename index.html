@@ -74,8 +74,7 @@
         .spy-msg.intercepted-deleted { border-left: 3px solid #ff004b; background: rgba(255, 0, 75, 0.15); }
         .spy-meta { font-size: 0.75rem; color: #00d2ff; font-weight: bold; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: center; }
         .spy-hard-del-btn { color: #ff4a4a; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
-        .spy-ban-btn { background: #ff004b; color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 0.7 ceramic; font-weight: bold; }
-        .edited-history-box { font-size: 0.8rem; color: #ffb300; background: rgba(255, 179, 0, 0.1); padding: 4px; border-radius: 4px; margin-top: 5px; border-left: 2px solid #ffb300; }
+        .spy-ban-btn { background: #ff004b; color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: bold; }
 
         /* Экран чата */
         #chat-screen { display: none; flex-direction: column; flex: 1; height: 100vh; z-index: 10; }
@@ -94,42 +93,34 @@
         .message { max-width: 70%; padding: 10px 15px; border-radius: 18px; line-height: 1.4; word-break: break-word; position: relative; display: flex; flex-direction: column; }
         .message.incoming { background: rgba(45, 45, 70, 0.85); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #3a3a5c; }
         .message.outgoing { background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .message.system-announcement { background: linear-gradient(135deg, #ff004b, #9c27b0); color: white; align-self: center; max-width: 90%; border-radius: 12px; border: 2px solid #ffeb3b; text-align: center; font-weight: bold; }
+        .message.system-announcement { background: linear-gradient(135deg, #ff004b, #9c27b0); color: white; align-self: center; max-width: 90%; border-radius: 12px; border: 2px solid #ffeb3b; text-align: center; padding: 10px 20px; font-weight: bold; }
 
         .meta { font-size: 0.75rem; color: #00d2ff; margin-bottom: 4px; display: flex; justify-content: space-between; font-weight: bold; }
         .message.outgoing .meta { color: #ffe600; }
-        .del-btn { font-size: 0.8rem; color: #ff4a4a; cursor: pointer; margin-left: 8px; font-weight: bold; }
-        .edit-msg-btn { font-size: 0.8rem; color: #00ffcc; cursor: pointer; margin-left: 8px; font-weight: bold; }
         .chat-img { max-width: 100%; border-radius: 10px; margin-top: 5px; max-height: 250px; display: block; }
-        .reply-container { background: rgba(0,0,0,0.2); padding: 5px 8px; border-left: 3px solid #00d2ff; border-radius: 4px; margin-bottom: 5px; font-size: 0.85rem; }
         #reply-preview-bar { display: none; background: #19192d; padding: 8px 15px; border-left: 4px solid #0078ff; justify-content: space-between; align-items: center; font-size: 0.9rem; }
-        .edited-marker { font-size: 0.7rem; color: #888; font-style: italic; margin-left: 5px; }
 
         audio { margin-top: 5px; max-width: 240px; outline: none; }
 
-        /* Реакции */
-        .reaction-panel { display: flex; gap: 4px; margin-top: 4px; font-size: 0.9rem; }
-        .reaction-badge { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 10px; cursor: pointer; display: inline-block; }
-        .msg-actions-trigger { position: absolute; right: -25px; top: 35%; display: none; cursor: pointer; font-size: 0.85rem; }
-        .message:hover .msg-actions-trigger { display: block; }
-        .reactions-picker { display: none; position: absolute; background: #22223b; border: 1px solid #445; padding: 5px; border-radius: 20px; gap: 5px; z-index: 100; top: -35px; right: 0; }
-
-        /* Панель ввода */
-        #input-area { background: rgba(25, 25, 45, 0.95); padding: 15px; display: flex; gap: 10px; border-top: 1px solid #334; align-items: center; position: relative; }
-        input[type="text"] { flex: 1; padding: 12px 20px; border: none; border-radius: 25px; background: #121225; color: #fff; font-size: 1rem; outline: none; border: 1px solid #3d3d6b; }
-        .icon-btn { background: #1a1a3a; border: 1px solid #3d3d6b; width: 45px; height: 45px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        #send-btn { background: #0078ff; color: white; border: none; padding: 0 22px; height: 45px; border-radius: 25px; font-weight: bold; cursor: pointer; }
-        #voice-btn { background: #2196f3; }
-        #voice-btn.recording { background: #f44336; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        
+        /* ИСПРАВЛЕННАЯ АДАПТИВНАЯ ПАНЕЛЬ ВВОДА ДЛЯ МОБИЛЬНЫХ */
+        #input-area { background: rgba(25, 25, 45, 0.95); padding: 10px; display: flex; gap: 8px; border-top: 1px solid #334; align-items: center; position: relative; width: 100%; max-width: 100vw; }
+        #msg-input { flex: 1; min-width: 0; padding: 12px 15px; border: none; border-radius: 25px; background: #121225; color: #fff; font-size: 0.95rem; outline: none; border: 1px solid #3d3d6b; }
+        .icon-btn { background: #1a1a3a; border: 1px solid #3d3d6b; width: 42px; height: 42px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        #send-btn { background: #0078ff; color: white; border: none; width: 42px; height: 42px; border-radius: 50%; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        #file-input { display: none; }
         #typing-status { position: absolute; top: -22px; left: 20px; font-size: 0.8rem; color: #00d2ff; font-style: italic; display: none; }
-        .status-ticks { font-size: 0.75rem; align-self: flex-end; margin-top: 2px; color: rgba(255,255,255,0.6); }
         .theme-select { background: #1a1a32; color: #00d2ff; border: 1px solid #3d3d6b; padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; outline: none; cursor: pointer; }
         
-        .header-controls { display: flex; align-items: center; gap: 8px; }
+        .header-controls { display: flex; align-items: center; gap: 6px; }
         .circle-control-btn { background: #1a1a3a; border: 1px solid #3d3d6b; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; }
-        .referral-btn { background: #ffeb3b; color: #000; border: none; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
+        .referral-btn { background: #ffeb3b; color: #000; border: none; padding: 6px 10px; border-radius: 15px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+
+        @media (max-width: 480px) {
+            header { padding: 10px; font-size: 0.9rem; }
+            .referral-btn { padding: 5px 8px; font-size: 0.7rem; }
+            .message { max-width: 85%; }
+            #chat-box { padding: 10px; }
+        }
     </style>
 </head>
 <body class="theme-space">
@@ -218,7 +209,7 @@
         <header>
             <span id="chat-header">Комната: ...</span>
             <div class="header-controls">
-                <button class="referral-btn" onclick="copyReferralLink()" title="Скопировать реферальную ссылку для парня">Пригласить друга 🔗</button>
+                <button class="referral-btn" onclick="copyReferralLink()" title="Скопировать реферальную ссылку для парня">Пригласить 🔗</button>
                 
                 <div class="circle-control-btn" onclick="toggleSearchField()" title="Поиск">🔍</div>
                 <div class="circle-control-btn" id="sound-toggle-btn" onclick="toggleNotificationSound()" title="Звук уведомлений">🔊</div>
@@ -257,7 +248,7 @@
             <button class="icon-btn" id="voice-btn">🎙️</button>
 
             <input type="text" id="msg-input" placeholder="Напишите сообщение..." autocomplete="off">
-            <button id="send-btn">Отправить</button>
+            <button id="send-btn" onclick="window.sendMyMessage()">➔</button>
         </div>
     </div>
 
@@ -281,23 +272,15 @@
 
         let myName = "";
         let currentRoom = "";
-        let replyTextPreview = null;
-        let typingTimeout;
         let spyUnsubscribe = null;
         let mainChatUnsubscribe = null;
-
-        let mediaRecorder;
-        let audioChunks = [];
-        let isRecording = false;
+        let roomConfigUnsubscribe = null;
 
         let soundEnabled = true; 
-        let currentPinnedId = null;
         let lastMessageCount = -1; 
 
-        // АВТО-ПЕРЕХВАТ ПАРАМЕТРОВ ССЫЛКИ ДЛЯ ДЕВОЧЕК/ПАРНЕЙ (РЕФЕРАЛКА)
         window.addEventListener('load', () => {
             history.replaceState({ screen: "auth" }, "");
-            
             const urlParams = new URLSearchParams(window.location.search);
             const roomFromUrl = urlParams.get('room');
             if(roomFromUrl) {
@@ -305,22 +288,16 @@
             }
         });
 
-        // ИСПРАВЛЕННЫЙ БАГ С ССЫЛКОЙ (теперь генерирует точный URL на любой хостинг-платформе)
         window.copyReferralLink = function() {
             if(!currentRoom) return;
-            
-            // Очищаем текущий URL от старых параметров, чтобы не плодить дубликаты вопросов в ссылке
             const baseUrl = window.location.href.split('?')[0];
             const refUrl = `${baseUrl}?room=${encodeURIComponent(currentRoom)}`;
-            
             navigator.clipboard.writeText(refUrl).then(() => {
-                alert(`🔗 Реферальная ссылка скопирована!\nЕё можно отправить парню. Она автоматически вставит комнату "${currentRoom}" при входе.`);
-            }).catch(err => {
-                console.error("Ошибка копирования: ", err);
-            });
+                alert(`🔗 Ссылка скопирована!\nОна автоматически вставит комнату "${currentRoom}" при входе.`);
+            }).catch(err => console.error(err));
         };
 
-        window.addEventListener('popstate', (event) => {
+        window.addEventListener('popstate', () => {
             document.getElementById("chat-screen").style.display = "none";
             document.getElementById("super-admin-screen").style.display = "none";
             document.getElementById("ban-overlay").style.display = "none";
@@ -331,23 +308,17 @@
             
             if (spyUnsubscribe) { spyUnsubscribe(); spyUnsubscribe = null; }
             if (mainChatUnsubscribe) { mainChatUnsubscribe(); mainChatUnsubscribe = null; }
+            if (roomConfigUnsubscribe) { roomConfigUnsubscribe(); roomConfigUnsubscribe = null; }
             closeSearchField();
         });
 
-        window.goBackToAuth = function() {
-            history.back();
-        };
-
+        window.goBackToAuth = function() { history.back(); };
         window.openAdminModal = function() {
             document.getElementById("admin-auth-modal").style.display = "flex";
             const input = document.getElementById("secret-admin-key-input");
-            input.value = "";
-            input.focus();
+            input.value = ""; input.focus();
         };
-
-        window.closeAdminModal = function() {
-            document.getElementById("admin-auth-modal").style.display = "none";
-        };
+        window.closeAdminModal = function() { document.getElementById("admin-auth-modal").style.display = "none"; };
 
         window.submitAdminKey = function() {
             const inputKey = document.getElementById("secret-admin-key-input").value.trim();
@@ -356,11 +327,10 @@
                 document.getElementById("auth-screen").style.display = "none";
                 document.getElementById("super-admin-screen").style.display = "flex";
                 document.getElementById("secret-admin-trigger").style.display = "none";
-                
                 history.pushState({ screen: "admin" }, "");
                 loadAdminStatistics(); 
             } else {
-                alert("Доступ заблокирован: Неверный ключ Создателя.");
+                alert("Доступ заблокирован.");
                 closeAdminModal();
             }
         };
@@ -369,32 +339,125 @@
             if (e.key === "Enter") submitAdminKey();
         });
 
-        window.toggleNotificationSound = function() {
-            soundEnabled = !soundEnabled;
-            const btn = document.getElementById("sound-toggle-btn");
-            btn.innerText = soundEnabled ? "🔊" : "🔇";
-            btn.title = soundEnabled ? "Звук включен" : "Звук отключен";
+        document.getElementById("target-room-input").addEventListener("input", (e) => {
+            checkDiamondCommand(e.target.value);
+        });
+
+        async function checkDiamondCommand(inputValue) {
+            const container = document.getElementById("rooms-list-container");
+            if (inputValue.toLowerCase().trim() === "алмаз") {
+                container.style.display = "flex";
+                container.innerHTML = "<span style='color:#ffe600;'>Сканирование комнат...</span>";
+                try {
+                    const snap = await getDocs(messagesCol);
+                    let activeRooms = new Set();
+                    snap.forEach(d => { if(d.data().room) activeRooms.add(d.data().room.trim().toLowerCase()); });
+
+                    container.innerHTML = "<span style='color:#aaa; font-size:0.8rem; margin-bottom:5px;'>Обнаруженные комнаты:</span>";
+                    if(activeRooms.size === 0) { container.innerHTML += "<div style='color:white;'>Пусто.</div>"; return; }
+                    
+                    activeRooms.forEach(roomName => {
+                        const btn = document.createElement("button");
+                        btn.className = "room-item-btn";
+                        btn.innerText = `📁 ${roomName}`;
+                        btn.onclick = () => {
+                            document.getElementById("target-room-input").value = roomName;
+                            container.style.display = "none";
+                            document.getElementById("connect-spy-btn").click();
+                        };
+                        container.appendChild(btn);
+                    });
+                } catch(e) { container.innerHTML = `Ошибка: ${e.message}`; }
+            } else { container.style.display = "none"; }
+        }
+
+        document.getElementById("connect-spy-btn").addEventListener("click", () => {
+            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if (!targetRoom || targetRoom === "алмаз") return alert("Введите имя комнаты!");
+
+            if (spyUnsubscribe) spyUnsubscribe();
+            const monitor = document.getElementById("admin-spy-monitor");
+            monitor.innerHTML = "📡 Подключение...";
+
+            const q = query(messagesCol, where("room", "==", targetRoom), orderBy("timestamp", "asc"));
+            spyUnsubscribe = onSnapshot(q, (snapshot) => {
+                monitor.innerHTML = "";
+                if (snapshot.empty) { monitor.innerHTML = "Нет сообщений."; return; }
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const msgId = docSnap.id;
+                    const item = document.createElement("div");
+                    item.className = `spy-msg ${data.isDeleted ? 'intercepted-deleted' : ''}`;
+                    let content = data.text || "";
+                    if (data.type === "image") content = `<a href="${data.fileUrl}" target="_blank">🖼️ Фото</a>`;
+                    if (data.type === "voice") content = `🎙️ Войс <audio src="${data.fileUrl}" controls></audio>`;
+
+                    item.innerHTML = `
+                        <div class="spy-meta">
+                            <span>👤 ${data.name} ${data.isDeleted ? '❌' : ''}</span>
+                            <div>
+                                <button class="spy-ban-btn" onclick="globalBanUser('${data.name}')">Бан</button>
+                                <span class="spy-hard-del-btn" onclick="globalHardDelete('${msgId}')" style="margin-left:8px;">💥 Стереть</span>
+                            </div>
+                        </div>
+                        <div>${content}</div>
+                    `;
+                    monitor.appendChild(item);
+                });
+                monitor.scrollTop = monitor.scrollHeight;
+            });
+        });
+
+        window.globalBanUser = async function(username) {
+            if(!username) return;
+            if(confirm(`Забанить ${username}?`)) {
+                await setDoc(doc(db, "blacklist", username.toLowerCase().trim()), { isBanned: true });
+                alert("Забанен.");
+            }
         };
 
-        function playNotificationSound() {
-            if (!soundEnabled) return;
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc1 = audioCtx.createOscillator();
-                const gain1 = audioCtx.createGain();
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
-                osc1.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); 
-                
-                gain1.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                
-                osc1.connect(gain1);
-                gain1.connect(audioCtx.destination);
-                osc1.start();
-                osc1.stop(audioCtx.currentTime + 0.2);
-            } catch(e) { console.log("Ошибка аудио: ", e); }
-        }
+        window.globalHardDelete = async function(msgId) {
+            if(confirm("Удалить СМС из базы?")) {
+                await deleteDoc(doc(db, "messages", msgId));
+                loadAdminStatistics();
+            }
+        };
+
+        document.getElementById("global-clear-btn").addEventListener("click", async () => {
+            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!targetRoom || targetRoom === "алмаз") return alert("Укажите комнату!");
+            if(confirm("Стереть всю комнату?")) {
+                const q = query(messagesCol, where("room", "==", targetRoom));
+                const snap = await getDocs(q);
+                for (const d of snap.docs) { await deleteDoc(doc(db, "messages", d.id)); }
+                alert("Очищено.");
+                loadAdminStatistics();
+            }
+        });
+
+        document.getElementById("global-maintenance-btn").addEventListener("click", async () => {
+            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!targetRoom || targetRoom === "алмаз") return alert("Укажите комнату!");
+            const configRef = doc(db, "rooms_config", targetRoom);
+            const snap = await getDoc(configRef);
+            let currentState = snap.exists() ? (snap.data().isMaintenance || false) : false;
+            await setDoc(configRef, { isMaintenance: !currentState }, { merge: true });
+            alert("Статус изменен.");
+        });
+
+        document.getElementById("global-msg-btn").addEventListener("click", async () => {
+            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!targetRoom || targetRoom === "алмаз") return alert("Укажите комнату!");
+            const text = prompt("Текст объявления:");
+            if(!text) return;
+            await addDoc(messagesCol, { room: targetRoom, name: "Система", text: text, type: "system-announcement", timestamp: serverTimestamp() });
+            loadAdminStatistics();
+        });
+
+        window.toggleNotificationSound = function() {
+            soundEnabled = !soundEnabled;
+            document.getElementById("sound-toggle-btn").innerText = soundEnabled ? "🔊" : "🔇";
+        };
 
         window.toggleSearchField = function() {
             const bar = document.getElementById("search-bar");
@@ -411,433 +474,124 @@
 
         window.filterMessages = function(keyword) {
             const cleanKeyword = keyword.toLowerCase().trim();
-            const elements = document.querySelectorAll("#chat-box .message");
-            
-            elements.forEach(el => {
+            document.querySelectorAll("#chat-box .message").forEach(el => {
                 if (el.classList.contains("system-announcement")) return;
-                const txt = el.innerText.toLowerCase();
-                if (cleanKeyword === "" || txt.includes(cleanKeyword)) {
-                    el.style.display = "flex";
-                } else {
-                    el.style.display = "none";
-                }
+                el.style.display = cleanKeyword === "" || el.innerText.toLowerCase().includes(cleanKeyword) ? "flex" : "none";
             });
         };
 
-        window.changeTheme = function(themeName) {
-            document.body.className = themeName;
-        };
+        window.changeTheme = function(themeName) { document.body.className = themeName; };
 
         document.getElementById("login-btn").addEventListener("click", async () => {
             myName = document.getElementById("username-input").value.trim().toLowerCase();
             const myPassword = document.getElementById("password-input").value.trim();
             currentRoom = document.getElementById("room-input").value.trim().toLowerCase();
             
-            if (!myName || !myPassword || !currentRoom) { alert("Заполни все поля!"); return; }
+            if (!myName || !myPassword || !currentRoom) return alert("Заполни все поля!");
 
             const banSnap = await getDoc(doc(db, "blacklist", myName));
             if (banSnap.exists() && banSnap.data().isBanned) {
                 document.getElementById("auth-screen").style.display = "none";
                 document.getElementById("ban-overlay").style.display = "flex";
-                history.pushState({ screen: "ban" }, "");
                 return;
             }
 
             const userDocRef = doc(db, "users", myName);
             const userSnap = await getDoc(userDocRef);
-
-            if (userSnap.exists()) {
-                if (userSnap.data().password !== myPassword) {
-                    alert("Неверный пароль!");
-                    return;
-                }
-            } else {
-                await setDoc(userDocRef, { password: myPassword });
-                alert("Аккаунт успешно создан!");
-            }
+            if (userSnap.exists() && userSnap.data().password !== myPassword) return alert("Неверный пароль!");
+            if (!userSnap.exists()) await setDoc(userDocRef, { password: myPassword });
 
             document.getElementById("auth-screen").style.display = "none";
             document.getElementById("chat-screen").style.display = "flex";
             document.getElementById("chat-header").innerText = `Комната: ${currentRoom} (${myName})`;
-            
             history.pushState({ screen: "chat" }, "");
 
             startChatListening();
-            setupTypingStatus();
             listenRoomConfig(); 
-            listenPins(); 
         });
 
         async function loadAdminStatistics() {
             try {
                 const snap = await getDocs(messagesCol);
                 let total = 0; let imgs = 0; let voices = 0; let deleted = 0;
-                
                 snap.forEach(d => {
-                    const data = d.data();
-                    total++;
+                    const data = d.data(); total++;
                     if(data.isDeleted) deleted++;
                     if(data.type === "image") imgs++;
                     if(data.type === "voice") voices++;
                 });
-
                 document.getElementById("stat-total-msg").innerText = total;
                 document.getElementById("stat-images").innerText = imgs;
                 document.getElementById("stat-voices").innerText = voices;
                 document.getElementById("stat-deleted").innerText = deleted;
-            } catch(e) { console.log("Ошибка сбора статистики: ", e); }
+            } catch(e) { console.log(e); }
         }
 
-        async function checkDiamondCommand(inputValue) {
-            const container = document.getElementById("rooms-list-container");
-            container.innerHTML = ""; 
-            if (inputValue.toLowerCase() === "алмаз") {
-                container.style.display = "flex";
-                container.innerHTML = "<span style='color:#ffe600;'>Сканирование...</span>";
-                
-                const snap = await getDocs(messagesCol);
-                let activeRooms = new Set();
-                snap.forEach(d => { if(d.data().room) activeRooms.add(d.data().room.trim().toLowerCase()); });
-
-                container.innerHTML = "<span style='color:#aaa; font-size:0.8rem; margin-bottom:5px;'>Все обнаруженные комнаты на сервере:</span>";
-                if(activeRooms.size === 0) {
-                    container.innerHTML += "<div style='color:white;'>Пока пусто.</div>"; return;
-                }
-                activeRooms.forEach(roomName => {
-                    if(!roomName) return;
-                    const btn = document.createElement("button");
-                    btn.className = "room-item-btn";
-                    btn.innerText = `📁 Комната: ${roomName}`;
-                    btn.onclick = () => {
-                        document.getElementById("target-room-input").value = roomName;
-                        document.getElementById("connect-spy-btn").click();
-                    };
-                    container.appendChild(btn);
-                });
-            } else { container.style.display = "none"; }
-        }
-
-        document.getElementById("connect-spy-btn").addEventListener("click", async () => {
-            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
-            if (targetRoom === "алмаз") { await checkDiamondCommand(targetRoom); return; }
-            if (!targetRoom) { alert("Укажите имя комнаты!"); return; }
-            document.getElementById("rooms-list-container").style.display = "none";
-
-            if (spyUnsubscribe) spyUnsubscribe();
-            const monitor = document.getElementById("admin-spy-monitor");
-            monitor.innerHTML = `<div style="color: #00d2ff; text-align: center; margin-top: 110px;">Перехват [${targetRoom}]...</div>`;
-
-            const q = query(messagesCol, orderBy("createdAt", "asc"));
-            spyUnsubscribe = onSnapshot(q, (snapshot) => {
-                monitor.innerHTML = "";
-                let hasMessages = false;
-
-                snapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    if (data.room !== targetRoom) return; 
-                    hasMessages = true;
-
-                    const msgDiv = document.createElement("div");
-                    msgDiv.className = data.isDeleted ? "spy-msg intercepted-deleted" : "spy-msg";
-                    let statusLabel = data.isDeleted ? `<span style="color:#ff004b;">🗑️ [УДАЛЕНО]</span>` : `<span>✔️ Активно</span>`;
-                    
-                    let body = `
-                        <div class="spy-meta">
-                            <span>👤 ник: <b>${data.user}</b> <button class="spy-ban-btn" onclick="window.banUser('${data.user}')">БАН 🚫</button></span> 
-                            ${statusLabel}
-                            <span class="spy-hard-del-btn" onclick="window.hardDeleteMsg('${docSnap.id}')">Стереть 💀</span>
-                        </div>
-                    `;
-                    
-                    if (data.type === "text" || data.type === "announcement") {
-                        body += `<div>${data.text}</div>`;
-                    } else if (data.type === "image") {
-                        body += `<div>🖼️ [Фото]: <img src="${data.fileData}" style="max-height:80px; border-radius:5px; display:block; margin-top:5px;"></div>`;
-                    } else if (data.type === "voice") {
-                        body += `<div>🎤 [Голосовое]: <audio src="${data.fileData}" controls></audio></div>`;
-                    }
-                    
-                    if (data.oldText) body += `<div class="edited-history-box"><b>📝 Было до изменения:</b> "${data.oldText}"</div>`;
-                    
-                    msgDiv.innerHTML = body;
-                    monitor.appendChild(msgDiv);
-                });
-                if (!hasMessages) monitor.innerHTML = `<div style="color:#666; text-align:center; margin-top:110px;">Тут пусто.</div>`;
-                monitor.scrollTop = monitor.scrollHeight;
-                loadAdminStatistics(); 
-            });
-        });
-
-        window.banUser = async function(username) {
-            if(!username || username === "администрация") return;
-            if(confirm(`Вы уверены, что хотите полностью ЗАБАНИТЬ пользователя ${username}?`)) {
-                await setDoc(doc(db, "blacklist", username.toLowerCase()), { isBanned: true });
-                alert(`Пользователь ${username} занесен в черный список!`);
-            }
-        };
-
-        window.hardDeleteMsg = async function(id) {
-            if(confirm("Стереть сообщение из облака безвозвратно?")) await deleteDoc(doc(db, "messages", id));
-        };
-
-        document.getElementById("global-clear-btn").addEventListener("click", async () => {
-            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
-            if (!targetRoom || targetRoom === "алмаз") return;
-            if (confirm(`Удалить все сообщения в ${targetRoom}?`)) {
-                const q = query(messagesCol, where("room", "==", targetRoom));
-                const snap = await getDocs(q);
-                snap.forEach(async (d) => await deleteDoc(doc(db, "messages", d.id)));
-                alert("Очищено!");
-            }
-        });
-
-        document.getElementById("global-maintenance-btn").addEventListener("click", async () => {
-            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
-            if (!targetRoom || targetRoom === "алмаз") return;
-            const roomRef = doc(db, "rooms_config", targetRoom);
-            const docSnap = await getDoc(roomRef);
-            let currentStatus = docSnap.exists() ? docSnap.data().isMaintenance || false : false;
-            await setDoc(roomRef, { isMaintenance: !currentStatus }, { merge: true });
-            alert(`Тех. работы: ${!currentStatus}`);
-        });
-
-        document.getElementById("global-msg-btn").addEventListener("click", async () => {
-            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
-            const text = prompt("Текст объявления:");
-            if (!targetRoom || !text || targetRoom === "алмаз") return;
-            await addDoc(messagesCol, { room: targetRoom, user: "АДМИНИСТРАЦИЯ", text: text, type: "announcement", createdAt: serverTimestamp() });
-        });
-
-        const msgInput = document.getElementById("msg-input");
-        const sendBtn = document.getElementById("send-btn");
-        const chatBox = document.getElementById("chat-box");
-        const fileInput = document.getElementById("file-input");
-        const voiceBtn = document.getElementById("voice-btn");
-
-        async function sendMessage() {
-            const text = msgInput.value.trim(); if (!text) return; msgInput.value = "";
-            await addDoc(messagesCol, { room: currentRoom, user: myName, text: text, type: "text", reply_to: replyTextPreview, reactions: {}, isDeleted: false, isEdited: false, oldText: "", createdAt: serverTimestamp() });
-            cancelReply();
-        }
-        sendBtn.addEventListener("click", sendMessage);
-        msgInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
-
-        voiceBtn.addEventListener("click", async () => {
-            if (!isRecording) {
-                audioChunks = [];
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.ondataavailable = (e) => { audioChunks.push(e.data); };
-                
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
-                    const reader = new FileReader();
-                    reader.onloadend = async () => {
-                        await addDoc(messagesCol, {
-                            room: currentRoom, user: myName, fileData: reader.result, type: "voice", reply_to: replyTextPreview, reactions: {}, isDeleted: false, createdAt: serverTimestamp()
-                        });
-                        cancelReply();
-                    };
-                    reader.readAsDataURL(audioBlob);
-                };
-
-                mediaRecorder.start();
-                isRecording = true;
-                voiceBtn.classList.add("recording");
-                voiceBtn.innerText = "🛑";
-            } else {
-                mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
-                isRecording = false;
-                voiceBtn.classList.remove("recording");
-                voiceBtn.innerText = "🎙️";
-            }
-        });
-
-        function listenRoomConfig() {
-            onSnapshot(doc(db, "rooms_config", currentRoom), (docSnap) => {
-                if (docSnap.exists()) {
-                    const isMaint = docSnap.data().isMaintenance || false;
-                    const indicator = document.getElementById("room-status-indicator");
-                    if (isMaint) {
-                        indicator.innerText = "● Тех.работы"; indicator.style.color = "#ff004b";
-                        document.getElementById("maintenance-overlay").style.display = "flex";
-                    } else {
-                        indicator.innerText = "● Активна"; indicator.style.color = "#4caf50";
-                        document.getElementById("maintenance-overlay").style.display = "none";
-                    }
-                }
-            });
-        }
-
-        window.pinMsg = async function(id, user, text) {
-            const shortText = text.length > 35 ? text.substring(0, 35) + "..." : text;
-            await setDoc(doc(db, "pins", currentRoom), { msgId: id, displayText: `${user}: ${shortText}` });
-            alert("Сообщение закреплено!");
-        };
-
-        window.unpinMsg = async function(e) {
-            if(e) e.stopPropagation(); 
-            if(confirm("Открепить это сообщение?")) {
-                await deleteDoc(doc(db, "pins", currentRoom));
-            }
-        };
-
-        function listenPins() {
-            onSnapshot(doc(db, "pins", currentRoom), (docSnap) => {
-                const bar = document.getElementById("pinned-bar");
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    currentPinnedId = data.msgId;
-                    document.getElementById("pinned-text").innerText = `📌 ${data.displayText}`;
-                    document.getElementById("unpin-btn-container").innerHTML = `<span style="color:#ff4a4a; font-weight:bold; padding-left:10px;" onclick="unpinMsg(event)">✕</span>`;
-                    bar.style.display = "flex";
-                } else {
-                    currentPinnedId = null;
-                    bar.style.display = "none";
-                }
-            });
-        }
-
-        window.scrollToPinnedMessage = function() {
-            if (!currentPinnedId) return;
-            const targetEl = document.getElementById(`msg-block-${currentPinnedId}`);
-            if (targetEl) {
-                targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                targetEl.style.outline = "2px solid #0078ff";
-                setTimeout(() => targetEl.style.outline = "none", 2000);
-            } else {
-                alert("Сообщение находится слишком далеко в истории.");
-            }
-        };
-
-        fileInput.addEventListener("change", (e) => {
-            const file = e.target.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onloadend = async () => {
-                await addDoc(messagesCol, { room: currentRoom, user: myName, fileData: reader.result, type: "image", reply_to: replyTextPreview, reactions: {}, isDeleted: false, createdAt: serverTimestamp() });
-                cancelReply();
-            };
-            reader.readAsDataURL(file);
-        });
-
-        window.deleteMsg = async function(id) {
-            if(confirm("Удалить сообщение для всех?")) await updateDoc(doc(db, "messages", id), { isDeleted: true });
-        }
-
-        window.editMsg = async function(id, currentText) {
-            const newText = prompt("Редактировать:", currentText);
-            if (!newText || newText.trim() === currentText) return;
-            await updateDoc(doc(db, "messages", id), { oldText: currentText, text: newText.trim(), isEdited: true });
-        };
-
-        window.togglePicker = function(id) {
-            const p = document.getElementById(`picker-${id}`);
-            if (p) p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
-        };
-
-        window.addReaction = async function(id, emoji) {
-            const docRef = doc(db, "messages", id); const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                let reactions = docSnap.data().reactions || {}; reactions[emoji] = (reactions[emoji] || 0) + 1;
-                await updateDoc(docRef, { reactions: reactions });
-            }
-        };
-
-        window.setReply = function(user, text) {
-            const shortText = text.length > 20 ? text.substring(0, 20) + "..." : text;
-            replyTextPreview = `${user}: "${shortText}"`;
-            document.getElementById("reply-preview-bar").style.display = "flex";
-            document.getElementById("reply-preview-text").innerText = `Ответ для ${user}: ${shortText}`;
-        };
-        
-        function cancelReply() { replyTextPreview = null; document.getElementById("reply-preview-bar").style.display = "none"; }
-        document.getElementById("cancel-reply-btn").addEventListener("click", cancelReply);
-
-        function setupTypingStatus() {
-            const statusDiv = document.getElementById("typing-status");
-            onSnapshot(collection(db, "typing"), (snapshot) => {
-                let typers = [];
-                snapshot.forEach(doc => { if (doc.data().room === currentRoom && doc.id !== myName) typers.push(doc.id); });
-                statusDiv.innerText = typers.length > 0 ? `${typers.join(", ")} печатает...` : "";
-                statusDiv.style.display = typers.length > 0 ? "block" : "none";
-            });
-            msgInput.addEventListener("input", async () => {
-                await setDoc(doc(db, "typing", myName), { room: currentRoom, typing: true });
-                clearTimeout(typingTimeout);
-                typingTimeout = setTimeout(async () => { await deleteDoc(doc(db, "typing", myName)); }, 2000);
-            });
+        function playNotificationSound() {
+            if (!soundEnabled) return;
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine'; osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+            } catch(e) {}
         }
 
         function startChatListening() {
-            const q = query(messagesCol, orderBy("createdAt", "asc"));
+            if(mainChatUnsubscribe) mainChatUnsubscribe();
+            const q = query(messagesCol, where("room", "==", currentRoom), orderBy("timestamp", "asc"));
+            const chatBox = document.getElementById("chat-box");
+
             mainChatUnsubscribe = onSnapshot(q, (snapshot) => {
                 chatBox.innerHTML = "";
-                let currentIterationCount = 0;
-
-                snapshot.forEach((doc) => {
-                    const data = doc.data(); const msgId = doc.id;
-                    if (data.room !== currentRoom || data.isDeleted) return;
-
-                    currentIterationCount++;
-
-                    const msgDiv = document.createElement("div");
-                    msgDiv.id = `msg-block-${msgId}`; 
-                    const isMe = data.user === myName;
-                    msgDiv.className = data.type === "announcement" ? "message system-announcement" : `message ${isMe ? 'outgoing' : 'incoming'}`;
-
-                    let content = `<span class="meta">${data.user}`;
-                    content += ` <span>`;
-                    if (isMe && data.type === "text") {
-                        content += `<span class="edit-msg-btn" onclick="editMsg('${msgId}', '${data.text}')">📝</span>`;
-                    }
-                    if (isMe && data.type !== "announcement") {
-                        content += `<span class="del-btn" onclick="deleteMsg('${msgId}')">×</span>`;
-                    }
-                    content += `</span></span>`;
-
-                    if (data.reply_to) content += `<div class="reply-container"><b>↳:</b> ${data.reply_to}</div>`;
-
-                    let editedLabel = data.isEdited ? `<span class="edited-marker">(изменено)</span>` : "";
+                let hasNewMessages = lastMessageCount !== -1 && snapshot.size > lastMessageCount;
+                
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    if (data.isDeleted) return;
+                    const msgEl = document.createElement("div");
                     
-                    if (data.type === "text" || data.type === "announcement") content += `<div>${data.text} ${editedLabel}</div>`;
-                    else if (data.type === "image") content += `<img class="chat-img" src="${data.fileData}">`;
-                    else if (data.type === "voice") content += `<audio src="${data.fileData}" controls></audio>`;
-
-                    if (data.type !== "announcement") {
-                        content += `<span class="msg-actions-trigger" onclick="togglePicker('${msgId}')">⚙️</span>`;
-                        let pinOption = data.type === "text" ? `<span onclick="pinMsg('${msgId}', '${data.user}', '${data.text}')">📌</span>` : "";
-                        content += `
-                            <div class="reactions-picker" id="picker-${msgId}">
-                                <span onclick="addReaction('${msgId}', '👍')">👍</span>
-                                <span onclick="addReaction('${msgId}', '❤️')">❤️</span>
-                                <span onclick="setReply('${data.user}', '${data.text || 'Медиа'}')">↩️</span>
-                                ${pinOption}
-                            </div>`;
+                    if (data.type === "system-announcement") {
+                        msgEl.className = "message system-announcement";
+                        msgEl.innerText = data.text;
+                    } else {
+                        const isMy = data.name === myName;
+                        msgEl.className = `message ${isMy ? 'outgoing' : 'incoming'}`;
+                        let content = data.text || "";
+                        if(data.type === "image") content = `<img src="${data.fileUrl}" class="chat-img" />`;
+                        if(data.type === "voice") content = `<audio src="${data.fileUrl}" controls></audio>`;
+                        msgEl.innerHTML = `<div class="meta"><span>${data.name}</span></div><div>${content}</div>`;
                     }
-
-                    if (data.reactions && Object.keys(data.reactions).length > 0) {
-                        content += `<div class="reaction-panel">`;
-                        for (let emoji in data.reactions) content += `<span class="reaction-badge">${emoji} ${data.reactions[emoji]}</span>`;
-                        content += `</div>`;
-                    }
-                    if (data.type !== "announcement") content += `<span class="status-ticks">✔️✔️</span>`;
-
-                    msgDiv.innerHTML = content; chatBox.appendChild(msgDiv);
+                    chatBox.appendChild(msgEl);
                 });
 
-                if (lastMessageCount !== -1 && currentIterationCount > lastMessageCount) {
-                    const lastDoc = snapshot.docs[snapshot.docs.length - 1].data();
-                    if (lastDoc && lastDoc.user !== myName && lastDoc.room === currentRoom) {
-                        playNotificationSound();
-                    }
-                }
-                lastMessageCount = currentIterationCount;
-
-                const currentSearch = document.getElementById("search-input").value;
-                if(currentSearch) filterMessages(currentSearch);
-
+                if (hasNewMessages) playNotificationSound();
+                lastMessageCount = snapshot.size;
                 chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+
+        window.sendMyMessage = async function() {
+            const input = document.getElementById("msg-input");
+            const text = input.value.trim();
+            if(!text) return;
+            await addDoc(messagesCol, { room: currentRoom, name: myName, text: text, type: "text", timestamp: serverTimestamp() });
+            input.value = "";
+        };
+
+        document.getElementById("msg-input").addEventListener("keypress", (e) => {
+            if(e.key === "Enter") window.sendMyMessage();
+        });
+
+        function listenRoomConfig() {
+            if(roomConfigUnsubscribe) roomConfigUnsubscribe();
+            roomConfigUnsubscribe = onSnapshot(doc(db, "rooms_config", currentRoom), (docSnap) => {
+                document.getElementById("maintenance-overlay").style.display = docSnap.exists() && docSnap.data().isMaintenance ? "flex" : "none";
             });
         }
     </script>
