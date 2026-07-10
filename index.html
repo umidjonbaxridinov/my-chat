@@ -9,7 +9,6 @@
         body { background-color: #0b0b1e; color: #e0e0e0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; }
         
         /* ТЕМЫ ОФОРМЛЕНИЯ */
-        /* 1. КОСМОС */
         body.theme-space { background-color: #0b0b1e; color: #e0e0e0; }
         body.theme-space .stars { position: absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%); z-index: -2; display: block; }
         body.theme-space .twinkling { position: absolute; top:0; left:0; width:100%; height:100%; background: transparent url('https://i.imgur.com/Y7wZ9H4.png') repeat top center; z-index: -1; animation: move-twink-back 200s linear infinite; display: block; }
@@ -18,7 +17,7 @@
         body.theme-space .msg-in { background: rgba(45, 45, 70, 0.8); border: 1px solid #3a3a5c; }
         body.theme-space .msg-out { background: linear-gradient(135deg, #0052d4, #4364f7); color: #fff; }
 
-        /* 2. МАТРИЦА */
+        /* МАТРИЦА */
         body.theme-matrix { background-color: #000000; color: #00ff00; }
         body.theme-matrix .stars, body.theme-matrix .twinkling, body.theme-matrix .hearts-container { display: none !important; }
         body.theme-matrix .panel-bg { background: #000; border: 1px solid #00ff00; }
@@ -27,57 +26,27 @@
         body.theme-matrix .msg-out { background: #003300; border: 1px solid #00ff00; color: #00ff00; }
         body.theme-matrix .meta, body.theme-matrix span, body.theme-matrix div, body.theme-matrix header span { color: #00ff00 !important; }
 
-        /* 3. ТЕМНЫЙ МИНИМАЛИЗМ */
+        /* ТЕМНЫЙ МИНИМАЛИЗМ */
         body.theme-minimal { background-color: #0e0e10; color: #ffffff; }
         body.theme-minimal .stars, body.theme-minimal .twinkling, body.theme-minimal .hearts-container { display: none !important; }
         body.theme-minimal .panel-bg { background: #18181c; border: 1px solid #2a2a32; }
         body.theme-minimal .msg-in { background: #26262b; border: 1px solid #32323d; }
         body.theme-minimal .msg-out { background: #007aff; color: #fff; }
 
-        /* 4. КИБЕРПАНК */
+        /* КИБЕРПАНК */
         body.theme-cyberpunk { background-color: #1a0826; color: #00ffcc; }
         body.theme-cyberpunk .stars, body.theme-cyberpunk .twinkling, body.theme-cyberpunk .hearts-container { display: none !important; }
         body.theme-cyberpunk .panel-bg { background: rgba(36, 11, 54, 0.9); border: 1px solid #ff007f; box-shadow: 0 0 10px #ff007f; }
         body.theme-cyberpunk .msg-in { background: #251c3d; border: 1px solid #00ffcc; color: #00ffcc; }
         body.theme-cyberpunk .msg-out { background: #ff007f; color: #fff; border: 1px solid #ff007f; box-shadow: 0 0 8px #ff007f; }
 
-        /* 5. ЗАКАТ */
-        body.theme-sunset { background: linear-gradient(180deg, #200122 0%, #6f0000 100%); color: #ffe3e3; }
-        body.theme-sunset .stars, body.theme-sunset .twinkling, body.theme-sunset .hearts-container { display: none !important; }
-        body.theme-sunset .panel-bg { background: rgba(60, 10, 10, 0.85); border: 1px solid #ff4e50; }
-        body.theme-sunset .msg-in { background: rgba(90, 20, 20, 0.8); border: 1px solid #fc913a; }
-        body.theme-sunset .msg-out { background: linear-gradient(135deg, #ff4e50, #f9d423); color: #000; font-weight: 500; }
-
-        /* 6. РОМАНТИЧЕСКАЯ ТЕМА С СЕРДЕЧКАМИ */
+        /* РОМАНТИЧЕСКАЯ ТЕМА */
         body.theme-love { background: linear-gradient(180deg, #ffe0e9 0%, #ffb6c1 100%); color: #4a0e17; }
         body.theme-love .stars, body.theme-love .twinkling { display: none !important; }
         body.theme-love .panel-bg { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(8px); border: 1px solid #ff6b8b; }
         body.theme-love input, body.theme-love select { background: #fff !important; color: #4a0e17 !important; border: 1px solid #ff6b8b !important; }
         body.theme-love .msg-in { background: #ffffff; border: 1px solid #ffa3b1; color: #4a0e17; }
         body.theme-love .msg-out { background: linear-gradient(135deg, #ff477e, #ff7096); color: #fff; box-shadow: 0 4px 10px rgba(255, 71, 126, 0.3); }
-        body.theme-love .meta, body.theme-love #chat-online-counter, body.theme-love header span { color: #ff477e !important; }
-
-        .hearts-container { position: absolute; width: 100%; height: 100%; overflow: hidden; top: 0; left: 0; z-index: -1; display: none; pointer-events: none; }
-        body.theme-love .hearts-container { display: block; }
-        .heart-fly { position: absolute; bottom: -20px; color: #ff477e; font-size: 20px; opacity: 0.6; animation: flyUp 6s linear infinite; }
-        @keyframes flyUp {
-            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.6; }
-            50% { transform: translateY(-50vh) translateX(30px) rotate(45deg); opacity: 0.8; }
-            100% { transform: translateY(-105vh) translateX(-30px) rotate(90deg); opacity: 0; }
-        }
-
-        /* 7. КАСТОМНАЯ ТЕМА С КАРТИНКОЙ ОТ АДМИНА */
-        body.theme-custom { background-size: cover; background-position: center; background-repeat: no-repeat; color: #ffffff; }
-        body.theme-custom .stars, body.theme-custom .twinkling, body.theme-custom .hearts-container { display: none !important; }
-        body.theme-custom .panel-bg { background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
-        body.theme-custom .msg-in { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255,255,255,0.2); color: #fff; backdrop-filter: blur(5px); }
-        body.theme-custom .msg-out { background: linear-gradient(135deg, #00c6ff, #0072ff); color: #fff; box-shadow: 0 4px 10px rgba(0, 114, 255, 0.3); }
-        body.theme-custom .meta { color: #00c6ff !important; }
-
-        .custom-bg-promo-btn { background: linear-gradient(135deg, #ff9800, #f44336); color: white; border: none; padding: 6px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; cursor: pointer; display: none; }
-
-        /* ИНТЕРФЕЙС И ОГРАНИЧЕНИЯ (АНТИ-КОПИРОВАНИЕ) */
-        .secure-mode { user-select: none !important; -webkit-user-select: none !important; }
 
         /* ЭКРАН ВХОДА */
         #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 20px; z-index: 10; position: relative; }
@@ -87,7 +56,7 @@
         
         #secret-admin-trigger { position: absolute; top: 15px; right: 15px; width: 25px; height: 25px; cursor: pointer; opacity: 0.15; color: #fff; font-size: 1.1rem; user-select: none; z-index: 100; text-align: center; }
         #secret-admin-trigger:hover { opacity: 0.7; }
-        .tg-admin-btn { background: #24a1de; color: white; border: none; padding: 12px; border-radius: 20px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(36, 161, 222, 0.3); }
+        .tg-admin-btn { background: #24a1de; color: white; border: none; padding: 12px; border-radius: 20px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; font-size: 0.95rem; }
 
         /* ХАБ / СПИСОК ЧАТОВ ДЛЯ ЮЗЕРА */
         #hub-screen { display: none; flex-direction: column; flex: 1; height: 100vh; z-index: 10; max-width: 600px; margin: 0 auto; width: 100%; }
@@ -96,41 +65,51 @@
         .user-avatar-circle { width: 40px; height: 40px; background: #007aff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
         .hub-chats-list { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
         
-        .chat-card-item { padding: 14px; border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; position: relative; }
+        .chat-card-item { padding: 14px; border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; }
         .chat-card-item:hover { transform: translateY(-1px); background: rgba(255,255,255,0.05); }
         .chat-card-top { display: flex; justify-content: space-between; align-items: center; }
-        .chat-card-title { font-weight: bold; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
+        .chat-card-title { font-weight: bold; font-size: 1.05rem; }
         .chat-card-preview { font-size: 0.85rem; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%; }
         .badge-unread { background: #ff3b30; color: white; font-size: 0.75rem; font-weight: bold; padding: 2px 7px; border-radius: 10px; }
         .badge-online { font-size: 0.8rem; color: #4caf50; font-weight: bold; }
-
-        .role-badge { font-size: 0.7rem; font-weight: bold; padding: 1px 5px; border-radius: 4px; text-transform: uppercase; margin-right: 4px; vertical-align: middle; }
-        .role-creator { background: #ffeb3b; color: #000; }
-        .role-vip { background: #00e5ff; color: #000; }
-        .role-premium { background: #e040fb; color: #fff; }
 
         /* ОКНА ДЛЯ АДМИНА */
         #admin-auth-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 15, 0.95); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
         .admin-modal-box { background: #14142b; border: 2px solid #ff004b; border-radius: 15px; padding: 25px; width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 0 25px rgba(255, 0, 75, 0.4); }
 
-        #super-admin-screen { display: none; flex-direction: column; flex: 1; padding: 20px; z-index: 20; overflow-y: auto; max-width: 950px; margin: 0 auto; width: 100%; height: 100vh; gap: 15px; }
-        .admin-card { background: rgba(20, 20, 35, 0.95); border: 1px solid #ff004b; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 0 15px rgba(255, 0, 75, 0.3); }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
-        .stat-box { background: rgba(255, 255, 255, 0.05); border: 1px solid #ffeba2; border-radius: 8px; padding: 10px; text-align: center; }
-        .stat-box val { font-size: 1.2rem; font-weight: bold; color: #ffeb3b; display: block; }
-        .admin-tabs { display: flex; gap: 8px; border-bottom: 1px solid #ff004b; padding-bottom: 10px; overflow-x: auto; }
-        .admin-tab-btn { background: #22223b; color: white; border: 1px solid #ff004b; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; white-space: nowrap; }
-        .admin-tab-btn.active { background: #ff004b; }
-
-        .admin-container-block { display: none; flex-direction: column; gap: 10px; background: #121225; border: 1px solid #ffeba2; border-radius: 10px; padding: 12px; }
-        .room-item-row, .user-item-row { display: flex; flex-direction: column; background: #22223b; padding: 12px; border-radius: 8px; border: 1px solid #444; gap: 8px; }
+        /* КРАСИВАЯ АДМИНКА С 6 СЧЁТЧИКАМИ */
+        #super-admin-screen { display: none; flex-direction: column; flex: 1; padding: 20px; z-index: 20; overflow-y: auto; max-width: 1000px; margin: 0 auto; width: 100%; height: 100vh; gap: 20px; }
+        .admin-card { background: rgba(20, 20, 35, 0.98); border: 2px solid #ff004b; border-radius: 20px; padding: 25px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 0 25px rgba(255, 0, 75, 0.25); }
         
-        #admin-spy-monitor, #admin-audit-log-box { background: #050510; border: 1px solid #334; border-radius: 10px; height: 200px; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 8px; }
-        .spy-msg { background: rgba(255, 255, 255, 0.04); padding: 8px 12px; border-radius: 8px; border-left: 3px solid #00d2ff; font-size: 0.9rem; }
-        .spy-msg.intercepted-deleted { border-left: 3px solid #ff004b; background: rgba(255, 0, 75, 0.15); }
-        .audit-row { font-size: 0.8rem; padding: 5px; border-bottom: 1px solid #222; font-family: monospace; color: #ffeba2; }
+        /* Сетка под 6 аккуратных счетчиков */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        @media(max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+        .stat-box { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 235, 162, 0.2); border-radius: 12px; padding: 12px 8px; text-align: center; }
+        .stat-box small { font-size: 0.75rem; color: #bbb; display: block; margin-bottom: 3px; font-weight: 500; }
+        .stat-box val { font-size: 1.4rem; font-weight: bold; color: #ffeb3b; display: block; text-shadow: 0 0 6px rgba(255,235,162,0.3); }
+        .stat-box val.online-val { color: #4caf50; text-shadow: 0 0 6px rgba(76,175,80,0.3); }
+        .stat-box val.deleted-val { color: #ff4a4a; text-shadow: 0 0 6px rgba(255,74,74,0.3); }
+        
+        .admin-tabs { display: flex; gap: 10px; border-bottom: 2px solid rgba(255, 0, 75, 0.4); padding-bottom: 12px; overflow-x: auto; }
+        .admin-tab-btn { background: #1a1a30; color: #ccc; border: 1px solid rgba(255, 0, 75, 0.5); padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: bold; white-space: nowrap; font-size: 0.9rem; }
+        .admin-tab-btn.active { background: #ff004b; color: white; box-shadow: 0 0 10px rgba(255,0,75,0.5); border-color: #ff004b; }
 
-        .admin-btn { background: #ff004b; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
+        .admin-container-block { display: none; flex-direction: column; gap: 15px; background: #0f0f24; border: 1px solid rgba(255, 235, 162, 0.15); border-radius: 15px; padding: 20px; }
+        .admin-form-group { display: flex; flex-direction: column; gap: 12px; }
+        .admin-row-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        @media(max-width: 600px) { .admin-row-inputs { grid-template-columns: 1fr; } }
+        
+        .admin-container-block input { padding: 12px 15px; background: #181836; border: 1px solid #3d3d6b; color: #fff; border-radius: 10px; font-size: 0.95rem; outline: none; }
+        .admin-container-block input:focus { border-color: #ff004b; box-shadow: 0 0 8px rgba(255,0,75,0.3); }
+
+        .room-item-row, .user-item-row { display: flex; flex-direction: column; background: #1a1a35; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); gap: 10px; }
+        
+        #admin-spy-monitor, #admin-audit-log-box { background: #070714; border: 1px solid #22223b; border-radius: 12px; height: 280px; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .spy-msg { background: rgba(255, 255, 255, 0.03); padding: 10px 14px; border-radius: 10px; border-left: 4px solid #00d2ff; font-size: 0.95rem; }
+        .spy-msg.intercepted-deleted { border-left: 4px solid #ff004b; background: rgba(255, 0, 75, 0.12); }
+        .audit-row { font-size: 0.85rem; padding: 6px; border-bottom: 1px solid #15152b; font-family: monospace; color: #ffeba2; }
+
+        .admin-btn { background: #ff004b; color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.95rem; text-align: center; }
         .admin-btn.secondary { background: #3f51b5; }
         .admin-btn.success { background: #4caf50; }
         .admin-btn.warning { background: #ff9800; color: black; }
@@ -159,8 +138,7 @@
         .icon-btn { background: #1a1a3a; border: 1px solid #3d3d6b; width: 45px; height: 45px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
         #send-btn { background: #0078ff; color: white; border: none; padding: 0 22px; height: 45px; border-radius: 25px; font-weight: bold; cursor: pointer; }
         #voice-btn.recording { background: #f44336; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-
+        
         .circle-control-btn { background: #1a1a3a; border: 1px solid #3d3d6b; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; }
         .select-styled { background: #1a1a32; color: #00d2ff; border: 1px solid #3d3d6b; padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; outline: none; cursor: pointer; }
     </style>
@@ -169,16 +147,7 @@
 
     <div class="stars"></div>
     <div class="twinkling"></div>
-    <div class="hearts-container">
-        <div class="heart-fly" style="left: 10%; animation-delay: 0s; font-size: 24px;">💖</div>
-        <div class="heart-fly" style="left: 25%; animation-delay: 2s; font-size: 16px;">❤️</div>
-        <div class="heart-fly" style="left: 40%; animation-delay: 1s; font-size: 28px;">💕</div>
-        <div class="heart-fly" style="left: 60%; animation-delay: 4s; font-size: 18px;">❤️</div>
-        <div class="heart-fly" style="left: 75%; animation-delay: 3s; font-size: 22px;">💖</div>
-        <div class="heart-fly" style="left: 90%; animation-delay: 5s; font-size: 15px;">💕</div>
-    </div>
 
-    <!-- ОКНА ЗАМОРОЗКИ И БАНА -->
     <div id="maintenance-overlay">
         <h1 style="color: #ff004b; font-size: 2.5rem; margin-bottom: 15px;">🛠️ Технические работы</h1>
         <p style="font-size: 1.2rem;">Срок действия этой приватной комнаты завершен или она временно заморожена.</p>
@@ -188,7 +157,6 @@
         <p style="font-size: 1.4rem; font-weight: bold;">Твой аккаунт заблокирован главным Администратором.</p>
     </div>
 
-    <!-- СКРЫТЫЙ ТЕРМИНАЛ -->
     <div id="secret-admin-trigger" onclick="openAdminModal()">⚙️</div>
     <div id="admin-auth-modal">
         <div class="admin-modal-box">
@@ -201,7 +169,6 @@
         </div>
     </div>
 
-    <!-- ЭКРАН ВХОДА (ЛОГИНА) -->
     <div id="auth-screen">
         <div style="position: absolute; top: 15px; left: 15px;">
             <select class="select-styled" onchange="changeLanguage(this.value)">
@@ -217,13 +184,10 @@
             <label id="lbl-password">Личный пароль:</label>
             <input type="password" id="password-input" placeholder="Пароль">
             <button id="login-btn" style="background: linear-gradient(135deg, #0078ff, #0052d4); color:white; border:none; padding:12px; border-radius:20px; font-weight:bold; cursor:pointer; margin-top:10px;">Авторизоваться</button>
-            
-            <!-- КНОПКА С АВТОМАТИЧЕСКИМ ТЕКСТОМ В ТЕЛЕГРАМ -->
             <a href="https://t.me/umidjon7177?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BA%D1%83%D0%BF%D0%B8%D1%82%D1%8C%20%D0%BF%D1%80%D0%B8%D0%B2%D0%B0%D1%82%D0%BD%D1%83%D1%8E%20%D0%BA%D0%BE%D0%BC%D0%BD%D0%B0%D1%82%D1%83%20%F0%9F%92%8E" target="_blank" class="tg-admin-btn" id="btn-buy-room">💬 Связаться с Создателем</a>
         </div>
     </div>
 
-    <!-- ЭКРАН ХАБА / ТЕЛЕГРАМ-МЕНЮ СПИСКА ЧАТОВ -->
     <div id="hub-screen">
         <div class="hub-header panel-bg">
             <div class="user-profile-badge">
@@ -238,35 +202,41 @@
         <div class="hub-chats-list" id="hub-chats-list-dom"></div>
     </div>
 
-    <!-- ПАНЕЛЬ СУПЕР-АДМИНА (CRM) -->
     <div id="super-admin-screen">
         <div class="admin-card">
-            <h2 style="color: #ffeba2; text-align: center; border-bottom: 1px solid #ff004b; padding-bottom: 10px;">Панель Создателя (Diamond Mode) 💎</h2>
+            <h2 style="color: #ffeba2; text-align: center; border-bottom: 2px solid #ff004b; padding-bottom: 12px;">Панель Создателя (Diamond Mode) 💎</h2>
+            
             <div class="stats-grid">
                 <div class="stat-box"><small>Всего СМС</small><val id="stat-total-msg">0</val></div>
                 <div class="stat-box"><small>Клиенты</small><val id="stat-users-count">0</val></div>
+                <div class="stat-box"><small>🖼️ Картинки</small><val id="stat-images-count">0</val></div>
+                <div class="stat-box"><small>🎤 Войсы</small><val id="stat-voices-count">0</val></div>
+                <div class="stat-box"><small>🟢 Сейчас Онлайн</small><val id="stat-total-online" class="online-val">0</val></div>
+                <div class="stat-box"><small>🗑️ Удалено СМС</small><val id="stat-deleted-count" class="deleted-val">0</val></div>
             </div>
+
             <div class="admin-tabs">
                 <button class="admin-tab-btn active" onclick="switchAdminTab('rooms', this)">📁 Комнаты</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('users', this)">👥 Клиенты CRM</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('audit', this)">📜 Журнал Действий</button>
             </div>
 
-            <!-- ВКЛАДКА КОМНАТ -->
             <div id="admin-rooms-block" class="admin-container-block" style="display:flex;">
-                <b style="color: #ffeb3b;">🆕 Добавить новую комнату в систему:</b>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
-                    <input type="text" id="new-room-name" placeholder="Имя (напр. room202)">
-                    <input type="text" id="new-room-pass" placeholder="Пароль комнаты">
-                    <input type="text" id="new-room-limit" placeholder="Лимит людей (число)">
+                <div class="admin-form-group">
+                    <b style="color: #ffeb3b;">🆕 Добавить новую комнату в систему:</b>
+                    <div class="admin-row-inputs">
+                        <input type="text" id="new-room-name" placeholder="Имя (напр. room202)">
+                        <input type="text" id="new-room-pass" placeholder="Пароль комнаты">
+                        <input type="text" id="new-room-limit" placeholder="Лимит людей (число)">
+                    </div>
+                    <button class="admin-btn success" onclick="window.createNewRoomFromAdmin()">➕ Сформировать и Зарегистрировать</button>
                 </div>
-                <button class="admin-btn success" onclick="window.createNewRoomFromAdmin()">➕ Сформировать и Зарегистрировать</button>
-                <div id="rooms-list-container" style="display:flex; flex-direction:column; gap:5px; margin-top:10px;"></div>
+
+                <div id="rooms-list-container" style="display:flex; flex-direction:column; gap:10px; margin-top:10px;"></div>
                 
-                <!-- КНОПКА ЗАГРУЗКИ КАСТОМНОГО ФОНА В АДМИНКЕ -->
-                <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ff004b; display: flex; flex-direction: column; gap: 5px;">
+                <div class="admin-form-group" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed rgba(255,0,75,0.4);">
                     <b style="color: #ffe3e3;">🖼️ Установить фоновую картинку для комнаты:</b>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                    <div class="admin-row-inputs">
                         <input type="text" id="bg-room-target" placeholder="Имя комнаты (напр. room101)">
                         <input type="text" id="bg-url-input" placeholder="Прямая ссылка на картинку (URL)">
                     </div>
@@ -274,27 +244,24 @@
                 </div>
             </div>
 
-            <!-- ВКЛАДКА КЛИЕНТОВ -->
             <div id="admin-users-block" class="admin-container-block">
-                <div id="users-list-container" style="display:flex; flex-direction:column; gap:5px;"></div>
+                <div id="users-list-container" style="display:flex; flex-direction:column; gap:10px;"></div>
             </div>
 
-            <!-- ВКЛАДКА АУДИТА -->
             <div id="admin-audit-block" class="admin-container-block">
                 <div id="admin-audit-log-box"></div>
             </div>
 
-            <div class="admin-input-group" style="display:flex; flex-direction:column; gap:5px; margin-top:5px;">
-                <label>Поиск / Слежка (Введите имя комнаты или <b>алмаз</b>):</label>
-                <input type="text" id="target-room-input" placeholder="Имя комнаты">
+            <div class="admin-form-group" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid #22223b;">
+                <label style="font-weight: bold; color: #00d2ff; margin-bottom: 5px;">Поиск / Слежка (Введите имя комнаты или слово <b style="color:#ffeb3b;">алмаз</b> для стрима ВСЕГО чата):</label>
+                <input type="text" id="target-room-input" placeholder="Введите: алмаз или конкретную комнату..." style="padding:12px; background:#181836; border:1px solid #ff004b; color:white; border-radius:8px; outline:none; margin-bottom: 8px;">
                 <button class="admin-btn secondary" id="connect-spy-btn">👁️ Подключиться к Стриму Комнаты</button>
             </div>
-            <div id="admin-spy-monitor"><div style="color: #666; text-align: center; margin-top: 100px;">Ожидание стрима...</div></div>
+            <div id="admin-spy-monitor"><div style="color: #666; text-align: center; margin-top: 120px;">Ожидание подключения к стриму...</div></div>
             <button style="background: #333;" class="admin-btn" onclick="goBackToAuth()">🚪 Закрыть терминал</button>
         </div>
     </div>
 
-    <!-- ЭКРАН КОНКРЕТНОГО ЧАТА -->
     <div id="chat-screen">
         <header class="panel-bg">
             <div style="display:flex; align-items:center; gap:10px;">
@@ -309,19 +276,15 @@
                     <option value="theme-matrix">🟢 Матрица</option>
                     <option value="theme-minimal">⚫ Минимализм</option>
                     <option value="theme-cyberpunk">🟣 Киберпанк</option>
-                    <option value="theme-sunset">🨡 Закат</option>
                     <option value="theme-love">💖 Для пар (Love)</option>
-                    <option value="theme-custom">🖼️ Свой фон (Custom)</option>
                 </select>
-                <!-- КНОПКА ЗАКАЗА СВОЕГО ФОНА С АВТОМАТИЧЕСКИМ ТЕКСТОМ В ТЕЛЕГРАМ -->
-                <button id="upload-bg-promo" class="custom-bg-promo-btn" onclick="redirectToTelegramForBg()">🖼️ Загрузить свой фон</button>
                 <span id="room-status-indicator" style="font-size:0.85rem; color:#4caf50; margin-left: 5px;">● OK</span>
             </div>
         </header>
 
         <div id="search-bar">
-            <input type="text" id="search-input" placeholder="Поиск СМС..." oninput="filterMessages(this.value)">
-            <span style="color: #ff4a4a; cursor: pointer; font-weight: bold;" onclick="closeSearchField()">✕</span>
+            <input type="text" id="search-input" placeholder="Поиск СМС..." oninput="window.filterMessages(this.value)">
+            <span style="color: #ff4a4a; cursor: pointer; font-weight: bold;" onclick="window.closeSearchField()">✕</span>
         </div>
         <div id="chat-box"></div>
         <div id="input-area" class="panel-bg">
@@ -358,8 +321,8 @@
         let mainChatUnsubscribe = null;
         let hubUnsubscribe = null;
         let onlineUnsubscribe = null;
+        let totalOnlineUnsubscribe = null;
         let myRole = "member";
-        let isAntiScreenshot = false;
 
         let mediaRecorder;
         let audioChunks = [];
@@ -381,7 +344,7 @@
         };
 
         window.openAdminModal = function() { document.getElementById("admin-auth-modal").style.display = "flex"; };
-        window.closeAdminModal = function() { document.getElementById("admin-auth-modal").style.none = "flex"; document.getElementById("admin-auth-modal").style.display = "none"; };
+        window.closeAdminModal = function() { document.getElementById("admin-auth-modal").style.display = "none"; };
 
         window.submitAdminKey = async function() {
             if (!myName) { alert("Сначала авторизуйтесь в системе!"); return; }
@@ -409,7 +372,7 @@
             document.getElementById("admin-audit-block").style.display = tab === 'audit' ? 'flex' : 'none';
         };
 
-        /* АВТОРИЗАЦИЯ ЮЗЕРА ПО СВЯЗКЕ НИК + ПАРОЛЬ */
+        /* АВТОРИЗАЦИЯ */
         document.getElementById("login-btn").addEventListener("click", async () => {
             myName = document.getElementById("username-input").value.trim().toLowerCase();
             const myPassword = document.getElementById("password-input").value.trim();
@@ -446,7 +409,7 @@
             enterHub();
         });
 
-        /* ЭКРАН ХАБА: TELEGRAM-STYLE СПИСОК ЧАТОВ */
+        /* СПИСОК ЧАТОВ */
         async function enterHub() {
             document.getElementById("auth-screen").style.display = "none";
             document.getElementById("chat-screen").style.display = "none";
@@ -490,7 +453,6 @@
                     card.onclick = () => openTargetChatRoom(rName);
                     listContainer.appendChild(card);
 
-                    // Счётчик непрочитанных
                     const qUnread = query(messagesCol, where("room", "==", rName), where("createdAtMs", ">", lastTime));
                     getDocs(qUnread).then(snapUnread => {
                         let count = 0;
@@ -502,7 +464,7 @@
             });
         }
 
-        /* ОТКРЫТИЕ СТРАНИЦЫ КОНКРЕТНОГО ЧАТА */
+        /* ВХОД В КОМНАТУ */
         async function openTargetChatRoom(roomName) {
             currentRoom = roomName;
             const rSnap = await getDoc(doc(db, "rooms_config", currentRoom));
@@ -522,10 +484,6 @@
                 await updateDoc(doc(db, "rooms_config", currentRoom), { members: currentMembers });
             }
 
-            isAntiScreenshot = rData.isAntiCopy || false;
-            if (isAntiScreenshot) document.body.classList.add("secure-mode");
-            else document.body.classList.remove("secure-mode");
-
             document.getElementById("hub-screen").style.display = "none";
             document.getElementById("chat-screen").style.display = "flex";
             document.getElementById("chat-header").innerText = `Чат: ${currentRoom}`;
@@ -537,7 +495,6 @@
             listenOnlinePresence();
         }
 
-        /* ВЫХОД СТРЕЛОЧКОЙ НАЗАД */
         window.exitToHub = async function() {
             if (mainChatUnsubscribe) mainChatUnsubscribe();
             if (onlineUnsubscribe) onlineUnsubscribe();
@@ -551,7 +508,6 @@
             enterHub();
         };
 
-        /* ПРИСУТСТВИЕ ОНЛАЙН СЧЁТЧИК ЮЗЕРОВ */
         function listenOnlinePresence() {
             if (onlineUnsubscribe) onlineUnsubscribe();
             onlineUnsubscribe = onSnapshot(collection(db, "presence"), (snap) => {
@@ -561,50 +517,18 @@
             });
         }
 
-        /* ТЕЛЕГРАМ-КНОПКА С АВТОТЕКСТОМ ДЛЯ ЗАГРУЗКИ ФОНА */
-        window.redirectToTelegramForBg = function() {
-            alert("Загрузить свой личный фон можно только через Главного Админа! Сейчас вас перенаправит в Telegram.");
-            const botUrl = `https://t.me/umidjon7177?text=${encodeURIComponent(`Привет! Я хочу изменить фон в комнате [${currentRoom}]. Мой ник: ${myName}`)}`;
-            window.open(botUrl, '_blank');
-        };
-
-        /* СОХРАНЕНИЕ КАСТОМНОГО ФОНА АДМИНОМ */
         window.saveRoomCustomBackground = async function() {
             const rTarget = document.getElementById("bg-room-target").value.trim().toLowerCase();
             const bgUrl = document.getElementById("bg-url-input").value.trim();
-            if (!rTarget || !bgUrl) return alert("Заполните оба поля (Имя комнаты и Ссылку)!");
+            if (!rTarget || !bgUrl) return alert("Заполните оба поля!");
 
             await updateDoc(doc(db, "rooms_config", rTarget), { customBgUrl: bgUrl });
-            await addLogRecord(`Админ установил кастомный фон для комнаты [${rTarget}]`);
-            alert(`Фон для комнаты ${rTarget} успешно сохранен в базе!`);
-            
-            document.getElementById("bg-room-target").value = "";
-            document.getElementById("bg-url-input").value = "";
+            alert(`Фон для комнаты ${rTarget} сохранен!`);
         };
 
-        /* ОБНОВЛЕННАЯ СМЕНА ТЕМ */
-        window.changeTheme = async function(theme) {
-            const promoBtn = document.getElementById("upload-bg-promo");
-            
-            if (theme === "theme-custom") {
-                promoBtn.style.display = "inline-block";
-                const rSnap = await getDoc(doc(db, "rooms_config", currentRoom));
-                
-                if (rSnap.exists() && rSnap.data().customBgUrl) {
-                    document.body.style.backgroundImage = `url('${rSnap.data().customBgUrl}')`;
-                } else {
-                    document.body.style.backgroundImage = "none";
-                    alert("Для этой комнаты еще не установлен персональный фон. Вы можете заказать его, нажав на появившуюся кнопку!");
-                }
-            } else {
-                promoBtn.style.display = "none";
-                document.body.style.backgroundImage = "none";
-            }
-            
-            document.body.className = theme;
-        };
+        window.changeTheme = function(theme) { document.body.className = theme; };
 
-        /* ФУНКЦИИ УПРАВЛЕНИЯ В АДМИНКЕ */
+        /* СОЗДАНИЕ КОМНАТЫ */
         window.createNewRoomFromAdmin = async function() {
             const rName = document.getElementById("new-room-name").value.trim().toLowerCase();
             const rPass = document.getElementById("new-room-pass").value.trim();
@@ -617,8 +541,7 @@
                 isMaintenance: false,
                 expiresAt: Date.now() + (30*24*60*60*1000),
                 members: [],
-                lastMsgPreview: "Комната создана Администратором.",
-                isAntiCopy: false
+                lastMsgPreview: "Комната создана Администратором."
             }, { merge: true });
 
             await addLogRecord(`Админ создал комнату [${rName}]`);
@@ -629,6 +552,7 @@
         async function addLogRecord(text) {
             await addDoc(collection(db, "audit_log"), { text: `[${new Date().toLocaleTimeString()}] ${text}`, timestamp: Date.now() });
         }
+
         function listenAuditLog() {
             onSnapshot(query(collection(db, "audit_log"), orderBy("timestamp", "desc")), (snap) => {
                 const box = document.getElementById("admin-audit-log-box");
@@ -637,79 +561,82 @@
             });
         }
 
-        window.hardDestroyRoom = async function(roomName) {
-            if (confirm(`🚨 ВНИМАНИЕ! Стереть комнату [${roomName}] из системы полностью?`)) {
-                await deleteDoc(doc(db, "rooms_config", roomName));
-                const snap = await getDocs(query(messagesCol, where("room", "==", roomName)));
-                snap.forEach(async (d) => { await deleteDoc(doc(db, "messages", d.id)); });
-                await addLogRecord(`🚨 Полное уничтожение комнаты под ноль: [${roomName}]`);
-                alert("Комната полностью стёрта!");
-                renderRoomsAndUsersLists();
-            }
-        };
-
-        window.toggleAntiCopy = async function(roomName) {
-            const rSnap = await getDoc(doc(db, "rooms_config", roomName));
-            let current = rSnap.data().isAntiCopy || false;
-            await updateDoc(doc(db, "rooms_config", roomName), { isAntiCopy: !current });
-            await addLogRecord(`Режим анти-слива для [${roomName}] изменен на: ${!current}`);
-            renderRoomsAndUsersLists();
-        };
-
-        window.setGradeUser = async function(user) {
-            let grade = prompt("Введите ранг клиента (vip / premium / member):", "vip");
-            if(grade) {
-                await updateDoc(doc(db, "users", user), { role: grade });
-                await addLogRecord(`Клиенту ${user} выдан ранг: ${grade}`);
-                renderRoomsAndUsersLists();
-            }
-        };
-
-        window.addRoomToUser = async function(user) {
-            let rName = prompt("Какую комнату привязать к аккаунту этого клиента?");
-            if(!rName) return;
-            let uSnap = await getDoc(doc(db, "users", user));
-            let arr = uSnap.data().activeRooms || [];
-            if(!arr.includes(rName)) arr.push(rName);
-            await updateDoc(doc(db, "users", user), { activeRooms: arr });
-            await addLogRecord(`Клиенту ${user} открыт доступ к комнате: ${rName}`);
-            renderRoomsAndUsersLists();
-        };
-
-        /* СЛЕЖКА АЛМАЗ */
+        /* ПОЛНЫЙ СТРИМ / СЛЕЖКА АЛМАЗ */
         document.getElementById("connect-spy-btn").addEventListener("click", () => {
             const target = document.getElementById("target-room-input").value.trim().toLowerCase();
-            if(!target) return;
+            if(!target) return alert("Введите имя комнаты или 'алмаз'!");
+            
             if (spyUnsubscribe) spyUnsubscribe();
 
             const monitor = document.getElementById("admin-spy-monitor");
-            monitor.innerHTML = `<div style="color:#ff004b; text-align:center; margin-top:100px;">Перехват частоты [${target}]...</div>`;
+            monitor.innerHTML = `<div style="color:#ff004b; text-align:center; margin-top:120px;">Перехват частоты [${target}]...</div>`;
 
-            spyUnsubscribe = onSnapshot(query(messagesCol, orderBy("createdAtMs", "asc")), (snap) => {
+            const qSpy = query(messagesCol, orderBy("createdAtMs", "asc"));
+            spyUnsubscribe = onSnapshot(qSpy, (snap) => {
                 monitor.innerHTML = "";
+                let count = 0;
                 snap.forEach(docSnap => {
                     const d = docSnap.data();
                     if (target !== "алмаз" && d.room !== target) return;
                     
+                    count++;
                     const div = document.createElement("div");
                     div.className = d.isDeleted ? "spy-msg intercepted-deleted" : "spy-msg";
                     div.innerHTML = `
-                        <div><b>[${d.room}] ${d.user}</b>: ${d.text || 'Медиа-файл'}</div>
-                        <div style="font-size:0.75rem; text-align:right; color:#ff4a4a; cursor:pointer;" onclick="window.hardDeleteMsg('${docSnap.id}')">Стереть ядерно 💀</div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span><b>[Хона: ${d.room}] Пользователь: ${d.user} ${d.isDeleted ? '(УДАЛЕНО)' : ''}</b></span>
+                            <span style="color:#ff4a4a; cursor:pointer; font-weight:bold;" onclick="window.hardDeleteMsg('${docSnap.id}')">Стереть ядерно 💀</span>
+                        </div>
+                        <div style="margin-top:5px; color:#fff;">${d.text || '🎙️ Медиа-файл/Голосовое'}</div>
                     `;
                     monitor.appendChild(div);
                 });
+                if(count === 0) {
+                    monitor.innerHTML = `<div style="color:#666; text-align:center; margin-top:120px;">Нет сообщений по данному фильтру.</div>`;
+                }
                 monitor.scrollTop = monitor.scrollHeight;
             });
         });
 
-        window.hardDeleteMsg = async function(id) { await deleteDoc(doc(db, "messages", id)); };
+        window.hardDeleteMsg = async function(id) { 
+            if(confirm("Удалить сообщение из базы навсегда?")) await deleteDoc(doc(db, "messages", id)); 
+        };
 
+        /* ЛОГИКА 6 СЧЁТЧИКОВ (ОНЛАЙН И УДАЛЕННЫЕ ВКЛЮЧЕНЫ) */
         async function loadAdminStatistics() {
-            const m = await getDocs(messagesCol); document.getElementById("stat-total-msg").innerText = m.size;
-            const u = await getDocs(collection(db, "users")); document.getElementById("stat-users-count").innerText = u.size;
+            onSnapshot(messagesCol, (snapshot) => {
+                let total = 0;
+                let images = 0;
+                let voices = 0;
+                let deleted = 0;
+
+                snapshot.forEach(d => {
+                    total++;
+                    const data = d.data();
+                    if(data.type === "image") images++;
+                    if(data.type === "voice") voices++;
+                    if(data.isDeleted === true) deleted++;
+                });
+
+                document.getElementById("stat-total-msg").innerText = total;
+                document.getElementById("stat-images-count").innerText = images;
+                document.getElementById("stat-voices-count").innerText = voices;
+                document.getElementById("stat-deleted-count").innerText = deleted;
+            });
+
+            // Подсчет клиентов в базе
+            onSnapshot(collection(db, "users"), (snap) => {
+                document.getElementById("stat-users-count").innerText = snap.size;
+            });
+
+            // ПОДДСЧЕТ ОБЩЕГО ОНЛАЙНА ИЗ ТАБЛИЦЫ PRESENCE
+            if (totalOnlineUnsubscribe) totalOnlineUnsubscribe();
+            totalOnlineUnsubscribe = onSnapshot(collection(db, "presence"), (snap) => {
+                document.getElementById("stat-total-online").innerText = snap.size;
+            });
         }
 
+        /* ВЫВОД КЛИЕНТОВ И КОМНАТ */
         async function renderRoomsAndUsersLists() {
             const rc = document.getElementById("rooms-list-container"); rc.innerHTML = "";
             const rSnap = await getDocs(collection(db, "rooms_config"));
@@ -719,13 +646,9 @@
                     <div class="room-item-row">
                         <div style="display:flex; justify-content:space-between; font-weight:bold; color:#ffeb3b;">
                             <span>📁 Хона: ${d.id}</span>
-                            <span style="color:#00ffcc;">Анти-слив: ${data.isAntiCopy ? 'АКТИВЕН 🛡️' : 'ВЫКЛ'}</span>
                         </div>
-                        <div style="font-size:0.8rem; color:#ccc;">Ключ: ${data.roomPassword || 'Нет'} | Мест: ${data.userLimit || 'Безлимит'}</div>
-                        <div style="display:flex; gap:5px;">
-                            <button class="admin-btn secondary" style="padding:4px 8px; font-size:0.75rem;" onclick="window.toggleAntiCopy('${d.id}')">🛡️ Переключить Анти-Слив</button>
-                            <button class="admin-btn" style="padding:4px 8px; font-size:0.75rem; background:#d32f2f;" onclick="window.hardDestroyRoom('${d.id}')">💀 Удалить комнату</button>
-                        </div>
+                        <div style="font-size:0.85rem; color:#ccc; margin: 4px 0;">Ключ: ${data.roomPassword || 'Нет'} | Мест: ${data.userLimit || 'Безлимит'}</div>
+                        <button class="admin-btn" style="padding:6px 12px; font-size:0.8rem; background:#d32f2f;" onclick="window.hardDestroyRoom('${d.id}')">💀 Удалить комнату</button>
                     </div>
                 `;
             });
@@ -736,16 +659,41 @@
                 const data = d.data();
                 uc.innerHTML += `
                     <div class="user-item-row">
-                        <div style="font-weight:bold; color:#00e5ff;">👤 ${d.id} [Пароль: ${data.password}]</div>
-                        <div style="font-size:0.8rem; color:#aaa;">Ранг: ${data.role || 'member'} | Доступы: ${(data.activeRooms || []).join(", ")}</div>
-                        <div style="display:flex; gap:5px; margin-top:5px;">
-                            <button class="admin-btn success" style="padding:4px 8px; font-size:0.75rem;" onclick="window.addRoomToUser('${d.id}')">➕ Выдать Доступ</button>
-                            <button class="admin-btn warning" style="padding:4px 8px; font-size:0.75rem;" onclick="window.setGradeUser('${d.id}')">⭐ Сменит Ранг</button>
+                        <div style="font-weight:bold; color:#00e5ff;">👤 Клиент: ${d.id} [Пароль: ${data.password}]</div>
+                        <div style="font-size:0.85rem; color:#aaa; margin: 4px 0;">Ранг: ${data.role || 'member'} | Доступные комнаты: ${(data.activeRooms || []).join(", ")}</div>
+                        <div style="display:flex; gap:10px; margin-top:5px;">
+                            <button class="admin-btn success" style="padding:6px 12px; font-size:0.8rem; flex:1;" onclick="window.addRoomToUser('${d.id}')">➕ Выдать Доступ</button>
+                            <button class="admin-btn warning" style="padding:6px 12px; font-size:0.8rem; flex:1;" onclick="window.setGradeUser('${d.id}')">⭐ Сменить Ранг</button>
                         </div>
                     </div>
                 `;
             });
         }
+
+        window.hardDestroyRoom = async function(roomName) {
+            if (confirm(`🚨 Уничтожить комнату [${roomName}]?`)) {
+                await deleteDoc(doc(db, "rooms_config", roomName));
+                renderRoomsAndUsersLists();
+            }
+        };
+
+        window.setGradeUser = async function(user) {
+            let grade = prompt("Введите ранг клиента (vip / premium / member):", "vip");
+            if(grade) {
+                await updateDoc(doc(db, "users", user), { role: grade });
+                renderRoomsAndUsersLists();
+            }
+        };
+
+        window.addRoomToUser = async function(user) {
+            let rName = prompt("Введите имя комнаты для привязки:");
+            if(!rName) return;
+            let uSnap = await getDoc(doc(db, "users", user));
+            let arr = uSnap.data().activeRooms || [];
+            if(!arr.includes(rName)) arr.push(rName);
+            await updateDoc(doc(db, "users", user), { activeRooms: arr });
+            renderRoomsAndUsersLists();
+        };
 
         function listenRoomConfig() {
             onSnapshot(doc(db, "rooms_config", currentRoom), (snap) => {
@@ -757,6 +705,7 @@
             });
         }
 
+        /* ПОДГРУЗКА ЧАТА */
         function startChatListening() {
             const q = query(messagesCol, orderBy("createdAtMs", "asc"));
             mainChatUnsubscribe = onSnapshot(q, (snapshot) => {
@@ -789,15 +738,13 @@
         async function sendMessage() {
             const inp = document.getElementById("msg-input");
             const text = inp.value.trim(); if(!text) return; inp.value = "";
-
             await addDoc(messagesCol, { room: currentRoom, user: myName, text: text, type: "text", isDeleted: false, createdAtMs: Date.now() });
-            await updateDoc(doc(db, "rooms_config", currentRoom), { lastMsgPreview: `${myName}: ${text.substring(0,20)}...` });
         }
         document.getElementById("send-btn").addEventListener("click", sendMessage);
         document.getElementById("msg-input").addEventListener("keypress", (e) => { if(e.key === "Enter") sendMessage(); });
 
         window.deleteMsg = async function(id) {
-            if(confirm("Удалить СМС?")) await updateDoc(doc(db, "messages", id), { isDeleted: true });
+            if(confirm("Удалить сообщение?")) await updateDoc(doc(db, "messages", id), { isDeleted: true });
         };
 
         window.toggleSearchField = function() {
@@ -819,18 +766,15 @@
         window.logout = function() { location.reload(); };
         window.goBackToAuth = function() { location.reload(); };
 
-        // Инициализация загрузки файлов
         document.getElementById("file-input").addEventListener("change", function(e) {
             const file = e.target.files[0]; if(!file) return;
             const r = new FileReader();
             r.onloadend = async () => {
                 await addDoc(messagesCol, { room: currentRoom, user: myName, fileData: r.result, type: "image", isDeleted: false, createdAtMs: Date.now() });
-                await updateDoc(doc(db, "rooms_config", currentRoom), { lastMsgPreview: `${myName}: 📷 Фотография` });
             };
             r.readAsDataURL(file);
         });
 
-        // Запись голосовых
         document.getElementById("voice-btn").addEventListener("click", async () => {
             const btn = document.getElementById("voice-btn");
             if (!isRecording) {
@@ -842,7 +786,6 @@
                     const reader = new FileReader();
                     reader.onloadend = async () => {
                         await addDoc(messagesCol, { room: currentRoom, user: myName, fileData: reader.result, type: "voice", isDeleted: false, createdAtMs: Date.now() });
-                        await updateDoc(doc(db, "rooms_config", currentRoom), { lastMsgPreview: `${myName}: 🎤 Голосовое сообщение` });
                     };
                     reader.readAsDataURL(new Blob(audioChunks, { type: 'audio/mp3' }));
                 };
