@@ -69,12 +69,12 @@
         .admin-btn.secondary { background: #3f51b5; }
         .admin-btn.secondary:hover { background: #2c3b8c; }
         
-        #rooms-list-container { display: none; background: #121225; border: 1px solid #ffeb3b; border-radius: 10px; padding: 12px; flex-direction: column; gap: 8px; }
+        #rooms-list-container { display: none; flex-direction: column; gap: 8px; background: #121225; border: 1px solid #ffeb3b; border-radius: 10px; padding: 12px; }
         .room-item-row { display: flex; justify-content: space-between; align-items: center; background: #22223b; padding: 8px; border-radius: 6px; border: 1px solid #444; gap: 10px; }
         .room-item-btn { background: transparent; color: #ffeb3b; border: none; cursor: pointer; font-weight: bold; text-align: left; flex: 1; }
         .room-timer { font-size: 0.85rem; color: #00ffcc; font-weight: bold; }
 
-        #users-list-container { display: none; background: #121225; border: 1px solid #00d2ff; border-radius: 10px; padding: 12px; flex-direction: column; gap: 8px; }
+        #users-list-container { display: none; flex-direction: column; gap: 8px; background: #121225; border: 1px solid #00d2ff; border-radius: 10px; padding: 12px; }
         .user-item-row { background: #1a1a3a; padding: 10px; border-radius: 8px; border-left: 4px solid #00d2ff; display: flex; flex-direction: column; gap: 5px; font-size: 0.9rem; }
         .user-row-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #fff; }
 
@@ -84,7 +84,6 @@
         .spy-meta { font-size: 0.75rem; color: #00d2ff; font-weight: bold; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: center; }
         .spy-hard-del-btn { color: #ff4a4a; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
         .spy-ban-btn { background: #ff004b; color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
-        .edited-history-box { font-size: 0.8rem; color: #ffb300; background: rgba(255, 179, 0, 0.1); padding: 4px; border-radius: 4px; margin-top: 5px; border-left: 2px solid #ffb300; }
 
         /* Экран чата */
         #chat-screen { display: none; flex-direction: column; flex: 1; height: 100vh; z-index: 10; }
@@ -103,26 +102,26 @@
         .message { max-width: 70%; padding: 10px 15px; border-radius: 18px; line-height: 1.4; word-break: break-word; position: relative; display: flex; flex-direction: column; }
         .message.incoming { background: rgba(45, 45, 70, 0.85); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #3a3a5c; }
         .message.outgoing { background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .message.system-announcement { background: linear-gradient(135deg, #ff004b, #9c27b0); color: white; align-self: center; max-width: 90%; border-radius: 12px; border: 2px solid #ffeb3b; text-align: center; font-weight: bold; }
+        .message.system-announcement { background: linear-gradient(135deg, #ff004b, #9c27b0); color: white; align-self: center; max-width: 90%; border-radius: 12px; border: 2px solid #ffeb3b; text-align: center; font-weight: bold; padding: 12px; }
 
         .meta { font-size: 0.75rem; color: #00d2ff; margin-bottom: 4px; display: flex; justify-content: space-between; font-weight: bold; }
         .message.outgoing .meta { color: #ffe600; }
-        .del-btn { font-size: 0.8rem; color: #ff4a4a; cursor: pointer; margin-left: 8px; font-weight: bold; }
-        .edit-msg-btn { font-size: 0.8rem; color: #00ffcc; cursor: pointer; margin-left: 8px; font-weight: bold; }
+        
+        .msg-options { font-size: 0.8rem; color: #00ffcc; margin-top: 5px; display: flex; gap: 10px; justify-content: flex-end; font-weight: bold; opacity: 0.3; transition: 0.2s; }
+        .message:hover .msg-options { opacity: 1; }
+        .msg-options span { cursor: pointer; }
+        .msg-options span.del-btn { color: #ff4a4a; }
+
         .chat-img { max-width: 100%; border-radius: 10px; margin-top: 5px; max-height: 250px; display: block; }
         .reply-container { background: rgba(0,0,0,0.2); padding: 5px 8px; border-left: 3px solid #00d2ff; border-radius: 4px; margin-bottom: 5px; font-size: 0.85rem; }
         #reply-preview-bar { display: none; background: #19192d; padding: 8px 15px; border-left: 4px solid #0078ff; justify-content: space-between; align-items: center; font-size: 0.9rem; }
-        .edited-marker { font-size: 0.7rem; color: #888; font-style: italic; margin-left: 5px; }
-
+        
         audio { margin-top: 5px; max-width: 240px; outline: none; }
 
         /* Реакции */
-        .reaction-panel { display: flex; gap: 4px; margin-top: 4px; font-size: 0.9rem; }
+        .reaction-panel { display: flex; gap: 4px; margin-top: 4px; font-size: 0.8rem; flex-wrap: wrap; }
         .reaction-badge { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 10px; cursor: pointer; display: inline-block; }
-        .msg-actions-trigger { position: absolute; right: -25px; top: 35%; display: none; cursor: pointer; font-size: 0.85rem; }
-        .message:hover .msg-actions-trigger { display: block; }
-        .reactions-picker { display: none; position: absolute; background: #22223b; border: 1px solid #445; padding: 5px; border-radius: 20px; gap: 5px; z-index: 100; top: -35px; right: 0; }
-
+        
         /* Панель ввода */
         #input-area { background: rgba(25, 25, 45, 0.95); padding: 15px; display: flex; gap: 10px; border-top: 1px solid #334; align-items: center; position: relative; }
         input[type="text"] { flex: 1; padding: 12px 20px; border: none; border-radius: 25px; background: #121225; color: #fff; font-size: 1rem; outline: none; border: 1px solid #3d3d6b; }
@@ -138,7 +137,6 @@
         .header-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .circle-control-btn { background: #1a1a3a; border: 1px solid #3d3d6b; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; }
         .referral-btn { background: #ffeb3b; color: #000; border: none; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
-        
         .select-styled { background: #1a1a32; color: #00d2ff; border: 1px solid #3d3d6b; padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; outline: none; cursor: pointer; }
     </style>
 </head>
@@ -149,7 +147,7 @@
 
     <div id="maintenance-overlay">
         <h1 id="maint-title" style="color: #ff004b; font-size: 2.5rem; margin-bottom: 15px;">🛠️ Технические работы</h1>
-        <p id="maint-desc" style="font-size: 1.2rem; color: #b0b0d0;">Эта комната временно заморожена владельцем сервиса.</p>
+        <p id="maint-desc" style="font-size: 1.2rem; color: #b0b0d0;">Эта комната временно заморожена владельцем или истек срок аренды room.</p>
     </div>
 
     <div id="ban-overlay">
@@ -329,7 +327,7 @@
                 username: "Твой никнейм:", password: "Пароль:", room: "Имя комнаты:",
                 login: "Войти в чат", buy_room: "💬 Купить приватную комнату", invite: "Пригласить друга 🔗",
                 input_placeholder: "Напишите сообщение...", send: "Отправить", search_placeholder: "Поиск...",
-                maint_title: "🛠️ Технические работы", maint_desc: "Эта комната временно заморожена владельцем или истек срок аренды.",
+                maint_title: "🛠️ Технические работы", maint_desc: "Эта комната временно заморожена владельцем или истек срок аренды room.",
                 ban_title: "🚫 ДОСТУП ПРЕКРАЩЕН", ban_desc: "Твой аккаунт был заблокирован Создателем чата."
             },
             uz: {
@@ -351,7 +349,6 @@
         window.changeLanguage = function(lang) {
             currentLang = lang;
             document.getElementById("lang-changer").value = lang;
-            
             document.getElementById("lbl-username").innerText = dictionary[lang].username;
             document.getElementById("lbl-password").innerText = dictionary[lang].password;
             document.getElementById("lbl-room").innerText = dictionary[lang].room;
@@ -361,7 +358,6 @@
             document.getElementById("msg-input").placeholder = dictionary[lang].input_placeholder;
             document.getElementById("send-btn").innerText = dictionary[lang].send;
             document.getElementById("search-input").placeholder = dictionary[lang].search_placeholder;
-            
             document.getElementById("maint-title").innerText = dictionary[lang].maint_title;
             document.getElementById("maint-desc").innerText = dictionary[lang].maint_desc;
             document.getElementById("ban-title").innerText = dictionary[lang].ban_title;
@@ -382,9 +378,7 @@
             if(!currentRoom) return;
             const baseUrl = window.location.href.split('?')[0];
             const refUrl = `${baseUrl}?room=${encodeURIComponent(currentRoom)}`;
-            navigator.clipboard.writeText(refUrl).then(() => {
-                alert("🔗 Ссылка скопирована!");
-            });
+            navigator.clipboard.writeText(refUrl).then(() => { alert("🔗 Ссылка скопирована!"); });
         };
 
         window.openAdminModal = function() {
@@ -472,10 +466,7 @@
             const userSnap = await getDoc(userDocRef);
 
             if (userSnap.exists()) {
-                if (userSnap.data().password !== myPassword) {
-                    alert("Неверный пароль!"); return;
-                }
-                // Фиксируем количество заходов и последнюю комнату
+                if (userSnap.data().password !== myPassword) { alert("Неверный пароль!"); return; }
                 let roomsArray = userSnap.data().activeRooms || [];
                 if(!roomsArray.includes(currentRoom)) roomsArray.push(currentRoom);
                 await updateDoc(userDocRef, {
@@ -521,7 +512,6 @@
         }
 
         async function renderRoomsAndUsersLists() {
-            // Загрузка комнат
             const roomsCont = document.getElementById("rooms-list-container");
             roomsCont.innerHTML = "";
             const msgSnap = await getDocs(messagesCol);
@@ -552,7 +542,6 @@
                 roomsCont.appendChild(row);
             }
 
-            // Загрузка пользователей для CRM и изменения паролей
             const usersCont = document.getElementById("users-list-container");
             usersCont.innerHTML = "";
             const uSnap = await getDocs(collection(db, "users"));
@@ -590,7 +579,7 @@
             let newPass = prompt(`Введите новый пароль для пользователя ${username}:`);
             if(!newPass || !newPass.trim()) return;
             await updateDoc(doc(db, "users", username.toLowerCase()), { password: newPass.trim() });
-            alert(`Пароль для ${username} успешно изменен на: ${newPass}`);
+            alert(`Пароль для ${username} успешно изменен!`);
             renderRoomsAndUsersLists();
         };
 
@@ -626,8 +615,7 @@
                     else if (data.type === "image") body += `<div>🖼️ [Фото]</div>`;
                     else if (data.type === "voice") body += `<div>🎤 [Голосовое]</div>`;
                     
-                    msgDiv.innerHTML = body;
-                    monitor.appendChild(msgDiv);
+                    msgDiv.innerHTML = body; monitor.appendChild(msgDiv);
                 });
                 monitor.scrollTop = monitor.scrollHeight;
             });
@@ -643,15 +631,43 @@
             if(confirm("Стереть безвозвратно?")) await deleteDoc(doc(db, "messages", id));
         };
 
+        /* КНОПКИ УПРАВЛЕНИЯ В АДМИНКЕ */
+        document.getElementById("global-clear-btn").addEventListener("click", async () => {
+            const rName = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!rName || rName === "алмаз") return alert("Укажите конкретную комнату!");
+            if(confirm(`Стереть ВСЕ сообщения в комнате ${rName}?`)) {
+                const snap = await getDocs(query(messagesCol, where("room", "==", rName)));
+                snap.forEach(async (d) => { await deleteDoc(doc(db, "messages", d.id)); });
+                alert("Комната очищена!");
+            }
+        });
+
+        document.getElementById("global-maintenance-btn").addEventListener("click", async () => {
+            const rName = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!rName || rName === "алмаз") return alert("Укажите конкретную комнату!");
+            const ref = doc(db, "rooms_config", rName);
+            const snap = await getDoc(ref);
+            let state = false; if(snap.exists()) state = snap.data().isMaintenance || false;
+            await setDoc(ref, { isMaintenance: !state }, { merge: true });
+            alert(`Статус заморозки изменен на: ${!state}`);
+        });
+
+        document.getElementById("global-msg-btn").addEventListener("click", async () => {
+            const rName = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!rName || rName === "алмаз") return alert("Укажите комнату!");
+            let txt = prompt("Введите текст системного объявления:");
+            if(txt) {
+                await addDoc(messagesCol, { room: rName, user: "Система", text: txt, type: "announcement", isDeleted: false, createdAt: serverTimestamp() });
+            }
+        });
+
         function listenRoomConfig() {
             onSnapshot(doc(db, "rooms_config", currentRoom), (docSnap) => {
                 const indicator = document.getElementById("room-status-indicator");
                 let isMaint = false;
                 if (docSnap.exists()) {
                     isMaint = docSnap.data().isMaintenance || false;
-                    if(docSnap.data().expiresAt && docSnap.data().expiresAt < Date.now()) {
-                        isMaint = true; // Срок истек
-                    }
+                    if(docSnap.data().expiresAt && docSnap.data().expiresAt < Date.now()) isMaint = true;
                 }
                 if (isMaint) {
                     indicator.innerText = "● СТОП"; indicator.style.color = "#ff004b";
@@ -691,12 +707,41 @@
         async function sendMessage() {
             const text = msgInput.value.trim(); if (!text) return; msgInput.value = "";
             await addDoc(messagesCol, { room: currentRoom, user: myName, text: text, type: "text", reply_to: replyTextPreview, reactions: {}, isDeleted: false, createdAt: serverTimestamp() });
-            replyTextPreview = null; document.getElementById("reply-preview-bar").style.display = "none";
+            window.cancelReply();
         }
         document.getElementById("send-btn").addEventListener("click", sendMessage);
         msgInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
 
-        /* ГОЛОВЫЕ СООБЩЕНИЯ */
+        /* ОТВЕТЫ (REPLY) */
+        window.setReply = function(user, text) {
+            replyTextPreview = `${user}: ${text.substring(0,25)}...`;
+            document.getElementById("reply-preview-text").innerText = `Ответ для ${user}: "${text.substring(0,15)}..."`;
+            document.getElementById("reply-preview-bar").style.display = "flex";
+            msgInput.focus();
+        };
+        window.cancelReply = function() {
+            replyTextPreview = null;
+            document.getElementById("reply-preview-bar").style.display = "none";
+        };
+        document.getElementById("cancel-reply-btn").addEventListener("click", window.cancelReply);
+
+        /* РЕАКЦИИ И УДАЛЕНИЕ */
+        window.addReaction = async function(id, emoji) {
+            const ref = doc(db, "messages", id);
+            const snap = await getDoc(ref);
+            if(snap.exists()) {
+                let r = snap.data().reactions || {};
+                r[emoji] = (r[emoji] || 0) + 1;
+                await updateDoc(ref, { reactions: r });
+            }
+        };
+        window.deleteMsg = async function(id) {
+            if(confirm("Удалить сообщение для всех?")) {
+                await updateDoc(doc(db, "messages", id), { isDeleted: true });
+            }
+        };
+
+        /* ГОЛОСОВЫЕ СООБЩЕНИЯ */
         document.getElementById("voice-btn").addEventListener("click", async () => {
             const vBtn = document.getElementById("voice-btn");
             if (!isRecording) {
@@ -719,15 +764,22 @@
             }
         });
 
+        /* ЗАКРЕПЛЕННЫЕ СМС */
         window.pinMsg = async function(id, user, text) {
             await setDoc(doc(db, "pins", currentRoom), { msgId: id, displayText: `${user}: ${text.substring(0,30)}...` });
+        };
+        window.unpinMsg = async function(e) {
+            e.stopPropagation();
+            await deleteDoc(doc(db, "pins", currentRoom));
         };
         function listenPins() {
             onSnapshot(doc(db, "pins", currentRoom), (d) => {
                 const bar = document.getElementById("pinned-bar");
+                const unpinCont = document.getElementById("unpin-btn-container");
                 if (d.exists()) {
                     currentPinnedId = d.data().msgId;
                     document.getElementById("pinned-text").innerText = `📌 ${d.data().displayText}`;
+                    unpinCont.innerHTML = `<b style="color:#ff4a4a; margin-left:10px;" onclick="window.unpinMsg(event)">✕</b>`;
                     bar.style.display = "flex";
                 } else bar.style.display = "none";
             });
@@ -741,7 +793,7 @@
             onSnapshot(collection(db, "typing"), (snap) => {
                 let typers = [];
                 snap.forEach(d => { if (d.data().room === currentRoom && d.id !== myName) typers.push(d.id); });
-                document.getElementById("typing-status").innerText = typers.length > 0 ? `${typers.join(", ")} ...` : "";
+                document.getElementById("typing-status").innerText = typers.length > 0 ? `${typers.join(", ")} печатает...` : "";
                 document.getElementById("typing-status").style.display = typers.length > 0 ? "block" : "none";
             });
             msgInput.addEventListener("input", async () => {
@@ -751,31 +803,58 @@
             });
         }
 
+        /* ОСНОВНОЙ ЧАТСКИЙ СЛУШАТЕЛЬ */
         function startChatListening() {
             const q = query(messagesCol, orderBy("createdAt", "asc"));
             mainChatUnsubscribe = onSnapshot(q, (snapshot) => {
                 const chatBox = document.getElementById("chat-box");
                 chatBox.innerHTML = ""; let count = 0;
-                snapshot.forEach((doc) => {
-                    const data = doc.data(); if (data.room !== currentRoom || data.isDeleted) return;
+                
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data(); if (data.room !== currentRoom || data.isDeleted) return;
                     count++;
                     const msgDiv = document.createElement("div");
-                    msgDiv.id = `msg-block-${doc.id}`;
+                    msgDiv.id = `msg-block-${docSnap.id}`;
                     const isMe = data.user === myName;
                     msgDiv.className = data.type === "announcement" ? "message system-announcement" : `message ${isMe ? 'outgoing' : 'incoming'}`;
                     
-                    let body = `<span class="meta">${data.user}</span>`;
-                    if (data.type === "text") body += `<div>${data.text}</div>`;
-                    else if (data.type === "image") body += `<img class="chat-img" src="${data.fileData}">`;
-                    else if (data.type === "voice") body += `<audio src="${data.fileData}" controls></audio>`;
+                    let content = `<span class="meta">${data.user}</span>`;
+                    if (data.reply_to) content += `<div class="reply-container">↩️ ${data.reply_to}</div>`;
                     
-                    if(data.type !== "announcement") {
-                        body += `<span class="msg-actions-trigger" onclick="window.pinMsg('${doc.id}','${data.user}','${data.text || 'Медиа'}')">📌</span>`;
+                    if (data.type === "text" || data.type === "announcement") content += `<div>${data.text}</div>`;
+                    else if (data.type === "image") content += `<img class="chat-img" src="${data.fileData}">`;
+                    else if (data.type === "voice") content += `<audio src="${data.fileData}" controls></audio>`;
+                    
+                    if (data.type !== "announcement") {
+                        let pinOption = `<span onclick="window.pinMsg('${docSnap.id}','${data.user}','${data.text || 'Медиа'}')">📌</span>`;
+                        let delOption = isMe ? `<span class="del-btn" onclick="window.deleteMsg('${docSnap.id}')">🗑️</span>` : "";
+                        content += `
+                            <div class="msg-options">
+                                <span onclick="window.addReaction('${docSnap.id}','❤️')">❤️</span>
+                                <span onclick="window.addReaction('${docSnap.id}','👍')">👍</span>
+                                <span onclick="window.setReply('${data.user}', '${data.text || 'Медиа'}')">↩️</span>
+                                ${pinOption} ${delOption}
+                            </div>
+                        `;
                     }
-                    msgDiv.innerHTML = body; chatBox.appendChild(msgDiv);
+
+                    if (data.reactions && Object.keys(data.reactions).length > 0) {
+                        content += `<div class="reaction-panel">`;
+                        for (let emoji in data.reactions) content += `<span class="reaction-badge">${emoji} ${data.reactions[emoji]}</span>`;
+                        content += `</div>`;
+                    }
+                    if (data.type !== "announcement") content += `<span class="status-ticks">✔️✔️</span>`;
+
+                    msgDiv.innerHTML = content; chatBox.appendChild(msgDiv);
                 });
-                if (lastMessageCount !== -1 && count > lastMessageCount) playNotificationSound();
+
+                if (lastMessageCount !== -1 && count > lastMessageCount) {
+                    const lastDoc = snapshot.docs[snapshot.docs.length - 1].data();
+                    if (lastDoc && lastDoc.user !== myName && lastDoc.room === currentRoom) playNotificationSound();
+                }
                 lastMessageCount = count;
+                const currentSearch = document.getElementById("search-input").value;
+                if(currentSearch) filterMessages(currentSearch);
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
         }
