@@ -41,14 +41,6 @@
         .tg-admin-btn { background: #24a1de; color: white; border: none; padding: 12px; border-radius: 20px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; display: inline-block; font-size: 0.95rem; margin-top: 5px; box-shadow: 0 4px 10px rgba(36, 161, 222, 0.3); transition: 0.2s; }
         .tg-admin-btn:hover { background: #1e83b4; transform: translateY(-1px); }
 
-        /* СКРЫТОЕ ОКНО ДЛЯ АДМИНА */
-        #admin-auth-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 15, 0.95); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
-        .admin-modal-box { background: #14142b; border: 2px solid #ff004b; border-radius: 15px; padding: 25px; width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 0 25px rgba(255, 0, 75, 0.4); }
-        .admin-modal-box h3 { color: #ffeba2; text-align: center; font-size: 1.1rem; }
-        .admin-modal-box input[type="password"] { padding: 12px; border-radius: 8px; border: 1px solid #ff004b; background: #0b0b1e; color: white; font-size: 1.1rem; text-align: center; outline: none; letter-spacing: 3px; }
-        .admin-modal-buttons { display: flex; gap: 10px; }
-        .admin-modal-buttons button { flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
-
         /* ПАНЕЛЬ СУПЕР-АДМИНА */
         #super-admin-screen { display: none; flex-direction: column; flex: 1; padding: 20px; z-index: 20; overflow-y: auto; max-width: 900px; margin: 0 auto; width: 100%; height: 100vh; gap: 15px; }
         .admin-card { background: rgba(20, 20, 35, 0.95); border: 1px solid #ff004b; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 0 15px rgba(255, 0, 75, 0.3); }
@@ -157,17 +149,6 @@
 
     <div id="secret-admin-trigger" onclick="openAdminModal()">⚙️</div>
 
-    <div id="admin-auth-modal">
-        <div class="admin-modal-box">
-            <h3>🔑 Вход в Diamond-Терминал</h3>
-            <input type="password" id="secret-admin-key-input" placeholder="••••••••••••" autocomplete="off">
-            <div class="admin-modal-buttons">
-                <button style="background: #ff004b; color: white;" onclick="submitAdminKey()">Войти</button>
-                <button style="background: #333; color: #ccc;" onclick="closeAdminModal()">Отмена</button>
-            </div>
-        </div>
-    </div>
-
     <div id="auth-screen">
         <div style="position: absolute; top: 15px; left: 15px;">
             <select class="select-styled" onchange="changeLanguage(this.value)">
@@ -227,6 +208,7 @@
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <button class="admin-btn" id="global-clear-btn">🚨 Стереть эту комнату из базы под ноль</button>
                 <button class="admin-btn secondary" id="global-maintenance-btn">🔒 Заблокировать / Разблокировать комнату</button>
+                <button class="admin-btn secondary" id="global-password-btn">🔑 Установить / Сбросить пароль комнаты</button>
                 <button class="admin-btn secondary" id="global-msg-btn">📢 Подать системное объявление</button>
             </div>
             
@@ -381,24 +363,37 @@
             navigator.clipboard.writeText(refUrl).then(() => { alert("🔗 Ссылка скопирована!"); });
         };
 
-        window.openAdminModal = function() {
-            document.getElementById("admin-auth-modal").style.display = "flex";
-            document.getElementById("secret-admin-key-input").focus();
-        };
-        window.closeAdminModal = function() { document.getElementById("admin-auth-modal").style.display = "none"; };
+        // БЕЗОПАСНЫЙ ДОСТУП БЕЗ ПАРОЛЯ В КОДЕ (ПРОВЕРКА ФЛАГОВ ИЗ FIRESTORE)
+        window.openAdminModal = async function() {
+            if (!myName) {
+                alert("Сначала войдите в систему под своим никнеймом!");
+                return;
+            }
 
-        window.submitAdminKey = function() {
-            if (document.getElementById("secret-admin-key-input").value.trim() === "umidjon30393110$$$") {
-                document.getElementById("admin-auth-modal").style.display = "none";
-                document.getElementById("auth-screen").style.display = "none";
-                document.getElementById("super-admin-screen").style.display = "flex";
-                document.getElementById("secret-admin-trigger").style.display = "none";
-                history.pushState({ screen: "admin" }, "");
-                loadAdminStatistics(); 
-                renderRoomsAndUsersLists();
-            } else {
-                alert("Неверный ключ!");
-                closeAdminModal();
+            try {
+                const userDocRef = doc(db, "users", myName);
+                const userSnap = await getDoc(userDocRef);
+
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    
+                    if (userData.isAdmin === true && userData.role === "creator") {
+                        document.getElementById("auth-screen").style.display = "none";
+                        document.getElementById("chat-screen").style.display = "none";
+                        document.getElementById("super-admin-screen").style.display = "flex";
+                        document.getElementById("secret-admin-trigger").style.display = "none";
+                        history.pushState({ screen: "admin" }, "");
+                        loadAdminStatistics(); 
+                        renderRoomsAndUsersLists();
+                    } else {
+                        alert("Ошибка доступа: у вас нет прав Создателя чата.");
+                    }
+                } else {
+                    alert("Пользователь не найден в базе данных.");
+                }
+            } catch (error) {
+                console.error("Ошибка Diamond доступа:", error);
+                alert("Ошибка при проверке прав безопасности.");
             }
         };
 
@@ -453,8 +448,9 @@
             const myPassword = document.getElementById("password-input").value.trim();
             currentRoom = document.getElementById("room-input").value.trim().toLowerCase();
             
-            if (!myName || !myPassword || !currentRoom) { alert("Заполни все поля!"); return; }
+            if (!myName || !currentRoom) { alert("Заполни никнейм и имя комнаты!"); return; }
 
+            // 1. Проверка на бан
             const banSnap = await getDoc(doc(db, "blacklist", myName));
             if (banSnap.exists() && banSnap.data().isBanned) {
                 document.getElementById("auth-screen").style.display = "none";
@@ -462,11 +458,36 @@
                 return;
             }
 
+            // 2. Проверяем настройки комнаты: есть ли у неё пароль
+            const roomConfigRef = doc(db, "rooms_config", currentRoom);
+            const roomConfigSnap = await getDoc(roomConfigRef);
+            let hasRoomPassword = false;
+
+            if (roomConfigSnap.exists()) {
+                const roomData = roomConfigSnap.data();
+                if (roomData.roomPassword && roomData.roomPassword.trim() !== "") {
+                    hasRoomPassword = true;
+                    if (!myPassword) {
+                        alert("Эта комната защищена паролем! Пожалуйста, укажите пароль комнаты в поле 'Пароль'.");
+                        return;
+                    }
+                    if (roomData.roomPassword !== myPassword) {
+                        alert("Неверный пароль от комнаты!");
+                        return;
+                    }
+                }
+            }
+
+            // 3. Авторизация / регистрация пользователя
             const userDocRef = doc(db, "users", myName);
             const userSnap = await getDoc(userDocRef);
 
             if (userSnap.exists()) {
-                if (userSnap.data().password !== myPassword) { alert("Неверный пароль!"); return; }
+                // Если у самой комнаты пароля нет, поле "Пароль" проверяется как ЛИЧНЫЙ пароль аккаунта пользователя
+                if (!hasRoomPassword && userSnap.data().password && userSnap.data().password !== myPassword) {
+                    alert("Неверный личный пароль этого пользователя!");
+                    return;
+                }
                 let roomsArray = userSnap.data().activeRooms || [];
                 if(!roomsArray.includes(currentRoom)) roomsArray.push(currentRoom);
                 await updateDoc(userDocRef, {
@@ -475,8 +496,9 @@
                     activeRooms: roomsArray
                 });
             } else {
+                // Если пользователя еще нет в базе, регистрируем его автоматически
                 await setDoc(userDocRef, { 
-                    password: myPassword,
+                    password: myPassword || "123456", // Если комната бесплатная и без пароля, ставится дефолтный
                     registeredAt: serverTimestamp(),
                     loginCount: 1,
                     lastLogin: serverTimestamp(),
@@ -518,20 +540,32 @@
             let roomsSet = new Set();
             msgSnap.forEach(d => { if(d.data().room) roomsSet.add(d.data().room); });
 
+            // Обязательно добавляем текущую или дефолтную комнату, если сообщений еще нет
+            if(currentRoom) roomsSet.add(currentRoom);
+            roomsSet.add("room101");
+
             for (let rName of roomsSet) {
                 const configRef = doc(db, "rooms_config", rName);
                 const configSnap = await getDoc(configRef);
                 let timerText = "Срок не задан";
-                if(configSnap.exists() && configSnap.data().expiresAt) {
-                    const diff = configSnap.data().expiresAt - Date.now();
-                    const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
-                    timerText = daysLeft > 0 ? `Осталось: ${daysLeft} дн.` : "Срок истёк!";
+                let passStatus = "🔓 Без пароля";
+
+                if(configSnap.exists()) {
+                    const cData = configSnap.data();
+                    if(cData.expiresAt) {
+                        const diff = cData.expiresAt - Date.now();
+                        const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                        timerText = daysLeft > 0 ? `Осталось: ${daysLeft} дн.` : "Срок истёк!";
+                    }
+                    if(cData.roomPassword && cData.roomPassword.trim() !== "") {
+                        passStatus = `🔑 ${cData.roomPassword}`;
+                    }
                 }
 
                 const row = document.createElement("div");
                 row.className = "room-item-row";
                 row.innerHTML = `
-                    <button class="room-item-btn">📁 Комната: ${rName}</button>
+                    <button class="room-item-btn">📁 ${rName} (<span style="color:#00ffcc; font-size:0.8rem;">${passStatus}</span>)</button>
                     <span class="room-timer">${timerText}</span>
                     <button class="admin-btn secondary" style="padding:4px 8px; font-size:0.8rem;" onclick="window.setRoomTimer('${rName}')">🗓️ Срок</button>
                 `;
@@ -583,6 +617,32 @@
             renderRoomsAndUsersLists();
         };
 
+        /* ПАНЕЛЬ УПРАВЛЕНИЯ ПАРОЛЕМ КОМНАТЫ */
+        document.getElementById("global-password-btn").addEventListener("click", async () => {
+            const rName = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!rName || rName === "алмаз") return alert("Сначала укажите конкретное имя комнаты в поле выше!");
+            
+            const ref = doc(db, "rooms_config", rName);
+            const snap = await getDoc(ref);
+            let currentPass = "";
+            if (snap.exists() && snap.data().roomPassword) {
+                currentPass = snap.data().roomPassword;
+            }
+
+            let newPass = prompt(`Введите НОВЫЙ пароль для комнаты [ ${rName} ]:\n(Оставьте поле абсолютно ПУСТЫМ, чтобы убрать пароль и сделать комнату бесплатной)`, currentPass);
+            
+            if (newPass === null) return; 
+
+            await setDoc(ref, { roomPassword: newPass.trim() }, { merge: true });
+            if (newPass.trim() === "") {
+                alert(`Пароль для комнаты ${rName} удален! Теперь вход свободный.`);
+            } else {
+                alert(`Для комнаты ${rName} успешно поставлен пароль: ${newPass.trim()}`);
+            }
+            renderRoomsAndUsersLists();
+        });
+
+        /* ПАНЕЛЬ СЛЕЖКИ С ОТОБРАЖЕНИЕМ УДАЛЕННЫХ МЕДИАФАЙЛОВ */
         document.getElementById("connect-spy-btn").addEventListener("click", async () => {
             const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
             if (targetRoom === "алмаз") {
@@ -602,20 +662,39 @@
                 snapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     if (data.room !== targetRoom) return; 
+
                     const msgDiv = document.createElement("div");
                     msgDiv.className = data.isDeleted ? "spy-msg intercepted-deleted" : "spy-msg";
                     
+                    let deletedLabel = data.isDeleted ? `<b style="color: #ff4a4a; margin-left: 10px;">[🗑️ УДАЛЕНО ЮЗЕРОМ]</b>` : "";
+
                     let body = `
                         <div class="spy-meta">
-                            <span>👤: <b>${data.user}</b> <button class="spy-ban-btn" onclick="window.banUser('${data.user}')">БАН</button></span> 
-                            <span class="spy-hard-del-btn" onclick="window.hardDeleteMsg('${docSnap.id}')">Стереть 💀</span>
+                            <span>👤: <b>${data.user}</b> ${deletedLabel} <button class="spy-ban-btn" onclick="window.banUser('${data.user}')">БАН</button></span> 
+                            <span class="spy-hard-del-btn" onclick="window.hardDeleteMsg('${docSnap.id}')">Стереть из базы 💀</span>
                         </div>
                     `;
-                    if (data.type === "text" || data.type === "announcement") body += `<div>${data.text}</div>`;
-                    else if (data.type === "image") body += `<div>🖼️ [Фото]</div>`;
-                    else if (data.type === "voice") body += `<div>🎤 [Голосовое]</div>`;
+
+                    if (data.type === "text" || data.type === "announcement") {
+                        body += `<div style="white-space: pre-wrap;">${data.text}</div>`;
+                    } else if (data.type === "image") {
+                        body += `
+                            <div>
+                                <div style="font-size:0.8rem; color:#aaa; margin-bottom:5px;">🖼️ Изображение:</div>
+                                <img src="${data.fileData}" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 1px solid #3d3d6b; display: block; cursor: pointer;" onclick="window.open('${data.fileData}', '_blank')">
+                            </div>
+                        `;
+                    } else if (data.type === "voice") {
+                        body += `
+                            <div>
+                                <div style="font-size:0.8rem; color:#aaa; margin-bottom:5px;">🎤 Голосовое сообщение:</div>
+                                <audio src="${data.fileData}" controls style="max-width: 100%; height: 30px; outline: none;"></audio>
+                            </div>
+                        `;
+                    }
                     
-                    msgDiv.innerHTML = body; monitor.appendChild(msgDiv);
+                    msgDiv.innerHTML = body; 
+                    monitor.appendChild(msgDiv);
                 });
                 monitor.scrollTop = monitor.scrollHeight;
             });
