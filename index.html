@@ -8,6 +8,16 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; transition: background 0.3s, color 0.3s; }
         body { background-color: #0b0b1e; color: #e0e0e0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; }
         
+        /* Защитный оверлей от скриншотов / печати */
+        @media print { body { display: none !important; } }
+        .anti-screenshot-overlay {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 99999; mix-blend-mode: difference; pointer-events: none;
+        }
+        body.protected-mode .anti-screenshot-overlay { display: block; animation: flashProtect 0.5s infinite alternate; }
+        body.protected-mode { user-select: none !important; -webkit-user-select: none !important; }
+        @keyframes flashProtect { from { opacity: 0.05; } to { opacity: 0.15; } }
+
         /* ТЕМЫ ОФОРМЛЕНИЯ */
         body.theme-space { background-color: #0b0b1e; color: #e0e0e0; }
         body.theme-space .stars { position: absolute; top:0; left:0; width:100%; height:100%; background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%); z-index: -2; display: block; }
@@ -28,38 +38,27 @@
         body.theme-minimal input[type="text"], body.theme-minimal input[type="password"] { background: #1e1e1e; border: 1px solid #444; color: #fff; }
         body.theme-minimal header, body.theme-minimal #input-area, body.theme-minimal #pinned-bar, body.theme-minimal #search-bar { background: #1a1a1a; border-color: #333; }
 
-        /* НОВЫЕ ПРЕМИУМ ТЕМЫ */
-        body.theme-cyberpunk { background-color: #1a0033; color: #00ffcc; font-family: 'Courier New', monospace; }
+        /* Новая тема: Кибербанк */
+        body.theme-cyberpunk { background-color: #120136; color: #f9f871; }
         body.theme-cyberpunk .stars, body.theme-cyberpunk .twinkling { display: none; }
-        body.theme-cyberpunk .message.incoming { background: #26004d; border: 1px solid #ff007f; color: #00ffcc; box-shadow: 0 0 8px #ff007f; }
-        body.theme-cyberpunk .message.outgoing { background: #003333; border: 1px solid #00ffcc; color: #ff007f; box-shadow: 0 0 8px #00ffcc; }
-        body.theme-cyberpunk input[type="text"], body.theme-cyberpunk input[type="password"] { background: #100020; border: 1px solid #ffea00; color: #ffea00; }
-        body.theme-cyberpunk header, body.theme-cyberpunk #input-area, body.theme-cyberpunk #pinned-bar, body.theme-cyberpunk #search-bar { background: #26004d; border-color: #ffea00; }
+        body.theme-cyberpunk .message.incoming { background: #400082; border: 1px solid #00f5ff; color: #fff; }
+        body.theme-cyberpunk .message.outgoing { background: #00f5ff; border: 1px solid #f9f871; color: #120136; font-weight: bold; }
+        body.theme-cyberpunk input[type="text"], body.theme-cyberpunk input[type="password"] { background: #400082; border: 1px solid #00f5ff; color: #f9f871; }
+        body.theme-cyberpunk header, body.theme-cyberpunk #input-area, body.theme-cyberpunk #pinned-bar, body.theme-cyberpunk #search-bar { background: #03001e; border-color: #f9f871; }
 
-        body.theme-love { background: linear-gradient(135deg, #ffe5ec, #ffc2d1); color: #c9184a; }
+        /* Новая тема: Love / Парочки */
+        body.theme-love { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color: #4a0e17; }
         body.theme-love .stars, body.theme-love .twinkling { display: none; }
-        body.theme-love .message.incoming { background: #fff0f3; border: 1px solid #ff85a1; color: #c9184a; }
-        body.theme-love .message.outgoing { background: #ff85a1; border: 1px solid #ff5c8a; color: #fff; }
-        body.theme-love input[type="text"], body.theme-love input[type="password"] { background: #fff; border: 1px solid #ff85a1; color: #c9184a; }
-        body.theme-love header, body.theme-love #input-area, body.theme-love #pinned-bar, body.theme-love #search-bar { background: #ffb3c6; border-color: #ff85a1; color: #c9184a; }
-        
-        /* Контейнер для летающих сердечек */
-        .hearts-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; display: none; }
-        body.theme-love .hearts-container { display: block; }
-        .heart-sparkle { position: absolute; bottom: -20px; color: #ff4d6d; animation: float-heart 6s linear infinite; font-size: 20px; opacity: 0.7; }
-        @keyframes float-heart {
-            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.7; }
-            50% { transform: translateY(-50vh) translateX(30px) rotate(180deg); opacity: 0.9; }
-            100% { transform: translateY(-105vh) translateX(-20px) rotate(360deg); opacity: 0; }
-        }
+        body.theme-love .message.incoming { background: #ffffff; border: 1px solid #ffb3ba; color: #4a0e17; }
+        body.theme-love .message.outgoing { background: #ff6b8b; color: #fff; border: 1px solid #ff477e; }
+        body.theme-love input[type="text"], body.theme-love input[type="password"] { background: #fff; border: 1px solid #ffb3ba; color: #4a0e17; }
+        body.theme-love header, body.theme-love #input-area, body.theme-love #pinned-bar, body.theme-love #search-bar { background: #ffe3e8; border-color: #ff6b8b; color: #ff477e; }
+        .heart-bg { position: absolute; font-size: 24px; color: rgba(255, 107, 139, 0.3); animation: floatHearts 6s linear infinite; pointer-events: none; z-index: -1; display: none; }
+        body.theme-love .heart-bg { display: block; }
+        @keyframes floatHearts { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
 
-        /* Элемент защиты от скриншотов */
-        #screenshot-protection-layer {
-            display: none; position: fixed; top:0; left:0; width:100vw; height:100vh;
-            background: rgba(10,10,25,0.92); backdrop-filter: blur(25px);
-            z-index: 99999; justify-content: center; align-items: center;
-            color: #ff004b; font-size: 1.5rem; font-weight: bold; text-align: center;
-        }
+        /* Кастомный URL Фон */
+        .custom-room-bg { position: absolute; top:0; left:0; width:100%; height:100%; background-size: cover; background-position: center; z-index: -3; pointer-events: none; }
 
         /* ЭКРАН ВХОДА */
         #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 15px; padding: 20px; z-index: 10; position: relative; }
@@ -78,7 +77,7 @@
         #super-admin-screen { display: none; flex-direction: column; flex: 1; padding: 20px; z-index: 20; overflow-y: auto; max-width: 900px; margin: 0 auto; width: 100%; height: 100vh; gap: 15px; }
         .admin-card { background: rgba(20, 20, 35, 0.95); border: 1px solid #ff004b; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 0 15px rgba(255, 0, 75, 0.3); }
         
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 5px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 5px; }
         .stat-box { background: rgba(255, 255, 255, 0.05); border: 1px solid #ffeba2; border-radius: 8px; padding: 10px; text-align: center; }
         .stat-box minititle { display: block; font-size: 0.75rem; color: #aaa; }
         .stat-box val { font-size: 1.3rem; font-weight: bold; color: #ffeb3b; }
@@ -93,16 +92,11 @@
         .admin-btn:hover { background: #cc003c; }
         .admin-btn.secondary { background: #3f51b5; }
         .admin-btn.secondary:hover { background: #2c3b8c; }
-        .admin-btn.success { background: #4caf50; }
-        .admin-btn.success:hover { background: #439a46; }
         
         #rooms-list-container { display: none; flex-direction: column; gap: 8px; background: #121225; border: 1px solid #ffeb3b; border-radius: 10px; padding: 12px; }
-        .room-item-row { display: flex; flex-direction: column; background: #22223b; padding: 10px; border-radius: 6px; border: 1px solid #444; gap: 8px; }
-        .room-row-top { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; }
-        .room-row-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; border-top: 1px dashed #555; padding-top: 6px; }
-        .room-item-btn { background: transparent; color: #ffeb3b; border: none; cursor: pointer; font-weight: bold; text-align: left; flex: 1; }
+        .room-item-row { display: flex; justify-content: space-between; align-items: center; background: #22223b; padding: 8px; border-radius: 6px; border: 1px solid #444; gap: 10px; flex-wrap: wrap; }
+        .room-item-btn { background: transparent; color: #ffeb3b; border: none; cursor: pointer; font-weight: bold; text-align: left; flex: 1; min-width: 150px; }
         .room-timer { font-size: 0.85rem; color: #00ffcc; font-weight: bold; }
-        .mini-toggle-btn { padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; border: none; cursor: pointer; font-weight: bold; color: white; }
 
         #users-list-container { display: none; flex-direction: column; gap: 8px; background: #121225; border: 1px solid #00d2ff; border-radius: 10px; padding: 12px; }
         .user-item-row { background: #1a1a3a; padding: 10px; border-radius: 8px; border-left: 4px solid #00d2ff; display: flex; flex-direction: column; gap: 5px; font-size: 0.9rem; }
@@ -116,7 +110,7 @@
         .spy-ban-btn { background: #ff004b; color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
 
         /* Экран чата */
-        #chat-screen { display: none; flex-direction: column; flex: 1; height: 100vh; z-index: 10; position: relative; background-size: cover; background-position: center; }
+        #chat-screen { display: none; flex-direction: column; flex: 1; height: 100vh; z-index: 10; }
         header { background: rgba(25, 25, 45, 0.95); backdrop-filter: blur(5px); padding: 12px 15px; border-bottom: 1px solid #334; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #00d2ff; gap: 10px; flex-wrap: wrap; }
         #maintenance-overlay, #ban-overlay { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 11, 30, 0.98); z-index: 999; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
 
@@ -127,7 +121,7 @@
         /* Панель закрепа */
         #pinned-bar { display: none; background: rgba(0, 120, 255, 0.15); border-bottom: 1px solid #0078ff; padding: 8px 15px; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #fff; cursor: pointer; backdrop-filter: blur(5px); }
 
-        #chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 2; }
+        #chat-box { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
         
         .message { max-width: 70%; padding: 10px 15px; border-radius: 18px; line-height: 1.4; word-break: break-word; position: relative; display: flex; flex-direction: column; }
         .message.incoming { background: rgba(45, 45, 70, 0.85); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #3a3a5c; }
@@ -153,7 +147,7 @@
         .reaction-badge { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 10px; cursor: pointer; display: inline-block; }
         
         /* Панель ввода */
-        #input-area { background: rgba(25, 25, 45, 0.95); padding: 15px; display: flex; gap: 10px; border-top: 1px solid #334; align-items: center; position: relative; z-index: 2; }
+        #input-area { background: rgba(25, 25, 45, 0.95); padding: 15px; display: flex; gap: 10px; border-top: 1px solid #334; align-items: center; position: relative; }
         input[type="text"] { flex: 1; padding: 12px 20px; border: none; border-radius: 25px; background: #121225; color: #fff; font-size: 1rem; outline: none; border: 1px solid #3d3d6b; }
         .icon-btn { background: #1a1a3a; border: 1px solid #3d3d6b; width: 45px; height: 45px; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
         #send-btn { background: #0078ff; color: white; border: none; padding: 0 22px; height: 45px; border-radius: 25px; font-weight: bold; cursor: pointer; }
@@ -172,13 +166,16 @@
 </head>
 <body class="theme-space">
 
+    <div class="anti-screenshot-overlay"></div>
+    <div class="custom-room-bg" id="room-custom-bg-layer"></div>
+
     <div class="stars"></div>
     <div class="twinkling"></div>
-    <div class="hearts-container" id="hearts-bg"></div>
-    
-    <div id="screenshot-protection-layer">
-        <div>🛡️ ЭКРАН ЗАБЛОКИРОВАН ЗАЩИТОЙ КОМНАТЫ<br><span style="font-size:0.9rem; color:#aaa; font-weight:normal;">Скриншоты и запись запрещены администратором</span></div>
-    </div>
+
+    <div class="heart-bg" style="left: 10%; animation-delay: 0s;">❤️</div>
+    <div class="heart-bg" style="left: 30%; animation-delay: 2s;">💖</div>
+    <div class="heart-bg" style="left: 55%; animation-delay: 1s;">💗</div>
+    <div class="heart-bg" style="left: 80%; animation-delay: 4s;">❤️</div>
 
     <div id="maintenance-overlay">
         <h1 id="maint-title" style="color: #ff004b; font-size: 2.5rem; margin-bottom: 15px;">🛠️ Технические работы</h1>
@@ -206,15 +203,15 @@
             <label id="lbl-username">Твой никнейм:</label>
             <input type="text" id="username-input" placeholder="Никнейм">
             
-            <label id="lbl-password">Пароль:</label>
-            <input type="text" id="password-input" placeholder="Пароль">
+            <label id="lbl-password">Пароль от аккаунта / комнаты:</label>
+            <input type="password" id="password-input" placeholder="Пароль">
             
             <label id="lbl-room">Имя комнаты:</label>
-            <input type="text" id="room-input" placeholder="room101">
+            <input type="text" id="room-input" placeholder="room101" oninput="updateTgHrefLink(this.value)">
             
             <button id="login-btn" style="background: linear-gradient(135deg, #0078ff, #0052d4); color:white; border:none; padding:12px; border-radius:20px; font-weight:bold; cursor:pointer; margin-top:10px;">Войти в чат</button>
             
-            <button onclick="handleTelegramCRM()" class="tg-admin-btn" id="btn-buy-room" style="width: 100%; border: none;">💬 Купить приватную комнату</button>
+            <a href="https://t.me/umidjon7177?text=Хочу_купить_доступ_к_комнате" target="_blank" class="tg-admin-btn" id="btn-buy-room">💬 Купить приватную комнату</a>
         </div>
     </div>
 
@@ -224,10 +221,8 @@
             
             <div class="stats-grid">
                 <div class="stat-box"><minititle>Всего СМС</minititle><val id="stat-total-msg">0</val></div>
-                <div class="stat-box"><minititle>Картинок</minititle><val id="stat-images">0</val></div>
-                <div class="stat-box"><minititle>Войсов</minititle><val id="stat-voices">0</val></div>
                 <div class="stat-box"><minititle>Юзеров</minititle><val id="stat-users-count">0</val></div>
-                <div class="stat-box" style="border-color:#ff007f;"><minititle>🔥 Всего онлайн</minititle><val id="stat-global-online">0</val></div>
+                <div class="stat-box"><minititle>Всего онлайн</minititle><val id="stat-global-online" style="color: #ff3366;">0</val></div>
             </div>
 
             <div class="admin-tabs">
@@ -238,9 +233,9 @@
             <div class="admin-input-group">
                 <label>Поиск / Команда (Введите имя комнаты ИЛИ слово <b>алмаз</b>):</label>
                 <input type="text" id="target-room-input" placeholder="Имя комнаты или слово 'алмаз'">
-                <div style="display:flex; gap:10px; margin-top:5px;">
-                    <button class="admin-btn secondary" id="connect-spy-btn" style="flex:1;">👁️ Запустить сканирование</button>
-                    <button class="admin-btn success" onclick="createNewRoomByAdmin()" style="flex:1;">➕ Создать новую комнату</button>
+                <div style="display: flex; gap: 10px; margin-top: 5px; flex-wrap: wrap;">
+                    <button class="admin-btn" style="background: #4caf50; flex: 1;" id="admin-create-room-btn">➕ Создать новую комнату</button>
+                    <button class="admin-btn secondary" id="connect-spy-btn" style="flex: 1;">👁️ Запустить слежку</button>
                 </div>
             </div>
 
@@ -253,21 +248,24 @@
             </div>
             
             <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="admin-btn secondary" id="global-bg-url-btn">🖼️ Задать URL фона комнаты</button>
                 <button class="admin-btn" id="global-clear-btn">🚨 Стереть эту комнату из базы под ноль</button>
                 <button class="admin-btn secondary" id="global-maintenance-btn">🔒 Заблокировать / Разблокировать комнату</button>
                 <button class="admin-btn secondary" id="global-password-btn">🔑 Установить / Сбросить пароль комнаты</button>
-                <button class="admin-btn secondary" onclick="askCustomBgUrl()">🖼️ Задать URL фона комнаты</button>
+                <button class="admin-btn secondary" id="global-limit-btn" style="background: #9c27b0;">👥 Выставить лимит человек</button>
                 <button class="admin-btn secondary" id="global-msg-btn">📢 Подать системное объявление</button>
             </div>
             
-            <button style="background: #333; margin-top: 5px;" class="admin-btn" onclick="goBackToAuth()">🚪 Закрыть терминал</button>
+            <button style="background: #333; margin-top: 5px;" class="admin-btn" onclick="goBackToAuth()">🚪 Закрыть terminal</button>
         </div>
     </div>
 
     <div id="chat-screen">
         <header>
-            <span id="chat-header">Комната: ...</span>
-            <span id="room-live-online" style="color:#ffeba2; margin-left:10px; font-size:0.9rem;">👥 Онлайн: 0</span>
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+                <span id="chat-header">Комната: ...</span>
+                <span id="room-online-counter" style="font-size: 0.8rem; color: #00ffcc;">👥 Онлайн: 0</span>
+            </div>
             <div class="header-controls">
                 <button class="referral-btn" id="btn-invite" onclick="copyReferralLink()">Пригласить друга 🔗</button>
                 
@@ -278,8 +276,8 @@
                     <option value="theme-space">🌌 Космос</option>
                     <option value="theme-matrix">🟢 Матрица</option>
                     <option value="theme-minimal">⚫ Минимализм</option>
-                    <option value="theme-cyberpunk">👾 Кибербанк</option>
-                    <option value="theme-love">❤️ Для пар / Love</option>
+                    <option value="theme-cyberpunk">⚡ Кибербанк</option>
+                    <option value="theme-love">💕 Love / Парные</option>
                 </select>
 
                 <select class="select-styled" id="lang-changer" onchange="changeLanguage(this.value)">
@@ -314,6 +312,7 @@
             <input type="file" id="file-input" accept="image/*" style="display:none;">
             
             <button class="icon-btn" id="voice-btn">🎙️</button>
+
             <input type="text" id="msg-input" placeholder="Напишите сообщение..." autocomplete="off">
             <button id="send-btn">Отправить</button>
         </div>
@@ -344,481 +343,51 @@
         let typingTimeout;
         let spyUnsubscribe = null;
         let mainChatUnsubscribe = null;
-        let roomConfigUnsubscribe = null;
-        let onlineUnsubscribe = null;
-        let globalOnlineUnsubscribe = null;
-        let presenceDocRef = null;
+
         let mediaRecorder;
         let audioChunks = [];
         let isRecording = false;
-        let soundEnabled = true;
+
+        let soundEnabled = true; 
         let currentPinnedId = null;
-        let lastMessageCount = -1;
+        let lastMessageCount = -1; 
         let adminTab = "rooms";
+        let protectionEnabled = false;
+        let globalCurrentRoomOnlineCount = 0;
 
         const dictionary = {
             ru: {
-                username: "Твой никнейм:",
-                password: "Пароль:",
-                room: "Имя комнаты:",
-                login: "Войти в чат",
-                buy_room: "💬 Купить приватную комнату",
-                invite: "Пригласить друга 🔗",
-                input_placeholder: "Напишите сообщение...",
-                send: "Отправить",
-                search_placeholder: "Поиск...",
-                maint_title: "🛠️ Технические работы",
-                maint_desc: "Эта комната временно заморожена владельцем или истек срок аренды room.",
-                ban_title: "🚫 ДОСТУП ПРЕКРАЩЕН",
-                ban_desc: "Твой аккаунт был заблокирован Создателем чата."
+                username: "Твой никнейм:", password: "Пароль от аккаунта / комнаты:", room: "Имя комнаты:",
+                login: "Войти в чат", buy_room: "💬 Купить приватную комнату", invite: "Пригласить друга 🔗",
+                input_placeholder: "Напишите сообщение...", send: "Отправить", search_placeholder: "Поиск...",
+                maint_title: "🛠️ Технические работы", maint_desc: "Эта комната временно заморожена владельцем или истек срок аренды room.",
+                ban_title: "🚫 ДОСТУП ПРЕКРАЩЕН", ban_desc: "Твой аккаунт был заблокирован Создателем чата."
             },
             uz: {
-                username: "Sizning nikneymingiz:",
-                password: "Parol:",
-                room: "Xona nomi:",
-                login: "Chatga kirish",
-                buy_room: "💬 Shaxsiy xonani sotib olish",
-                invite: "Do'stni taklif qilish 🔗",
-                input_placeholder: "Xabar yozing...",
-                send: "Yuborish",
-                search_placeholder: "Qidiruv...",
-                maint_title: "🛠️ Texnik ishlar",
-                maint_desc: "Ushbu xona vaqtincha muzlatilgan yoki ijara muddati tugagan.",
-                ban_title: "🚫 KIRISH TAQIQLANDI",
-                ban_desc: "Hisobingiz chat yaratuvchisi tomonidan bloklangan."
+                username: "Sizning nikneymingiz:", password: "Parol:", room: "Xona nomi:",
+                login: "Chatga kirish", buy_room: "💬 Shaxsiy xonani sotib olish", invite: "Do'stni taklif qilish 🔗",
+                input_placeholder: "Xabar yozing...", send: "Yuborish", search_placeholder: "Qidiruv...",
+                maint_title: "🛠️ Texnik ishlar", maint_desc: "Ushbu xona vaqtincha muzlatilgan yoki ijara muddati tugagan.",
+                ban_title: "🚫 KIRISH TAQIQLANDI", ban_desc: "Sizning akkauntingiz Yaratвуchi tomonidan bloklangan."
             },
             en: {
-                username: "Your nickname:",
-                password: "Password:",
-                room: "Room name:",
-                login: "Enter Chat",
-                buy_room: "💬 Buy private room",
-                invite: "Invite Friend 🔗",
-                input_placeholder: "Type a message...",
-                send: "Send",
-                search_placeholder: "Search...",
-                maint_title: "🛠️ Maintenance",
-                maint_desc: "This room is temporarily frozen by the owner or the lease has expired.",
-                ban_title: "🚫 ACCESS DENIED",
-                ban_desc: "Your account has been banned by the Chat Creator."
+                username: "Your nickname:", password: "Password:", room: "Room name:",
+                login: "Login to Chat", buy_room: "💬 Buy Private Room", invite: "Invite Friend 🔗",
+                input_placeholder: "Type a message...", send: "Send", search_placeholder: "Search...",
+                maint_title: "🛠️ Maintenance Mode", maint_desc: "This room is frozen by the owner or rental period expired.",
+                ban_title: "🚫 ACCESS DENIED", ban_desc: "Your account has been banned by the Creator."
             }
         };
 
-        // Генерация красивых летящих сердечек для Love темы
-        function initLoveHearts() {
-            const container = document.getElementById("hearts-bg");
-            container.innerHTML = "";
-            for (let i = 0; i < 15; i++) {
-                createHeart(container);
-            }
-        }
-        function createHeart(container) {
-            const heart = document.createElement("div");
-            heart.className = "heart-sparkle";
-            heart.innerText = Math.random() > 0.5 ? "❤️" : "💕";
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
-            heart.style.fontSize = (Math.random() * 15 + 15) + "px";
-            heart.style.animationDelay = (Math.random() * 5) + "s";
-            container.appendChild(heart);
-            heart.addEventListener("animationiteration", () => {
-                heart.style.left = Math.random() * 100 + "vw";
-            });
-        }
-        initLoveHearts();
-
-        // CRM-ссылка динамическая для покупки комнат
-        window.handleTelegramCRM = function() {
-            const roomField = document.getElementById("room-input").value.trim();
-            const suffix = roomField ? "_" + encodeURIComponent(roomField) : "";
-            window.open(`https://t.me/umidjon7177?text=Хочу_купить_доступ_к_комнате${suffix}`, '_blank');
-        };
-
-        // Запуск Presence (счетчик присутствия)
-        async function enterRoomPresence(room, username) {
-            if (presenceDocRef) {
-                try { await deleteDoc(presenceDocRef); } catch(e){}
-            }
-            const presenceId = room + "_" + username + "_" + Math.random().toString(36).substr(2, 9);
-            presenceDocRef = doc(db, "presence", presenceId);
-            await setDoc(presenceDocRef, {
-                room: room,
-                user: username,
-                lastSeen: serverTimestamp()
-            });
-
-            setInterval(async () => {
-                if (presenceDocRef) {
-                    await updateDoc(presenceDocRef, { lastSeen: serverTimestamp() }).catch(()=>{});
-                }
-            }, 20000);
-        }
-
-        // Прослушивание живого счетчика онлайна внутри комнаты
-        function listenRoomOnline(roomName) {
-            if (onlineUnsubscribe) onlineUnsubscribe();
-            const q = query(collection(db, "presence"), where("room", "==", roomName));
-            onlineUnsubscribe = onSnapshot(q, (snapshot) => {
-                const count = snapshot.size;
-                document.getElementById("room-live-online").innerText = `👥 Онлайн: ${count}`;
-            });
-        }
-
-        // Защита: отслеживание параметров безопасности комнаты в реальном времени
-        function listenRoomSecurity(roomName) {
-            if (roomConfigUnsubscribe) roomConfigUnsubscribe();
-            roomConfigUnsubscribe = onSnapshot(doc(db, "rooms", roomName), (snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.data();
-                    
-                    // Проверка кастомного фона по URL
-                    const chatScreen = document.getElementById("chat-screen");
-                    if (data.bgUrl) {
-                        chatScreen.style.backgroundImage = `url('${data.bgUrl}')`;
-                    } else {
-                        chatScreen.style.backgroundImage = 'none';
-                    }
-
-                    // Логика защиты Anti-screenshot & Copy
-                    if (data.protected === true) {
-                        enableAntiScreenshotProtection();
-                    } else {
-                        disableAntiScreenshotProtection();
-                    }
-                }
-            });
-        }
-
-        let antiScreenshotHandlers = {};
-        function enableAntiScreenshotProtection() {
-            document.body.style.userSelect = "none";
-            document.body.style.webkitUserSelect = "none";
-            
-            antiScreenshotHandlers.contextmenu = (e) => e.preventDefault();
-            antiScreenshotHandlers.keydown = (e) => {
-                if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'u' || e.key === 'U' || e.key === 'i' || e.key === 'I' || e.key === 's' || e.key === 'S')) {
-                    e.preventDefault();
-                }
-            };
-            antiScreenshotHandlers.visibility = () => {
-                const layer = document.getElementById("screenshot-protection-layer");
-                if (document.visibilityState === "hidden") {
-                    layer.style.display = "flex";
-                } else {
-                    setTimeout(() => { layer.style.display = "none"; }, 400);
-                }
-            };
-            antiScreenshotHandlers.blur = () => {
-                document.getElementById("screenshot-protection-layer").style.display = "flex";
-            };
-            antiScreenshotHandlers.focus = () => {
-                setTimeout(() => { document.getElementById("screenshot-protection-layer").style.display = "none"; }, 400);
-            };
-
-            window.addEventListener("contextmenu", antiScreenshotHandlers.contextmenu);
-            window.addEventListener("keydown", antiScreenshotHandlers.keydown);
-            document.addEventListener("visibilitychange", antiScreenshotHandlers.visibility);
-            window.addEventListener("blur", antiScreenshotHandlers.blur);
-            window.addEventListener("focus", antiScreenshotHandlers.focus);
-        }
-
-        function disableAntiScreenshotProtection() {
-            document.body.style.userSelect = "auto";
-            document.body.style.webkitUserSelect = "auto";
-            if (antiScreenshotHandlers.contextmenu) {
-                window.removeEventListener("contextmenu", antiScreenshotHandlers.contextmenu);
-                window.removeEventListener("keydown", antiScreenshotHandlers.keydown);
-                document.removeEventListener("visibilitychange", antiScreenshotHandlers.visibility);
-                window.removeEventListener("blur", antiScreenshotHandlers.blur);
-                window.removeEventListener("focus", antiScreenshotHandlers.focus);
-            }
-            document.getElementById("screenshot-protection-layer").style.display = "none";
-        }
-
-        // Добавление новой комнаты Создателем из Панели
-        window.createNewRoomByAdmin = async function() {
-            const name = prompt("Введите уникальное имя для новой комнаты:");
-            if (!name) return;
-            const cleanedName = name.trim();
-            if (cleanedName === "") return;
-
-            const roomRef = doc(db, "rooms", cleanedName);
-            const snap = await getDoc(roomRef);
-            if (snap.exists()) {
-                alert("Комната с таким названием уже существует!");
-                return;
-            }
-
-            await setDoc(roomRef, {
-                created: serverTimestamp(),
-                maintenance: false,
-                password: "",
-                protected: false,
-                bgUrl: ""
-            });
-            alert(`Комната "${cleanedName}" успешно создана.`);
-            loadRoomsList();
-        };
-
-        // Задать URL фона для текущей исследуемой админом комнаты
-        window.askCustomBgUrl = async function() {
-            const target = document.getElementById("target-room-input").value.trim();
-            if (!target || target.toLowerCase() === "алмаз") {
-                alert("Сначала укажите конкретное имя комнаты в поле поиска!");
-                return;
-            }
-            const url = prompt("Введите прямую ссылку (URL) на картинку фона:");
-            if (url === null) return;
-
-            await updateDoc(doc(db, "rooms", target), { bgUrl: url.trim() });
-            alert("Фон комнаты успешно обновлен!");
-        };
-
-        // Переключение тумблера защиты в списке комнат
-        window.toggleRoomProtection = async function(roomName, currentStatus) {
-            await updateDoc(doc(db, "rooms", roomName), { protected: !currentStatus });
-            loadRoomsList();
-        };
-
-        // Логин с проверкой Закрытой модели (только созданные комнаты)
-        document.getElementById("login-btn").addEventListener("click", async () => {
-            const user = document.getElementById("username-input").value.trim();
-            const pass = document.getElementById("password-input").value.trim();
-            const room = document.getElementById("room-input").value.trim();
-
-            if (!user || !room) {
-                alert("Заполните никнейм и имя комнаты!");
-                return;
-            }
-
-            const roomDocRef = doc(db, "rooms", room);
-            const roomSnap = await getDoc(roomDocRef);
-
-            if (!roomSnap.exists()) {
-                alert("Эта комната еще не создана. Обратитесь к Администратору.");
-                return;
-            }
-
-            const roomData = roomSnap.data();
-            if (roomData.password && roomData.password !== pass) {
-                alert("Неверный пароль к комнате!");
-                return;
-            }
-
-            myName = user;
-            currentRoom = room;
-
-            await setDoc(doc(db, "users", myName), {
-                username: myName,
-                lastRoom: currentRoom,
-                joinedAt: serverTimestamp(),
-                banned: false
-            }, { merge: true });
-
-            document.getElementById("auth-screen").style.display = "none";
-            document.getElementById("chat-screen").style.display = "flex";
-            document.getElementById("chat-header").innerText = `Комната: ${currentRoom} | Юзер: ${myName}`;
-
-            enterRoomPresence(currentRoom, myName);
-            listenRoomOnline(currentRoom);
-            listenRoomSecurity(currentRoom);
-            startChatListening();
-        });
-
-        window.openAdminModal = function() {
-            const secret = prompt("Введите секретный ключ терминала:");
-            if (secret === "алмаз" || secret === "diamond") {
-                document.getElementById("auth-screen").style.display = "none";
-                document.getElementById("chat-screen").style.display = "none";
-                document.getElementById("super-admin-screen").style.display = "flex";
-                loadGlobalStats();
-                loadRoomsList();
-                listenGlobalOnline();
+        window.updateTgHrefLink = function(roomVal) {
+            const cleanName = roomVal.trim().toLowerCase();
+            const btn = document.getElementById("btn-buy-room");
+            if(cleanName) {
+                btn.href = `https://t.me/umidjon7177?text=Хочу_купить_доступ_к_комнате_${encodeURIComponent(cleanName)}`;
             } else {
-                alert("Доступ отклонен.");
+                btn.href = `https://t.me/umidjon7177?text=Хочу_купить_доступ_к_комнате`;
             }
         };
-
-        function listenGlobalOnline() {
-            if (globalOnlineUnsubscribe) globalOnlineUnsubscribe();
-            globalOnlineUnsubscribe = onSnapshot(collection(db, "presence"), (snapshot) => {
-                document.getElementById("stat-global-online").innerText = snapshot.size;
-            });
-        }
-
-        async function loadGlobalStats() {
-            const msgs = await getDocs(messagesCol);
-            let total = 0, imgs = 0, voices = 0;
-            msgs.forEach(d => {
-                total++;
-                const data = d.data();
-                if (data.type === "image") imgs++;
-                if (data.type === "audio") voices++;
-            });
-            document.getElementById("stat-total-msg").innerText = total;
-            document.getElementById("stat-images").innerText = imgs;
-            document.getElementById("stat-voices").innerText = voices;
-
-            const usersSnap = await getDocs(collection(db, "users"));
-            document.getElementById("stat-users-count").innerText = usersSnap.size;
-        }
-
-        async function loadRoomsList() {
-            const container = document.getElementById("rooms-list-container");
-            container.innerHTML = "";
-            const snap = await getDocs(collection(db, "rooms"));
-            snap.forEach(d => {
-                const data = d.data();
-                const isMaint = data.maintenance ? "🔴 Блок" : "🟢 Актив";
-                const isProt = data.protected ? "🛡️ Защита: Вкл" : "🛡️ Защита: Выкл";
-                const protColor = data.protected ? "#4caf50" : "#ff004b";
-                
-                const row = document.createElement("div");
-                row.className = "room-item-row";
-                row.innerHTML = `
-                    <div class="room-row-top">
-                        <button class="room-item-btn" onclick="document.getElementById('target-room-input').value='${d.id}'">${d.id}</button>
-                        <span class="room-timer">${isMaint}</span>
-                    </div>
-                    <div class="room-row-controls">
-                        <button class="mini-toggle-btn" style="background:${protColor};" onclick="toggleRoomProtection('${d.id}', ${!!data.protected})">${isProt}</button>
-                    </div>
-                `;
-                container.appendChild(row);
-            });
-        }
-
-        async function loadUsersCRM() {
-            const container = document.getElementById("users-list-container");
-            container.innerHTML = "";
-            const snap = await getDocs(collection(db, "users"));
-            snap.forEach(d => {
-                const data = d.data();
-                const status = data.banned ? "❌ ЗАБАНЕН" : "✅ Активен";
-                const row = document.createElement("div");
-                row.className = "user-item-row";
-                row.innerHTML = `
-                    <div class="user-row-header">
-                        <span>👤 ${data.username}</span>
-                        <span style="color:${data.banned ? '#ff004b':'#4caf50'};">${status}</span>
-                    </div>
-                    <div style="font-size:0.8rem; color:#aaa;">Последняя комната: ${data.lastRoom || 'Нет'}</div>
-                    <button class="spy-ban-btn" style="margin-top:5px; width:fit-content;" onclick="toggleUserBan('${d.id}', ${!!data.banned})">
-                        ${data.banned ? 'Разбанить':'Забанить намертво'}
-                    </button>
-                `;
-                container.appendChild(row);
-            });
-        }
-
-        window.toggleUserBan = async function(uid, currentBan) {
-            await updateDoc(doc(db, "users", uid), { banned: !currentBan });
-            alert("Статус блокировки изменен!");
-            loadUsersCRM();
-        };
-
-        window.switchAdminTab = function(tab) {
-            adminTab = tab;
-            document.getElementById("tab-rooms-btn").classList.toggle("active", tab === "rooms");
-            document.getElementById("tab-users-btn").classList.toggle("active", tab === "users");
-            document.getElementById("rooms-list-container").style.display = tab === "rooms" ? "flex" : "none";
-            document.getElementById("users-list-container").style.display = tab === "users" ? "flex" : "none";
-            if (tab === "rooms") loadRoomsList();
-            if (tab === "users") loadUsersCRM();
-        };
-
-        document.getElementById("connect-spy-btn").addEventListener("click", () => {
-            const target = document.getElementById("target-room-input").value.trim();
-            if (!target) return alert("Введите имя комнаты!");
-            
-            const monitor = document.getElementById("admin-spy-monitor");
-            monitor.innerHTML = `<div style="color:#00ffcc;">Подключение к прослушке комнаты [${target}]...</div>`;
-            
-            if (spyUnsubscribe) spyUnsubscribe();
-            
-            const q = query(messagesCol, where("room", "==", target), orderBy("timestamp", "asc"));
-            spyUnsubscribe = onSnapshot(q, (snapshot) => {
-                monitor.innerHTML = "";
-                if(snapshot.empty) {
-                    monitor.innerHTML = `<div style="color:#666; text-align:center; margin-top:110px;">В этой комнате пока нет сообщений.</div>`;
-                }
-                snapshot.forEach(docSnap => {
-                    const data = docSnap.data();
-                    const msgDiv = document.createElement("div");
-                    msgDiv.className = `spy-msg ${data.isDeleted ? 'intercepted-deleted':''}`;
-                    
-                    let body = data.text || "[Медиа-файл/Аудио]";
-                    if(data.isDeleted) body = `[УДАЛЕНО ПОЛЬЗОВАТЕЛЕМ]: ${body}`;
-                    
-                    msgDiv.innerHTML = `
-                        <div class="spy-meta">
-                            <span>От: ${data.user}</span>
-                            <span class="spy-hard-del-btn" onclick="hardDeleteMessage('${docSnap.id}')">🚨 Стереть окончательно</span>
-                        </div>
-                        <div>${body}</div>
-                    `;
-                    monitor.appendChild(msgDiv);
-                });
-                monitor.scrollTop = monitor.scrollHeight;
-            });
-        });
-
-        window.hardDeleteMessage = async function(id) {
-            if(confirm("Удалить это сообщение из облака навсегда?")) {
-                await deleteDoc(doc(db, "messages", id));
-            }
-        };
-
-        document.getElementById("global-clear-btn").addEventListener("click", async () => {
-            const target = document.getElementById("target-room-input").value.trim();
-            if(!target || target.toLowerCase() === "алмаз") return alert("Укажите имя целевой комнаты!");
-            if(confirm(`Вы уверены, что хотите полностью очистить комнату ${target}?`)) {
-                const q = query(messagesCol, where("room", "==", target));
-                const snap = await getDocs(q);
-                snap.forEach(async (d) => {
-                    await deleteDoc(doc(db, "messages", d.id));
-                });
-                alert("Комната полностью стерта!");
-            }
-        });
-
-        document.getElementById("global-maintenance-btn").addEventListener("click", async () => {
-            const target = document.getElementById("target-room-input").value.trim();
-            if(!target || target.toLowerCase() === "алмаз") return alert("Укажите имя комнаты!");
-            const rRef = doc(db, "rooms", target);
-            const snap = await getDoc(rRef);
-            if(snap.exists()) {
-                const cur = snap.data().maintenance || false;
-                await updateDoc(rRef, { maintenance: !cur });
-                alert(`Статус заморозки комнаты изменен на: ${!cur}`);
-                loadRoomsList();
-            }
-        });
-
-        document.getElementById("global-password-btn").addEventListener("click", async () => {
-            const target = document.getElementById("target-room-input").value.trim();
-            if(!target || target.toLowerCase() === "алмаз") return alert("Укажите имя комнаты!");
-            const pass = prompt("Введите новый пароль для комнаты (или оставьте пустым для сброса):");
-            if (pass !== null) {
-                await updateDoc(doc(db, "rooms", target), { password: pass.trim() });
-                alert("Пароль комнаты успешно обновлен!");
-            }
-        });
-
-        document.getElementById("global-msg-btn").addEventListener("click", async () => {
-            const target = document.getElementById("target-room-input").value.trim();
-            if(!target) return alert("Укажите имя комнаты!");
-            const txt = prompt("Введите текст глобального объявления:");
-            if(txt) {
-                await addDoc(messagesCol, {
-                    room: target,
-                    user: "Система",
-                    text: txt,
-                    type: "announcement",
-                    timestamp: serverTimestamp()
-                });
-            }
-        });
 
         window.changeLanguage = function(lang) {
             currentLang = lang;
@@ -827,6 +396,8 @@
             document.getElementById("lbl-password").innerText = dictionary[lang].password;
             document.getElementById("lbl-room").innerText = dictionary[lang].room;
             document.getElementById("login-btn").innerText = dictionary[lang].login;
+            document.getElementById("btn-buy-room").innerText = dictionary[lang].buy_room;
+            document.getElementById("btn-invite").innerText = dictionary[lang].invite;
             document.getElementById("msg-input").placeholder = dictionary[lang].input_placeholder;
             document.getElementById("send-btn").innerText = dictionary[lang].send;
             document.getElementById("search-input").placeholder = dictionary[lang].search_placeholder;
@@ -836,252 +407,68 @@
             document.getElementById("ban-desc").innerText = dictionary[lang].ban_desc;
         };
 
-        window.changeTheme = function(theme) {
-            document.body.className = theme;
-            document.getElementById("theme-changer").value = theme;
-        };
+        window.addEventListener('load', () => {
+            history.replaceState({ screen: "auth" }, "");
+            const urlParams = new URLSearchParams(window.location.search);
+            const roomFromUrl = urlParams.get('room');
+            if(roomFromUrl) {
+                const rVal = roomFromUrl.trim().toLowerCase();
+                document.getElementById("room-input").value = rVal;
+                updateTgHrefLink(rVal);
+            }
+            changeLanguage("ru");
+            setupAntiScreenshotTriggers();
+            listenGlobalOnlinePresence();
+        });
 
-        function startChatListening() {
-            onSnapshot(doc(db, "users", myName), (snap) => {
-                if (snap.exists() && snap.data().banned === true) {
-                    document.getElementById("ban-overlay").style.display = "flex";
-                } else {
-                    document.getElementById("ban-overlay").style.display = "none";
-                }
-            });
-
-            onSnapshot(doc(db, "rooms", currentRoom), (snap) => {
-                if(snap.exists() && snap.data().maintenance === true) {
-                    document.getElementById("maintenance-overlay").style.display = "flex";
-                } else {
-                    document.getElementById("maintenance-overlay").style.display = "none";
-                }
-            });
-
-            const q = query(messagesCol, where("room", "==", currentRoom), orderBy("timestamp", "asc"));
-            if(mainChatUnsubscribe) mainChatUnsubscribe();
-            
-            mainChatUnsubscribe = onSnapshot(q, (snapshot) => {
-                const chatBox = document.getElementById("chat-box");
-                chatBox.innerHTML = "";
-                let count = 0;
-                
-                snapshot.forEach(docSnap => {
-                    count++;
-                    const data = docSnap.data();
-                    const msgDiv = document.createElement("div");
-                    
-                    if (data.type === "announcement") {
-                        msgDiv.className = "message system-announcement";
-                        msgDiv.innerText = data.text;
-                        chatBox.appendChild(msgDiv);
-                        return;
-                    }
-
-                    const isMe = data.user === myName;
-                    msgDiv.className = `message ${isMe ? 'outgoing' : 'incoming'}`;
-                    
-                    let content = "";
-                    if (data.replyTo) {
-                        content += `
-                            <div class="reply-container">
-                                <b style="font-size:0.75rem;">↩️ Ответ для ${data.replyTo.user}:</b><br>
-                                ${data.replyTo.text}
-                            </div>
-                        `;
-                    }
-
-                    content += `<div class="meta"><span>${data.user}</span></div>`;
-
-                    if (data.isDeleted) {
-                        content += `<i style="opacity:0.6;">Сообщение удалено собеседником</i>`;
-                    } else {
-                        if (data.type === "text") content += `<div>${data.text}</div>`;
-                        if (data.type === "image") content += `<img src="${data.url}" class="chat-img" onclick="window.open('${data.url}')">`;
-                        if (data.type === "audio") content += `<audio src="${data.url}" controls></audio>`;
-                        
-                        let pinOption = isMe ? `<span onclick="window.pinMessage('${docSnap.id}', '${data.text || 'Медиа'}')">📌</span>` : "";
-                        let delOption = isMe ? `<span class="del-btn" onclick="window.deleteMessage('${docSnap.id}')">🗑️</span>` : "";
-                        
-                        content += `
-                            <div class="msg-options">
-                                <span onclick="window.setReply('${data.user}', '${data.text || 'Медиа'}')">↩️</span>
-                                ${pinOption} ${delOption}
-                            </div>
-                        `;
-                    }
-
-                    // ОРИГИНАЛЬНЫЕ РЕАКЦИИ (С обработчиком клика addReaction)
-                    content += `<div class="reaction-panel">`;
-                    const currentReactions = data.reactions || {};
-                    const availableEmojis = ['👍', '❤️', '😂', '😮', '🔥'];
-                    availableEmojis.forEach(emoji => {
-                        const countEmoji = currentReactions[emoji] || 0;
-                        if (countEmoji > 0 || !data.isDeleted) {
-                            content += `<span class="reaction-badge" onclick="window.addReaction('${docSnap.id}', '${emoji}')">${emoji} ${countEmoji}</span>`;
-                        }
-                    });
-                    content += `</div>`;
-
-                    if (data.type !== "announcement") content += `<span class="status-ticks">✔️✔️</span>`;
-
-                    msgDiv.innerHTML = content;
-                    chatBox.appendChild(msgDiv);
-                });
-
-                if (lastMessageCount !== -1 && count > lastMessageCount) {
-                    const lastDoc = snapshot.docs[snapshot.docs.length - 1].data();
-                    if (lastDoc && lastDoc.user !== myName && lastDoc.room === currentRoom) playNotificationSound();
-                }
-                lastMessageCount = count;
-                const currentSearch = document.getElementById("search-input").value;
-                if(currentSearch) filterMessages(currentSearch);
-                chatBox.scrollTop = chatBox.scrollHeight;
-            });
-
-            // ОРИГИНАЛЬНЫЙ ЗАКРЕП С КНОПКОЙ СНЯТИЯ ЗАКРЕПА ДЛЯ СОЗДАТЕЛЯ
-            onSnapshot(doc(db, "rooms", currentRoom), (snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.data();
-                    if (data.pinnedMessage) {
-                        document.getElementById("pinned-bar").style.display = "flex";
-                        document.getElementById("pinned-text").innerText = `📌 Закреплено: ${data.pinnedMessage.text}`;
-                        currentPinnedId = data.pinnedMessage.id;
-                        document.getElementById("unpin-btn-container").innerHTML = `<span style="color:#ff4a4a; font-weight:bold; margin-left:10px;" onclick="event.stopPropagation(); window.unpinMessage();">✕</span>`;
-                    } else {
-                        document.getElementById("pinned-bar").style.display = "none";
-                    }
+        /* Защита Anti-Screenshot & Copy */
+        function setupAntiScreenshotTriggers() {
+            document.addEventListener('contextmenu', e => { if(protectionEnabled) e.preventDefault(); });
+            document.addEventListener('keydown', e => {
+                if(!protectionEnabled) return;
+                if(e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) {
+                    e.preventDefault();
                 }
             });
         }
-
-        // ОРИГИНАЛЬНЫЕ МЕТОДЫ РЕАКЦИЙ, УДАЛЕНИЯ И ЗАКРЕПА
-        window.deleteMessage = async function(id) {
-            await updateDoc(doc(db, "messages", id), { isDeleted: true });
-        };
-
-        window.pinMessage = async function(id, text) {
-            await updateDoc(doc(db, "rooms", currentRoom), {
-                pinnedMessage: { id, text }
-            });
-        };
-
-        window.unpinMessage = async function() {
-            await updateDoc(doc(db, "rooms", currentRoom), {
-                pinnedMessage: null
-            });
-        };
-
-        window.scrollToPinnedMessage = function() {
-            // Оригинальная логика скролла к закрепу
-            if (currentPinnedId) {
-                alert("Переход к закрепленному сообщению...");
-            }
-        };
-
-        window.addReaction = async function(msgId, emoji) {
-            const msgRef = doc(db, "messages", msgId);
-            const snap = await getDoc(msgRef);
-            if(snap.exists()){
-                const data = snap.data();
-                const reactions = data.reactions || {};
-                reactions[emoji] = (reactions[emoji] || 0) + 1;
-                await updateDoc(msgRef, { reactions: reactions });
-            }
-        };
-
-        window.setReply = function(user, text) {
-            replyTextPreview = { user, text };
-            document.getElementById("reply-preview-bar").style.display = "flex";
-            document.getElementById("reply-preview-text").innerText = `Ответ для ${user}: ${text}`;
-        };
-
-        document.getElementById("cancel-reply-btn").addEventListener("click", () => {
-            replyTextPreview = null;
-            document.getElementById("reply-preview-bar").style.display = "none";
-        });
-
-        document.getElementById("send-btn").addEventListener("click", sendMessage);
-        document.getElementById("msg-input").addEventListener("keypress", (e) => { if (e.key === 'Enter') sendMessage(); });
-
-        async function sendMessage() {
-            const input = document.getElementById("msg-input");
-            const text = input.value.trim();
-            if (!text) return;
-
-            const msgData = {
-                room: currentRoom,
-                user: myName,
-                text: text,
-                type: "text",
-                timestamp: serverTimestamp(),
-                isDeleted: false
-            };
-
-            if (replyTextPreview) {
-                msgData.replyTo = replyTextPreview;
-                replyTextPreview = null;
-                document.getElementById("reply-preview-bar").style.display = "none";
-            }
-
-            input.value = "";
-            await addDoc(messagesCol, msgData);
-        }
-
-        document.getElementById("file-input").addEventListener("change", function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async function(event) {
-                await addDoc(messagesCol, {
-                    room: currentRoom,
-                    user: myName,
-                    url: event.target.result,
-                    type: "image",
-                    timestamp: serverTimestamp(),
-                    isDeleted: false
-                });
-            };
-            reader.readAsDataURL(file);
-        });
-
-        const voiceBtn = document.getElementById("voice-btn");
-        voiceBtn.addEventListener("click", async () => {
-            if (!isRecording) {
-                if (!navigator.mediaDevices) return alert("Запись не поддерживается.");
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-                mediaRecorder.onstop = async () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
-                    const reader = new FileReader();
-                    reader.onload = async (event) => {
-                        await addDoc(messagesCol, {
-                            room: currentRoom,
-                            user: myName,
-                            url: event.target.result,
-                            type: "audio",
-                            timestamp: serverTimestamp(),
-                            isDeleted: false
-                        });
-                    };
-                    reader.readAsDataURL(audioBlob);
-                };
-                mediaRecorder.start();
-                isRecording = true;
-                voiceBtn.classList.add("recording");
-            } else {
-                mediaRecorder.stop();
-                isRecording = false;
-                voiceBtn.classList.remove("recording");
-            }
-        });
 
         window.copyReferralLink = function() {
-            const link = `${window.location.origin}${window.location.pathname}?room=${encodeURIComponent(currentRoom)}`;
-            navigator.clipboard.writeText(link);
-            alert("Ссылка для входа скопирована!");
+            if(!currentRoom) return;
+            const baseUrl = window.location.href.split('?')[0];
+            const refUrl = `${baseUrl}?room=${encodeURIComponent(currentRoom)}`;
+            navigator.clipboard.writeText(refUrl).then(() => { alert("🔗 Ссылка скопирована!"); });
+        };
+
+        window.openAdminModal = async function() {
+            if (!myName) {
+                alert("Сначала войдите в систему под своим никнеймом!");
+                return;
+            }
+            try {
+                const userDocRef = doc(db, "users", myName);
+                const userSnap = await getDoc(userDocRef);
+                if (userSnap.exists() && userSnap.data().isAdmin === true && userSnap.data().role === "creator") {
+                    document.getElementById("auth-screen").style.display = "none";
+                    document.getElementById("chat-screen").style.display = "none";
+                    document.getElementById("super-admin-screen").style.display = "flex";
+                    document.getElementById("secret-admin-trigger").style.display = "none";
+                    history.pushState({ screen: "admin" }, "");
+                    loadAdminStatistics(); 
+                    renderRoomsAndUsersLists();
+                } else {
+                    alert("Ошибка доступа: у вас нет прав Создателя чата.");
+                }
+            } catch (error) {
+                alert("Ошибка при проверке прав безопасности.");
+            }
+        };
+
+        window.switchAdminTab = function(tab) {
+            adminTab = tab;
+            document.getElementById("tab-rooms-btn").classList.toggle("active", tab === 'rooms');
+            document.getElementById("tab-users-btn").classList.toggle("active", tab === 'users');
+            document.getElementById("rooms-list-container").style.display = tab === 'rooms' ? 'flex' : 'none';
+            document.getElementById("users-list-container").style.display = tab === 'users' ? 'flex' : 'none';
         };
 
         window.toggleNotificationSound = function() {
@@ -1094,19 +481,18 @@
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = "sine";
-            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-            osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1);
+            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); 
             gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.3);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
 
         window.toggleSearchField = function() {
-            document.getElementById("search-bar").style.display = "flex";
+            const bar = document.getElementById("search-bar");
+            bar.style.display = bar.style.display === "flex" ? "none" : "flex";
+            if(bar.style.display === "flex") document.getElementById("search-input").focus();
         };
         window.closeSearchField = function() {
             document.getElementById("search-bar").style.display = "none";
@@ -1114,27 +500,625 @@
             filterMessages("");
         };
 
-        window.filterMessages = function(val) {
-            const needle = val.toLowerCase().trim();
-            const msgs = document.querySelectorAll("#chat-box .message");
-            msgs.forEach(m => {
-                if(m.classList.contains("system-announcement")) return;
-                const txt = m.innerText.toLowerCase();
-                if (txt.includes(needle)) {
-                    m.style.display = "flex";
-                } else {
-                    m.style.display = "none";
-                }
+        window.filterMessages = function(keyword) {
+            document.querySelectorAll("#chat-box .message").forEach(el => {
+                if (el.classList.contains("system-announcement")) return;
+                el.style.display = el.innerText.toLowerCase().includes(keyword.toLowerCase().trim()) ? "flex" : "none";
             });
         };
 
-        window.goBackToAuth = function() { location.reload(); };
+        window.changeTheme = function(theme) { document.body.className = theme; };
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlRoom = urlParams.get('room');
-        if (urlRoom) {
-            document.getElementById("room-input").value = urlRoom;
+        // Предварительная слежка за онлайном до входа (для контроля лимитов)
+        function listenGlobalOnlinePresence() {
+            onSnapshot(collection(db, "online_presence"), (snapshot) => {
+                if(!currentRoom) return;
+                let roomCount = 0;
+                const threshold = Date.now() - 35000;
+                snapshot.forEach(d => {
+                    const data = d.data();
+                    if(data.room === currentRoom) {
+                        const ms = data.lastSeen ? data.lastSeen.seconds * 1000 : Date.now();
+                        if (ms > threshold) roomCount++;
+                    }
+                });
+                globalCurrentRoomOnlineCount = roomCount;
+                const counterEl = document.getElementById("room-online-counter");
+                if (counterEl) counterEl.innerText = `👥 Онлайн: ${roomCount}`;
+            });
         }
+
+        document.getElementById("login-btn").addEventListener("click", async () => {
+            myName = document.getElementById("username-input").value.trim().toLowerCase();
+            const myPassword = document.getElementById("password-input").value.trim();
+            currentRoom = document.getElementById("room-input").value.trim().toLowerCase();
+            
+            if (!myName || !currentRoom) { alert("Заполни никнейм и имя комнаты!"); return; }
+
+            // 1. Проверка на бан
+            const banSnap = await getDoc(doc(db, "blacklist", myName));
+            if (banSnap.exists() && banSnap.data().isBanned) {
+                document.getElementById("auth-screen").style.display = "none";
+                document.getElementById("ban-overlay").style.display = "flex";
+                return;
+            }
+
+            // Проверка роли админа заранее для корректного обхода паролей и лимитов
+            const userDocRef = doc(db, "users", myName);
+            const userSnap = await getDoc(userDocRef);
+            const isCreatorAdmin = userSnap.exists() && userSnap.data().isAdmin === true && userSnap.data().role === "creator";
+
+            // 2. ЗАКРЫТАЯ МОДЕЛЬ (Проверка существования комнаты)
+            const roomConfigRef = doc(db, "rooms_config", currentRoom);
+            const roomConfigSnap = await getDoc(roomConfigRef);
+            
+            if (!roomConfigSnap.exists()) {
+                alert("Эта комната еще не создана. Обратитесь к Администратору.");
+                return;
+            }
+
+            const roomData = roomConfigSnap.data();
+
+            // ПРОВЕРКА ПАРОЛЯ КОМНАТЫ: Если пароль задан — требуем. Если нет — скипаем[cite: 1]
+            if (roomData.roomPassword && roomData.roomPassword.trim() !== "") {
+                if (!myPassword && !isCreatorAdmin) {
+                    alert("Эта комната защищена паролем! Укажите пароль комнаты в поле 'Пароль'.");
+                    return;
+                }
+                if (roomData.roomPassword !== myPassword && !isCreatorAdmin) {
+                    alert("Неверный пароль от комнаты!");
+                    return;
+                }
+            }
+
+            // ПРОВЕРКА ЛИМИТА ЧЕЛОВЕК (Админа пускает в любом случае)
+            if (roomData.userLimit && parseInt(roomData.userLimit) > 0 && !isCreatorAdmin) {
+                const limit = parseInt(roomData.userLimit);
+                if (globalCurrentRoomOnlineCount >= limit) {
+                    alert(`Комната переполнена! Установлен лимит на ${limit} человек.`);
+                    return;
+                }
+            }
+
+            // 3. Авторизация / регистрация пользователя
+            if (userSnap.exists()) {
+                // Если у комнаты нет пароля, проверяем личный пароль юзера[cite: 1]
+                const noRoomPass = !roomData.roomPassword || roomData.roomPassword.trim() === "";
+                if (noRoomPass && userSnap.data().password && userSnap.data().password !== myPassword && !isCreatorAdmin) {
+                    alert("Неверный личный пароль этого пользователя!");
+                    return;
+                }
+                let roomsArray = userSnap.data().activeRooms || [];
+                if(!roomsArray.includes(currentRoom)) roomsArray.push(currentRoom);
+                await updateDoc(userDocRef, {
+                    loginCount: increment(1),
+                    lastLogin: serverTimestamp(),
+                    activeRooms: roomsArray
+                });
+            } else {
+                await setDoc(userDocRef, { 
+                    password: myPassword || "123456",
+                    registeredAt: serverTimestamp(),
+                    loginCount: 1,
+                    lastLogin: serverTimestamp(),
+                    activeRooms: [currentRoom]
+                });
+            }
+
+            // Вход в систему присутствия (Presence System)
+            setupPresenceSystem();
+
+            document.getElementById("auth-screen").style.display = "none";
+            document.getElementById("chat-screen").style.display = "flex";
+            document.getElementById("chat-header").innerText = `Комната: ${currentRoom} (${myName})`;
+            
+            history.pushState({ screen: "chat" }, "");
+            startChatListening();
+            setupTypingStatus();
+            listenRoomConfig(); 
+            listenPins(); 
+        });
+
+        // Presence System (Живой счетчик онлайн)
+        async function setupPresenceSystem() {
+            const onlineRef = doc(db, "online_presence", `${currentRoom}_${myName}`);
+            await setDoc(onlineRef, {
+                room: currentRoom,
+                user: myName,
+                lastSeen: serverTimestamp()
+            });
+
+            // Обновление таймстампа каждые 10 секунд
+            setInterval(async () => {
+                await setDoc(onlineRef, {
+                    room: currentRoom,
+                    user: myName,
+                    lastSeen: serverTimestamp()
+                }, { merge: true });
+            }, 10000);
+
+            // Удаление при закрытии вкладки
+            window.addEventListener("beforeunload", () => {
+                navigator.sendBeacon(`https://my-secret-chat-23f6d.firebaseio.com/online_presence/${currentRoom}_${myName}.json?method=DELETE`);
+            });
+        }
+
+        async function loadAdminStatistics() {
+            const msgSnap = await getDocs(messagesCol);
+            document.getElementById("stat-total-msg").innerText = msgSnap.size;
+
+            const uSnap = await getDocs(collection(db, "users"));
+            document.getElementById("stat-users-count").innerText = uSnap.size;
+
+            // Глобальный онлайн во всем приложении в админке
+            onSnapshot(collection(db, "online_presence"), (snapshot) => {
+                let globalCount = 0;
+                const threshold = Date.now() - 35000;
+                snapshot.forEach(d => {
+                    const data = d.data();
+                    const ms = data.lastSeen ? data.lastSeen.seconds * 1000 : Date.now();
+                    if(ms > threshold) globalCount++;
+                });
+                document.getElementById("stat-global-online").innerText = globalCount;
+            });
+        }
+
+        /* Создание новой комнаты через Панель Создателя */
+        document.getElementById("admin-create-room-btn").addEventListener("click", async () => {
+            const newRoomName = prompt("Введите уникальное имя для новой комнаты:");
+            if(!newRoomName) return;
+            const cleanName = newRoomName.trim().toLowerCase();
+            
+            const rRef = doc(db, "rooms_config", cleanName);
+            const rSnap = await getDoc(rRef);
+            if(rSnap.exists()) {
+                alert("Эта комната уже существует!");
+                return;
+            }
+
+            await setDoc(rRef, {
+                createdAt: serverTimestamp(),
+                isMaintenance: false,
+                protection: false,
+                roomPassword: "",
+                userLimit: 0,
+                bgUrl: ""
+            });
+            alert(`Комната "${cleanName}" успешно создана и добавлена в CRM систему!`);
+            renderRoomsAndUsersLists();
+        });
+
+        async function renderRoomsAndUsersLists() {
+            const roomsCont = document.getElementById("rooms-list-container");
+            roomsCont.innerHTML = "";
+            
+            const configSnap = await getDocs(collection(db, "rooms_config"));
+            
+            configSnap.forEach(dSnap => {
+                const rName = dSnap.id;
+                const cData = dSnap.data();
+                let timerText = "Срок не задан";
+                let passStatus = "🔓 Без пароля";
+                let protText = cData.protection ? "🛡️ Защита: ВКЛ" : "🛡️ Защита: ВЫКЛ";
+                let limitText = cData.userLimit ? `👥 Лимит: ${cData.userLimit}` : "👥 Лимит: ❌";
+
+                if(cData.expiresAt) {
+                    const diff = cData.expiresAt - Date.now();
+                    const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                    timerText = daysLeft > 0 ? `Осталось: ${daysLeft} дн.` : "Срок истёк!";
+                }
+                if(cData.roomPassword && cData.roomPassword.trim() !== "") {
+                    passStatus = `🔑 ${cData.roomPassword}`;
+                }
+
+                const row = document.createElement("div");
+                row.className = "room-item-row";
+                row.innerHTML = `
+                    <button class="room-item-btn">📁 ${rName} (<span style="color:#00ffcc; font-size:0.8rem;">${passStatus}</span>) <small style="color: #bc76ff;">${limitText}</small></button>
+                    <span class="room-timer">${timerText}</span>
+                    <div style="display:flex; gap:5px; margin-top:4px;">
+                        <button class="admin-btn secondary" style="padding:4px 8px; font-size:0.8rem;" onclick="window.toggleProtection('${rName}', ${cData.protection || false})">${protText}</button>
+                        <button class="admin-btn secondary" style="padding:4px 8px; font-size:0.8rem;" onclick="window.setRoomTimer('${rName}')">🗓️ Срок</button>
+                    </div>
+                `;
+                row.querySelector('.room-item-btn').onclick = () => {
+                    document.getElementById("target-room-input").value = rName;
+                    document.getElementById("connect-spy-btn").click();
+                };
+                roomsCont.appendChild(row);
+            });
+
+            const usersCont = document.getElementById("users-list-container");
+            usersCont.innerHTML = "";
+            const uSnap = await getDocs(collection(db, "users"));
+            uSnap.forEach(uDoc => {
+                const uData = uDoc.data();
+                let regDate = uData.registeredAt ? new Date(uData.registeredAt.seconds * 1000).toLocaleDateString() : "---";
+                let roomsList = uData.activeRooms ? uData.activeRooms.join(", ") : "Нет комнат";
+                
+                const uRow = document.createElement("div");
+                uRow.className = "user-item-row";
+                uRow.innerHTML = `
+                    <div class="user-row-header">
+                        <span>👤 ${uDoc.id} (Пароль: <b style="color:#ffeb3b;">${uData.password}</b>)</span>
+                        <button class="admin-btn" style="padding:2px 8px; font-size:0.75rem; background:#00d2ff; color:#000;" onclick="window.changeUserPassword('${uDoc.id}')">🔑 Сменить пароль</button>
+                    </div>
+                    <div style="color:#aaa; font-size:0.8rem;">
+                        <div>📅 Регистрация: ${regDate} | 🚀 Заходов: ${uData.loginCount || 1}</div>
+                        <div>🚪 Активен в комнатах: <span style="color:#00ffcc;">${roomsList}</span></div>
+                    </div>
+                `;
+                usersCont.appendChild(uRow);
+            });
+        }
+
+        /* Переключатель Anti-Screenshot & Copy */
+        window.toggleProtection = async function(roomName, currentStatus) {
+            await setDoc(doc(db, "rooms_config", roomName), { protection: !currentStatus }, { merge: true });
+            alert(`Защита комнаты ${roomName} переключена на: ${!currentStatus ? "ВКЛЮЧЕНА" : "ВЫКЛЮЧЕНА"}`);
+            renderRoomsAndUsersLists();
+        };
+
+        /* Задать кастомный URL фона комнаты */
+        document.getElementById("global-bg-url-btn").addEventListener("click", async () => {
+            const rName = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!rName || rName === "алмаз") return alert("Укажите конкретную комнату в поле поиска/команды!");
+            
+            const newBg = prompt("Введите прямую ссылку URL на картинку для фона комнаты:");
+            if(newBg === null) return;
+
+            await setDoc(doc(db, "rooms_config", rName), { bgUrl: newBg.trim() }, { merge: true });
+            alert("Кастомный фон успешно применен!");
+        });
+
+        window.setRoomTimer = async function(roomName) {
+            let days = prompt(`На сколько дней активировать комнату ${roomName}?`, "30");
+            if(!days) return;
+            const expireTimestamp = Date.now() + (parseInt(days) * 24 * 60 * 60 * 1000);
+            await setDoc(doc(db, "rooms_config", roomName), { expiresAt: expireTimestamp }, { merge: true });
+            alert("Срок успешно установлен!");
+            renderRoomsAndUsersLists();
+        };
+
+        window.changeUserPassword = async function(username) {
+            let newPass = prompt(`Введите новый пароль для пользователя ${username}:`);
+            if(!newPass || !newPass.trim()) return;
+            await updateDoc(doc(db, "users", username.toLowerCase()), { password: newPass.trim() });
+            alert(`Пароль для ${username} успешно изменен!`);
+            renderRoomsAndUsersLists();
+        };
+
+        document.getElementById("global-password-btn").addEventListener("click", async () => {
+            const rName = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!rName || rName === "алмаз") return alert("Сначала укажите конкретное имя комнаты!");
+            
+            const ref = doc(db, "rooms_config", rName);
+            const snap = await getDoc(ref);
+            let currentPass = "";
+            if (snap.exists() && snap.data().roomPassword) {
+                currentPass = snap.data().roomPassword;
+            }
+            let newPass = prompt(`Введите НОВЫЙ пароль для комнаты [ ${rName} ]:\n(Оставьте пустым для свободного входа)`, currentPass);
+            if (newPass === null) return; 
+
+            await setDoc(ref, { roomPassword: newPass.trim() }, { merge: true });
+            alert("Пароль комнаты успешно обновлен!");
+            renderRoomsAndUsersLists();
+        });
+
+        /* Кнопка изменения лимита человек */
+        document.getElementById("global-limit-btn").addEventListener("click", async () => {
+            const rName = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!rName || rName === "алмаз") return alert("Сначала укажите конкретное имя комнаты!");
+            
+            const ref = doc(db, "rooms_config", rName);
+            const snap = await getDoc(ref);
+            let currentLimit = 0;
+            if (snap.exists() && snap.data().userLimit) {
+                currentLimit = snap.data().userLimit;
+            }
+            let newLimit = prompt(`Установите лимит человек для комнаты [ ${rName} ]:\n(0 или пусто — без ограничений)`, currentLimit);
+            if (newLimit === null) return;
+
+            await setDoc(ref, { userLimit: parseInt(newLimit) || 0 }, { merge: true });
+            alert(`Лимит человек для комнаты ${rName} успешно обновлен!`);
+            renderRoomsAndUsersLists();
+        });
+
+        document.getElementById("connect-spy-btn").addEventListener("click", async () => {
+            const targetRoom = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if (targetRoom === "алмаз") {
+                document.getElementById("rooms-list-container").style.display = adminTab === "rooms" ? "flex" : "none";
+                document.getElementById("users-list-container").style.display = adminTab === "users" ? "flex" : "none";
+                return;
+            }
+            if (!targetRoom) return;
+
+            if (spyUnsubscribe) spyUnsubscribe();
+            const monitor = document.getElementById("admin-spy-monitor");
+            monitor.innerHTML = `<div style="color: #00d2ff; text-align: center; margin-top: 110px;">Перехват [${targetRoom}]...</div>`;
+
+            const q = query(messagesCol, orderBy("createdAt", "asc"));
+            spyUnsubscribe = onSnapshot(q, (snapshot) => {
+                monitor.innerHTML = "";
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    if (data.room !== targetRoom) return; 
+
+                    const msgDiv = document.createElement("div");
+                    msgDiv.className = data.isDeleted ? "spy-msg intercepted-deleted" : "spy-msg";
+                    let deletedLabel = data.isDeleted ? `<b style="color: #ff4a4a; margin-left: 10px;">[🗑️ УДАЛЕНО ЮЗЕРОМ]</b>` : "";
+
+                    let body = `
+                        <div class="spy-meta">
+                            <span>👤: <b>${data.user}</b> ${deletedLabel} <button class="spy-ban-btn" onclick="window.banUser('${data.user}')">БАН</button></span> 
+                            <span class="spy-hard-del-btn" onclick="window.hardDeleteMsg('${docSnap.id}')">Стереть из базы 💀</span>
+                        </div>
+                    `;
+
+                    if (data.type === "text" || data.type === "announcement") {
+                        body += `<div style="white-space: pre-wrap;">${data.text}</div>`;
+                    } else if (data.type === "image") {
+                        body += `<div><img src="${data.fileData}" style="max-width: 150px; max-height: 150px; border-radius: 8px; display: block;"></div>`;
+                    } else if (data.type === "voice") {
+                        body += `<div><audio src="${data.fileData}" controls style="max-width: 100%; height: 30px;"></audio></div>`;
+                    }
+                    msgDiv.innerHTML = body; monitor.appendChild(msgDiv);
+                });
+                monitor.scrollTop = monitor.scrollHeight;
+            });
+        });
+
+        window.banUser = async function(username) {
+            if(confirm(`Забанить ${username}?`)) {
+                await setDoc(doc(db, "blacklist", username.toLowerCase()), { isBanned: true });
+                alert("Забанен!");
+            }
+        };
+        window.hardDeleteMsg = async function(id) {
+            if(confirm("Стереть безвозвратно?")) await deleteDoc(doc(db, "messages", id));
+        };
+
+        document.getElementById("global-clear-btn").addEventListener("click", async () => {
+            const rName = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!rName || rName === "алмаз") return alert("Укажите комнату!");
+            if(confirm(`Стереть ВСЕ сообщения в комнате ${rName}?`)) {
+                const snap = await getDocs(query(messagesCol, where("room", "==", rName)));
+                snap.forEach(async (d) => { await deleteDoc(doc(db, "messages", d.id)); });
+                alert("Комната очищена!");
+            }
+        });
+
+        document.getElementById("global-maintenance-btn").addEventListener("click", async () => {
+            const rName = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!rName || rName === "алмаз") return alert("Укажите комнату!");
+            const ref = doc(db, "rooms_config", rName);
+            const snap = await getDoc(ref);
+            let state = false; if(snap.exists()) state = snap.data().isMaintenance || false;
+            await setDoc(ref, { isMaintenance: !state }, { merge: true });
+            alert(`Статус заморозки изменен на: ${!state}`);
+        });
+
+        document.getElementById("global-msg-btn").addEventListener("click", async () => {
+            const rName = document.getElementById("target-room-input").value.trim().toLowerCase();
+            if(!rName || rName === "алмаз") return alert("Укажите комнату!");
+            let txt = prompt("Введите текст системного объявления:");
+            if(txt) {
+                await addDoc(messagesCol, { room: rName, user: "Система", text: txt, type: "announcement", isDeleted: false, createdAt: serverTimestamp() });
+            }
+        });
+
+        function listenRoomConfig() {
+            onSnapshot(doc(db, "rooms_config", currentRoom), (docSnap) => {
+                const indicator = document.getElementById("room-status-indicator");
+                const bgLayer = document.getElementById("room-custom-bg-layer");
+                let isMaint = false;
+                
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    isMaint = data.isMaintenance || false;
+                    if(data.expiresAt && data.expiresAt < Date.now()) isMaint = true;
+                    
+                    // Обновление состояния защиты (Anti-screenshot)
+                    protectionEnabled = data.protection || false;
+                    if(protectionEnabled) {
+                        document.body.classList.add("protected-mode");
+                    } else {
+                        document.body.classList.remove("protected-mode");
+                    }
+
+                    // Применение кастомного URL фона
+                    if(data.bgUrl && data.bgUrl.trim() !== "") {
+                        bgLayer.style.backgroundImage = `url('${data.bgUrl.trim()}')`;
+                    } else {
+                        bgLayer.style.backgroundImage = "none";
+                    }
+                }
+                
+                if (isMaint) {
+                    indicator.innerText = "● СТОП"; indicator.style.color = "#ff004b";
+                    document.getElementById("maintenance-overlay").style.display = "flex";
+                } else {
+                    indicator.innerText = "● OK"; indicator.style.color = "#4caf50";
+                    document.getElementById("maintenance-overlay").style.display = "none";
+                }
+            });
+        }
+
+        function compressImage(file, maxWidth, maxHeight, quality) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let w = img.width, h = img.height;
+                    if (w > h ? w > maxWidth : h > maxHeight) {
+                        w > h ? (h *= maxWidth / w, w = maxWidth) : (w *= maxHeight / h, h = maxHeight);
+                    }
+                    canvas.width = w; canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                };
+            });
+        }
+
+        document.getElementById("file-input").addEventListener("change", async (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            const b64 = await compressImage(file, 1000, 1000, 0.7);
+            await addDoc(messagesCol, { room: currentRoom, user: myName, fileData: b64, type: "image", reactions: {}, isDeleted: false, createdAt: serverTimestamp() });
+        });
+
+        const msgInput = document.getElementById("msg-input");
+        async function sendMessage() {
+            const text = msgInput.value.trim(); if (!text) return; msgInput.value = "";
+            await addDoc(messagesCol, { room: currentRoom, user: myName, text: text, type: "text", reply_to: replyTextPreview, reactions: {}, isDeleted: false, createdAt: serverTimestamp() });
+            window.cancelReply();
+        }
+        document.getElementById("send-btn").addEventListener("click", sendMessage);
+        msgInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
+
+        window.setReply = function(user, text) {
+            replyTextPreview = `${user}: ${text.substring(0,25)}...`;
+            document.getElementById("reply-preview-text").innerText = `Ответ для ${user}: "${text.substring(0,15)}..."`;
+            document.getElementById("reply-preview-bar").style.display = "flex";
+            msgInput.focus();
+        };
+        window.cancelReply = function() {
+            replyTextPreview = null;
+            document.getElementById("reply-preview-bar").style.display = "none";
+        };
+        document.getElementById("cancel-reply-btn").addEventListener("click", window.cancelReply);
+
+        window.addReaction = async function(id, emoji) {
+            const ref = doc(db, "messages", id);
+            const snap = await getDoc(ref);
+            if(snap.exists()) {
+                let r = snap.data().reactions || {};
+                r[emoji] = (r[emoji] || 0) + 1;
+                await updateDoc(ref, { reactions: r });
+            }
+        };
+        window.deleteMsg = async function(id) {
+            if(confirm("Удалить сообщение для всех?")) {
+                await updateDoc(doc(db, "messages", id), { isDeleted: true });
+            }
+        };
+
+        document.getElementById("voice-btn").addEventListener("click", async () => {
+            const vBtn = document.getElementById("voice-btn");
+            if (!isRecording) {
+                audioChunks = [];
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const reader = new FileReader();
+                    reader.onloadend = async () => {
+                        await addDoc(messagesCol, { room: currentRoom, user: myName, fileData: reader.result, type: "voice", reactions: {}, isDeleted: false, createdAt: serverTimestamp() });
+                    };
+                    reader.readAsDataURL(new Blob(audioChunks, { type: 'audio/mp3' }));
+                };
+                mediaRecorder.start(); isRecording = true;
+                vBtn.classList.add("recording"); vBtn.innerText = "🛑";
+            } else {
+                mediaRecorder.stop(); mediaRecorder.stream.getTracks().forEach(t => t.stop());
+                isRecording = false; vBtn.classList.remove("recording"); vBtn.innerText = "🎙️";
+            }
+        });
+
+        window.pinMsg = async function(id, user, text) {
+            await setDoc(doc(db, "pins", currentRoom), { msgId: id, displayText: `${user}: ${text.substring(0,30)}...` });
+        };
+        window.unpinMsg = async function(e) {
+            e.stopPropagation();
+            await deleteDoc(doc(db, "pins", currentRoom));
+        };
+        function listenPins() {
+            onSnapshot(doc(db, "pins", currentRoom), (d) => {
+                const bar = document.getElementById("pinned-bar");
+                const unpinCont = document.getElementById("unpin-btn-container");
+                if (d.exists()) {
+                    currentPinnedId = d.data().msgId;
+                    document.getElementById("pinned-text").innerText = `📌 ${d.data().displayText}`;
+                    unpinCont.innerHTML = `<b style="color:#ff4a4a; margin-left:10px;" onclick="window.unpinMsg(event)">✕</b>`;
+                    bar.style.display = "flex";
+                } else bar.style.display = "none";
+            });
+        }
+        window.scrollToPinnedMessage = function() {
+            const el = document.getElementById(`msg-block-${currentPinnedId}`);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
+        function setupTypingStatus() {
+            onSnapshot(collection(db, "typing"), (snap) => {
+                let typers = [];
+                snap.forEach(d => { if (d.data().room === currentRoom && d.id !== myName) typers.push(d.id); });
+                document.getElementById("typing-status").innerText = typers.length > 0 ? `${typers.join(", ")} печатает...` : "";
+                document.getElementById("typing-status").style.display = typers.length > 0 ? "block" : "none";
+            });
+            msgInput.addEventListener("input", async () => {
+                await setDoc(doc(db, "typing", myName), { room: currentRoom });
+                clearTimeout(typingTimeout);
+                typingTimeout = setTimeout(async () => { await deleteDoc(doc(db, "typing", myName)); }, 2000);
+            });
+        }
+
+        function startChatListening() {
+            const q = query(messagesCol, orderBy("createdAt", "asc"));
+            mainChatUnsubscribe = onSnapshot(q, (snapshot) => {
+                const chatBox = document.getElementById("chat-box");
+                chatBox.innerHTML = ""; let count = 0;
+                
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data(); if (data.room !== currentRoom || data.isDeleted) return;
+                    count++;
+                    const msgDiv = document.createElement("div");
+                    msgDiv.id = `msg-block-${docSnap.id}`;
+                    const isMe = data.user === myName;
+                    msgDiv.className = data.type === "announcement" ? "message system-announcement" : `message ${isMe ? 'outgoing' : 'incoming'}`;
+                    
+                    let content = `<span class="meta">${data.user}</span>`;
+                    if (data.reply_to) content += `<div class="reply-container">↩️ ${data.reply_to}</div>`;
+                    
+                    if (data.type === "text" || data.type === "announcement") content += `<div>${data.text}</div>`;
+                    else if (data.type === "image") content += `<img class="chat-img" src="${data.fileData}">`;
+                    else if (data.type === "voice") content += `<audio src="${data.fileData}" controls></audio>`;
+                    
+                    if (data.type !== "announcement") {
+                        let pinOption = `<span onclick="window.pinMsg('${docSnap.id}','${data.user}','${data.text || 'Медиа'}')">📌</span>`;
+                        let delOption = isMe ? `<span class="del-btn" onclick="window.deleteMsg('${docSnap.id}')">🗑️</span>` : "";
+                        content += `
+                            <div class="msg-options">
+                                <span onclick="window.addReaction('${docSnap.id}','❤️')">❤️</span>
+                                <span onclick="window.addReaction('${docSnap.id}','👍')">👍</span>
+                                <span onclick="window.setReply('${data.user}', '${data.text || 'Медиа'}')">↩️</span>
+                                ${pinOption} ${delOption}
+                            </div>
+                        `;
+                    }
+
+                    if (data.reactions && Object.keys(data.reactions).length > 0) {
+                        content += `<div class="reaction-panel">`;
+                        for (let emoji in data.reactions) content += `<span class="reaction-badge">${emoji} ${data.reactions[emoji]}</span>`;
+                        content += `</div>`;
+                    }
+                    if (data.type !== "announcement") content += `<span class="status-ticks">✔️✔️</span>`;
+
+                    msgDiv.innerHTML = content; chatBox.appendChild(msgDiv);
+                });
+
+                if (lastMessageCount !== -1 && count > lastMessageCount) {
+                    const lastDoc = snapshot.docs[snapshot.docs.length - 1].data();
+                    if (lastDoc && lastDoc.user !== myName && lastDoc.room === currentRoom) playNotificationSound();
+                }
+                lastMessageCount = count;
+                const currentSearch = document.getElementById("search-input").value;
+                if(currentSearch) filterMessages(currentSearch);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+        window.goBackToAuth = function() { location.reload(); };
     </script>
 </body>
 </html>
